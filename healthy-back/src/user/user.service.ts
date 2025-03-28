@@ -1,29 +1,26 @@
 import { Injectable } from '@nestjs/common';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../database/entities/user.entity';
+import { UserHashtag } from '../database/entities/hashtag.entity';
 @Injectable()
 export class UserService {
-  // 사용자 생성
-  create(username: string, email: string) {
-    return `New user created with username: ${username} and email: ${email}`;
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>, // UserRepository 의존성 주입
+    @InjectRepository(UserHashtag)
+    private readonly hashRepository: Repository<UserHashtag>,
+  ) {}
+
+  async create(userData: Partial<User>) {
+    const newUser = this.userRepository.create(userData);
+    return this.userRepository.save(newUser);
   }
 
-  // 모든 사용자 조회
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return this.userRepository.find();
   }
 
-  // 특정 사용자 조회
-  findOne(id: number) {
-    return `This action returns user #${id}`;
-  }
-
-  // 사용자 업데이트
-  update(id: number, username: string, email: string) {
-    return `This action updates user #${id} with username: ${username} and email: ${email}`;
-  }
-
-  // 사용자 삭제
-  remove(id: number) {
-    return `This action removes user #${id}`;
+  async findOne(id: number) {
+    return this.userRepository.findOne({ where: { id } });
   }
 }
