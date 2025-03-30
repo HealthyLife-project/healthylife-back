@@ -15,6 +15,6 @@ export class Category {
   @Column()
   category: string;
 
-  @OneToMany(() => Hashtag, (hashtag) => hashtag.parentid)
+  @OneToMany(() => Hashtag, (hashtag) => hashtag.category)
   hashtags: Hashtag[];
 }
