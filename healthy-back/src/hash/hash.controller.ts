@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
 import { HashService } from './hash.service';
 import { Hashtag } from '../database/entities/hash.entity';
 import { Category } from '../database/entities/category.entity';
@@ -57,5 +57,27 @@ export class HashController {
   ): Promise<Hashtag> {
     console.log(hashtag, categoryId);
     return this.hashService.createHashtag(hashtag, categoryId);
+  }
+
+  @Get('hash/:id')
+  @ApiOperation({
+    summary: '해시태그 조회',
+    description: '특정 id에 해당하는 해시태그 조회',
+  })
+  @ApiParam({ name: 'id', description: '해시태그 ID' })
+  async findAll(@Param('id') id: number): Promise<Hashtag[]> {
+    const { oneHash } = await this.hashService.findAllHash(id); // { result, oneHash }에서 oneHash만 추출
+    return oneHash; // 담긴 값을 반환
+  }
+
+  @Delete('delHash/:id')
+  @ApiOperation({
+    summary: '해시태그 제거',
+  })
+  @ApiParam({ name: 'id', description: '해시태그 ID' })
+  async delete(@Param('id') id: number): Promise<boolean> {
+    const res = await this.hashService.deleteHash(id);
+
+    return res.result;
   }
 }

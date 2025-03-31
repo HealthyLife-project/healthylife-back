@@ -1,6 +1,16 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AuthService } from './auth.service'; // AuthService import
+import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/database/entities/user.entity'; // User Entity import
+import { Response } from 'express';
 import { LoginDto } from 'src/database/entities/dto/userdto';
 import {
   ApiTags,
@@ -9,11 +19,16 @@ import {
   ApiBody,
   ApiParam,
 } from '@nestjs/swagger';
-
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 @ApiTags('auth')
 @Controller('auth') // '/auth' 경로로 요청을 처리
 export class AuthController {
-  constructor(private readonly authService: AuthService) {} // AuthService 의존성 주입
+  constructor(
+    private readonly authService: AuthService,
+    private readonly jwtService: JwtService, // JWT 서비스 주입
+    private readonly configService: ConfigService,
+  ) {} // AuthService 의존성 주입
 
   @Post('login') // 로그인 API
   @ApiOperation({
@@ -50,5 +65,69 @@ export class AuthController {
     // AuthService의 login 메서드를 호출하여 결과 처리
     const result = await this.authService.login(userInput); // User는 여기서 필요없음
     return result; // 로그인 성공 시 result 반환
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {
+    return;
+  }
+
+  @Get('google/cb')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req, @Res() res: Response) {
+    const user = req.user;
+    const jwtSecret = this.configService.get<string>('JWT_SECRET');
+
+    // NestJS의 JwtService를 이용해 토큰 생성
+    const token = this.jwtService.sign(user, {
+      secret: jwtSecret,
+      expiresIn: '1h',
+    });
+
+    // 프론트엔드로 리디렉트 (토큰 전달)
+    res.redirect(`http://localhost:3000/auth-success?token=${token}`);
+  }
+  @Get('naver')
+  @UseGuards(AuthGuard('naver'))
+  async naverAuth() {
+    return;
+  }
+
+  @Get('naver/cb')
+  @UseGuards(AuthGuard('naver'))
+  async naverAuthRedirect(@Req() req, @Res() res: Response) {
+    const user = req.user;
+    const jwtSecret = this.configService.get<string>('JWT_SECRET');
+
+    // NestJS의 JwtService를 이용해 토큰 생성
+    const token = this.jwtService.sign(user, {
+      secret: jwtSecret,
+      expiresIn: '1h',
+    });
+
+    // 프론트엔드로 리디렉트 (토큰 전달)
+    res.redirect(`http://localhost:3000/auth-success?token=${token}`);
+  }
+  @Get('kakao')
+  @UseGuards(AuthGuard('kakao'))
+  async kakaoAuth() {
+    return;
+  }
+
+  @Get('kakao/cb')
+  @UseGuards(AuthGuard('kakao'))
+  async kakaoAuthRedirect(@Req() req, @Res() res: Response) {
+    const user = req.user;
+    const jwtSecret = this.configService.get<string>('JWT_SECRET');
+
+    // NestJS의 JwtService를 이용해 토큰 생성
+    const token = this.jwtService.sign(user, {
+      secret: jwtSecret,
+      expiresIn: '1h',
+    });
+
+    // 프론트엔드로 리디렉트 (토큰 전달)
+    res.redirect(`http://localhost:3000/auth-success?token=${token}`);
   }
 }

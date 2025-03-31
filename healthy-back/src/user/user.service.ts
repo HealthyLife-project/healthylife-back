@@ -23,4 +23,24 @@ export class UserService {
   async findOne(id: number) {
     return this.userRepository.findOne({ where: { id } });
   }
+
+  async findUser(
+    userid: string,
+  ): Promise<{ result: boolean; message: string }> {
+    const res = await this.userRepository.findOne({ where: { userid } });
+
+    return res
+      ? { result: false, message: '중복 아이디입니다.' }
+      : { result: true, message: '사용 가능한 아이디입니다.' };
+  }
+
+  async findNickname(
+    nickname: string,
+  ): Promise<{ result: boolean; message: string }> {
+    const res = await this.userRepository.findOne({ where: { nickname } });
+
+    return res
+      ? { result: false, message: '중복 닉네임입니다.' }
+      : { result: true, message: '사용 가능한 닉네임입니다.' };
+  }
 }
