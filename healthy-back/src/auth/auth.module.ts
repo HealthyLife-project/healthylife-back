@@ -5,7 +5,10 @@ import { AuthController } from './auth.controller';
 import { User } from 'src/database/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { GoogleStrategy } from './google.strategy';
+import { NaverStrategy } from './naver.strategy';
+import { KakaoStrategy } from './kakao.strategy';
+import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]), // User 엔티티를 TypeORM에 등록
@@ -18,8 +21,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         signOptions: { expiresIn: '7d' }, // 토큰 만료 시간 설정
       }),
     }),
+    PassportModule.register({ defaultStrategy: 'google' }),
   ],
-  providers: [AuthService], // AuthService를 providers에 등록
+  providers: [AuthService, GoogleStrategy, NaverStrategy, KakaoStrategy], // AuthService를 providers에 등록
   controllers: [AuthController], // AuthController를 controllers에 등록
 })
 export class AuthModule {}

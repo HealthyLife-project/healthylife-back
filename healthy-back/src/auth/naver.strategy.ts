@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class NaverStrategy extends PassportStrategy(Strategy, 'google') {
+export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
   constructor(
     configService: ConfigService,
     private readonly jwtService: JwtService,

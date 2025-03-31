@@ -20,6 +20,6 @@ async function bootstrap() {
   app.enableCors();
 
   // 5000번 포트에서 서버 실행
-  await app.listen(5000);
+  await app.listen(5001);
 }
 bootstrap();

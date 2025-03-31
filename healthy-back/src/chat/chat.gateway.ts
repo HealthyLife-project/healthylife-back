@@ -2,46 +2,49 @@ import {
   WebSocketGateway,
   SubscribeMessage,
   MessageBody,
-} from '@nestjs/websockets'; // 필요한 웹소켓 관련 데코레이터와 타입을 임포트
-import { ChatService } from './chat.service'; // ChatService를 임포트하여 로직을 처리
+  WebSocketServer,
+  ConnectedSocket,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+} from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway() // WebSocketGateway 데코레이터는 이 클래스가 웹소켓 서버 역할을 함을 정의
-export class ChatGateway {
-  constructor(private readonly chatService: ChatService) {} // ChatService를 의존성 주입하여 사용
+@WebSocketGateway({ cors: true }) // CORS 설정
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  @WebSocketServer()
+  server: Server;
 
-  // 'createChat' 이벤트 처리
-  @SubscribeMessage('createChat') // 'createChat'이라는 이름의 이벤트를 구독
-  create(@MessageBody() body: { username: string; message: string }) {
-    // 이벤트에서 전달받은 메시지 바디를 처리
-    return this.chatService.create(body.username, body.message); // ChatService의 create 메소드를 호출, 인수로 받은 username과 message 전달
+  private users = new Map<string, string>(); // socketId -> username 매핑
+
+  // 클라이언트 연결 시 실행
+  handleConnection(@ConnectedSocket() client: Socket) {
+    console.log(`Client connected: ${client.id}`);
   }
 
-  // 'findAllChat' 이벤트 처리
-  @SubscribeMessage('findAllChat') // 'findAllChat'이라는 이름의 이벤트를 구독
-  findAll() {
-    return this.chatService.findAll(); // 모든 채팅을 찾는 서비스 메소드 호출
+  // 클라이언트 연결 해제 시 실행
+  handleDisconnect(@ConnectedSocket() client: Socket) {
+    console.log(`Client disconnected: ${client.id}`);
+    this.users.delete(client.id);
+    this.server.emit('userList', Array.from(this.users.values()));
   }
 
-  // 'findOneChat' 이벤트 처리
-  @SubscribeMessage('findOneChat') // 'findOneChat'이라는 이름의 이벤트를 구독
-  findOne(@MessageBody() id: number) {
-    // 요청 본문에서 id를 받아옴
-    return this.chatService.findOne(id); // 받은 id를 기반으로 하나의 채팅을 찾는 서비스 메소드 호출
-  }
-
-  // 'updateChat' 이벤트 처리
-  @SubscribeMessage('updateChat') // 'updateChat'이라는 이름의 이벤트를 구독
-  update(
-    @MessageBody() body: { id: number; username: string; message: string },
+  // 메시지 수신 이벤트
+  @SubscribeMessage('sendMessage')
+  handleMessage(
+    @MessageBody() data: { username: string; message: string },
+    @ConnectedSocket() client: Socket,
   ) {
-    // id, username, message를 요청 본문에서 받아옴
-    return this.chatService.update(body.id, body.username, body.message); // 받은 정보를 기반으로 채팅을 업데이트하는 서비스 메소드 호출
+    console.log(`Message from ${data.username}: ${data.message}`);
+    this.server.emit('receiveMessage', data); // 모든 클라이언트에게 전송
   }
 
-  // 'removeChat' 이벤트 처리
-  @SubscribeMessage('removeChat') // 'removeChat'이라는 이름의 이벤트를 구독
-  remove(@MessageBody() id: number) {
-    // 요청 본문에서 id를 받아옴
-    return this.chatService.remove(id); // 받은 id를 기반으로 채팅을 삭제하는 서비스 메소드 호출
+  // 사용자 연결 시 닉네임 등록
+  @SubscribeMessage('registerUser')
+  handleRegister(
+    @MessageBody() username: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    this.users.set(client.id, username);
+    this.server.emit('userList', Array.from(this.users.values())); // 사용자 목록 갱신
   }
 }
