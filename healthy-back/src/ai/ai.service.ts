@@ -1,26 +1,49 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAiDto } from './dto/create-ai.dto';
-import { UpdateAiDto } from './dto/update-ai.dto';
+import { ConfigService } from '@nestjs/config';
+import axios from 'axios';
 
 @Injectable()
 export class AiService {
-  create(createAiDto: CreateAiDto) {
-    return 'This action adds a new ai';
-  }
+  private readonly Gemini_API =
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+  constructor(private readonly configService: ConfigService) {}
 
-  findAll() {
-    return `This action returns all ai`;
-  }
+  async generateText(prompt: string): Promise<string> {
+    const apiKey = this.configService.get<string>('GOOGLE_GEMINI_KEY');
+    const requestData = {
+      contents: [{ parts: [{ text: prompt }] }],
+    };
 
-  findOne(id: number) {
-    return `This action returns a #${id} ai`;
-  }
+    try {
+      const res = await axios.post(
+        `${this.Gemini_API}?key=${apiKey}`,
+        requestData,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
 
-  update(id: number, updateAiDto: UpdateAiDto) {
-    return `This action updates a #${id} ai`;
-  }
+      console.log('테스트', JSON.stringify(res.data, null, 2));
+      const candidates = res.data.candidates;
+      if (!candidates || candidates.length === 0) {
+        return '응답 데이터가 없습니다.';
+      }
 
-  remove(id: number) {
-    return `This action removes a #${id} ai`;
+      return (
+        candidates[0]?.content?.parts?.[0]?.text || '텍스트 응답이 아닐 경우.'
+      );
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          'API 호출 오류',
+          error.response.data || error.response.status,
+        );
+      } else if (error.request) {
+        console.error('API 요청 실패', error.request);
+      } else {
+        console.error('오류 메시지', error.message);
+      }
+      throw new Error('API 호출 실패');
+    }
   }
 }

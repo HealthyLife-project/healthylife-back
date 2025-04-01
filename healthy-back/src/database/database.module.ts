@@ -16,7 +16,7 @@ import { UserModule } from '../user/user.module';
 import { ChatModule } from '../chat/chat.module';
 import { LogModule } from 'src/log/log.module';
 import { AuthModule } from 'src/auth/auth.module';
-
+import { AiModule } from 'src/ai/ai.module';
 @Module({
   imports: [
     ConfigModule.forRoot(), // 환경 변수 사용
@@ -28,6 +28,7 @@ import { AuthModule } from 'src/auth/auth.module';
         HashModule,
         LogModule,
         AuthModule,
+        AiModule,
       ],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
