@@ -84,7 +84,7 @@ export class AuthController {
     if (req.user.signup) {
       const jwt = req.user.jwt;
       res.cookie('healthy_token', jwt, {
-        httpOnly: true,
+        httpOnly: false,
         maxAge: 60 * 120 * 1000,
       });
     }
@@ -106,10 +106,10 @@ export class AuthController {
   @Get('naver/cb')
   @UseGuards(AuthGuard('naver'))
   async naverAuthRedirect(@Req() req, @Res() res: Response) {
-    if (!req.user.signup) {
+    if (req.user.signup) {
       const jwt = req.user.jwtoken;
       res.cookie('healthy_token', jwt, {
-        httpOnly: true,
+        httpOnly: false,
         maxAge: 60 * 120 * 1000,
       });
     }
@@ -135,7 +135,7 @@ export class AuthController {
     if (req.user.signup) {
       const jwt = req.user.jwt;
       res.cookie('healthy_token', jwt, {
-        httpOnly: true,
+        httpOnly: false,
         maxAge: 60 * 120 * 1000,
       });
     }
