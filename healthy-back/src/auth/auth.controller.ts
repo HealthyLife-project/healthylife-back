@@ -10,7 +10,7 @@ import {
 import { AuthService } from './auth.service'; // AuthService import
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/database/entities/user.entity'; // User Entity import
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { LoginDto } from 'src/database/entities/dto/userdto';
 import {
   ApiTags,
@@ -21,6 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+
 @ApiTags('auth')
 @Controller('auth') // '/auth' 경로로 요청을 처리
 export class AuthController {
@@ -89,10 +90,10 @@ export class AuthController {
     }
     req.user.signup
       ? res.redirect(
-          `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:4000/suess?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:3000/?signup=false&userid=${req.user.userid}`,
+          `http://localhost:4000/suss?signup=false&userid=${req.user.userid}`,
         );
   }
   @ApiTags('naver')
@@ -114,10 +115,10 @@ export class AuthController {
     }
     req.user.signup
       ? res.redirect(
-          `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:4000/suss?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:3000/?signup=false&userid=${req.user.userid}`,
+          `http://localhost:4000/suss?signup=false&userid=${req.user.userid}`,
         );
   }
 
@@ -140,10 +141,17 @@ export class AuthController {
     }
     req.user.signup
       ? res.redirect(
-          `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:4000/suss?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:3000/?signup=false&userid=${req.user.userid}`,
+          `http://localhost:4000/suss?signup=false&userid=${req.user.userid}`,
         );
+  }
+
+  @Get('cookie')
+  getCookie(@Req() request: Request): string | null {
+    const healthy_token = request.cookies['healthy_token'];
+
+    return healthy_token ? healthy_token : null;
   }
 }
