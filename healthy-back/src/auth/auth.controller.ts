@@ -105,8 +105,8 @@ export class AuthController {
   @Get('naver/cb')
   @UseGuards(AuthGuard('naver'))
   async naverAuthRedirect(@Req() req, @Res() res: Response) {
-    if (req.user.signup) {
-      const jwt = req.user.jwt;
+    if (!req.user.signup) {
+      const jwt = req.user.jwtoken;
       res.cookie('healthy_token', jwt, {
         httpOnly: true,
         maxAge: 60 * 120 * 1000,
