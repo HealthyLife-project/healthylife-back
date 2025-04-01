@@ -12,10 +12,12 @@ export class UserService {
   ) {}
 
   async create(userData: Partial<User>) {
-    const newUser = this.userRepository.create(userData);
+    const newUser = this.userRepository.create({
+      ...userData,
+      provider: 'local',
+    });
     return this.userRepository.save(newUser);
   }
-
   async findAll() {
     return this.userRepository.find();
   }
