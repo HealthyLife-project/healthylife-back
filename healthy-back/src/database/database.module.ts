@@ -9,6 +9,7 @@ import { InBody } from './entities/inbody.entity';
 import { Category } from './entities/category.entity';
 import { IpMiddle } from '../middle/logging.ip.middle'; // 미들웨어 경로 확인
 import { IpLog } from './entities/iplog.entitiy';
+import { Report } from './entities/report.entity';
 
 import { HashModule } from 'src/hash/hash.module';
 import { UserModule } from '../user/user.module';
@@ -38,7 +39,7 @@ import { AuthModule } from 'src/auth/auth.module';
         database: configService.get('DB_NAME', 'healthy_db'),
         autoLoadEntities: true,
         synchronize: true, // 개발 환경에서만 true (배포 시에는 false)
-        entities: [User, UserHashtag, InBody, Hashtag, Category, IpLog],
+        entities: [User, UserHashtag, InBody, Hashtag, Category, IpLog, Report],
       }),
     }),
     TypeOrmModule.forFeature([IpLog]),

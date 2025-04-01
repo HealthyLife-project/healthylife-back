@@ -75,10 +75,10 @@ export class AuthController {
     // 프론트엔드로 리디렉트 (토큰 전달) 회원이 아니면 signup에 boolean값 전달
     req.user.signup
       ? res.redirect(
-          `http://localhost:4000/success?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:4000/success?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/?signup=false&userid=${req.user.userid}`,
         );
   }
   @ApiTags('naver')
@@ -93,10 +93,10 @@ export class AuthController {
   async naverAuthRedirect(@Req() req, @Res() res: Response) {
     req.user.signup
       ? res.redirect(
-          `http://localhost:4000/success?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:4000/success?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/?signup=false&userid=${req.user.userid}`,
         );
   }
 
@@ -112,10 +112,10 @@ export class AuthController {
   async kakaoAuthRedirect(@Req() req, @Res() res: Response) {
     req.user.signup
       ? res.redirect(
-          `http://localhost:4000/success?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:4000/success?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/?signup=false&userid=${req.user.userid}`,
         );
   }
 }

@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { InBody } from './inbody.entity';
 import { UserHashtag } from './hashtag.entity';
+import { Report } from './report.entity';
 
 @Entity()
 export class User {
@@ -37,9 +38,15 @@ export class User {
   @Column({ nullable: true })
   provider: string;
 
+  @Column({ default: 0 })
+  reportCnt: number;
+
   @OneToMany(() => InBody, (inbody) => inbody.user)
   inbodys: InBody[];
 
   @OneToMany(() => UserHashtag, (userHashtag) => userHashtag.user)
   hashtags: UserHashtag[];
+
+  @OneToMany(() => Report, (report) => report.user)
+  reports: Report[]; // 유저가 작성한 신고 리스트
 }
