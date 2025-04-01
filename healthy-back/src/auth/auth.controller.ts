@@ -64,7 +64,7 @@ export class AuthController {
 
     if (result.result) {
       res.cookie('healthy_token', result.token, {
-        httpOnly: true,
+        httpOnly: false,
         maxAge: 60 * 120 * 1000,
       });
     }
@@ -90,7 +90,7 @@ export class AuthController {
     }
     req.user.signup
       ? res.redirect(
-          `http://localhost:4000/suess?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/main?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
           `http://localhost:4000/suss?signup=false&userid=${req.user.userid}`,
