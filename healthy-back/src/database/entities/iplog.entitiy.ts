@@ -5,10 +5,10 @@ export class IpLog {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'longtext' })
   ipAddress: string;
 
-  @Column()
+  @Column({ type: 'longtext' })
   url: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

@@ -35,7 +35,7 @@ export class User {
   address: string;
 
   @Column({ nullable: true })
-  social: string;
+  provider: string;
 
   @OneToMany(() => InBody, (inbody) => inbody.user)
   inbodys: InBody[];

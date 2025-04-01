@@ -18,7 +18,7 @@ import { PassportModule } from '@nestjs/passport';
       inject: [ConfigService], // ConfigService 주입
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'), // env에서 JWT_SECRET 가져오기
-        signOptions: { expiresIn: '7d' }, // 토큰 만료 시간 설정
+        signOptions: { expiresIn: '2h' }, // 토큰 만료 시간 설정
       }),
     }),
     PassportModule.register({ defaultStrategy: 'google' }),

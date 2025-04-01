@@ -36,7 +36,7 @@ export class AuthService {
 
   // id를 이용해서 jwt token 생성
   async createJWTPASS(user: User): Promise<{ accessToken: string }> {
-    const payload = { sub: user.id, username: user.userid };
+    const payload = { sub: user.id, userid: user.userid };
     return {
       accessToken: this.jwtService.sign(payload),
     };
@@ -72,5 +72,13 @@ export class AuthService {
       result: true, // 로그인 성공
       token: jwt, // 생성된 토큰 반환
     };
+  }
+
+  async findUser(userid: string): Promise<User | null> {
+    const users = await this.userRepository.findOne({
+      where: { userid: userid },
+    });
+
+    return users;
   }
 }
