@@ -31,10 +31,11 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
 
     // 사용자 정보 처리 (이메일로 사용자 검색)
     const user = await this.userService.findUser(email);
-
+    const pay = { email };
+    const jwtoken = this.jwtService.sign(pay);
     if (!user) {
       // 사용자가 없으면 회원가입 유도 (result: true, signup: false)
-      done(null, { userid: email, signup: false });
+      done(null, { userid: email, signup: false, jwtoken });
     } else {
       // 이미 회원이면 JWT 발급
       const payload = { sub: user.id, userid: user.userid }; // JWT payload
