@@ -26,7 +26,7 @@ import { ConfigService } from '@nestjs/config';
 export class AuthController {
   constructor(private readonly authService: AuthService) {} // AuthService 의존성 주입
 
-  @Post('login') // 로그인 API
+  @Post('login')
   @ApiOperation({
     summary: '로그인',
   })
@@ -56,10 +56,17 @@ export class AuthController {
     },
   })
   async login(
-    @Body() userInput: { userid: string; password: string }, // 요청 본문에서 userid, password 받기
+    @Body() userInput: { userid: string; password: string },
+    @Res() res: Response,
   ) {
-    // AuthService의 login 메서드를 호출하여 결과 처리
     const result = await this.authService.login(userInput); // User는 여기서 필요없음
+
+    if (result.result) {
+      res.cookie('healthy_token', result.token, {
+        httpOnly: true,
+        maxAge: 60 * 120 * 1000,
+      });
+    }
     return result; // 로그인 성공 시 result 반환 result의 값은 auth.service의 login의 return값
   }
   @ApiTags('google')
@@ -73,6 +80,13 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
     // 프론트엔드로 리디렉트 (토큰 전달) 회원이 아니면 signup에 boolean값 전달
+    if (req.user.signup) {
+      const jwt = req.user.jwt;
+      res.cookie('healthy_token', jwt, {
+        httpOnly: true,
+        maxAge: 60 * 120 * 1000,
+      });
+    }
     req.user.signup
       ? res.redirect(
           `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
@@ -91,6 +105,13 @@ export class AuthController {
   @Get('naver/cb')
   @UseGuards(AuthGuard('naver'))
   async naverAuthRedirect(@Req() req, @Res() res: Response) {
+    if (req.user.signup) {
+      const jwt = req.user.jwt;
+      res.cookie('healthy_token', jwt, {
+        httpOnly: true,
+        maxAge: 60 * 120 * 1000,
+      });
+    }
     req.user.signup
       ? res.redirect(
           `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
@@ -110,6 +131,13 @@ export class AuthController {
   @Get('kakao/cb')
   @UseGuards(AuthGuard('kakao'))
   async kakaoAuthRedirect(@Req() req, @Res() res: Response) {
+    if (req.user.signup) {
+      const jwt = req.user.jwt;
+      res.cookie('healthy_token', jwt, {
+        httpOnly: true,
+        maxAge: 60 * 120 * 1000,
+      });
+    }
     req.user.signup
       ? res.redirect(
           `http://localhost:3000/?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
