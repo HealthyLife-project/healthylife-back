@@ -60,15 +60,16 @@ export class AuthController {
     @Body() userInput: { userid: string; password: string },
     @Res() res: Response,
   ) {
-    const result = await this.authService.login(userInput); // User는 여기서 필요없음
+    const result = await this.authService.login(userInput);
 
     if (result.result) {
-      res.cookie('healthy_token', result.token, {
+      res.cookie('healthy_token', result.token.accessToken, {
         httpOnly: false,
         maxAge: 60 * 120 * 1000,
       });
     }
-    return result; // 로그인 성공 시 result 반환 result의 값은 auth.service의 login의 return값
+    console.log(result);
+    return res.json(result); // 로그인 성공 시 result 반환 result의 값은 auth.service의 login의 return값
   }
   @ApiTags('google')
   @Get('google')

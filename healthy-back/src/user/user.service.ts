@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../database/entities/user.entity';
 import { UserHashtag } from '../database/entities/hashtag.entity';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(
@@ -10,8 +11,14 @@ export class UserService {
     @InjectRepository(UserHashtag)
     private readonly hashRepository: Repository<UserHashtag>,
   ) {}
-
+  async hashPassword(password: string): Promise<string> {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(password, salt);
+  }
   async create(userData: Partial<User>) {
+    if (userData.password) {
+      userData.password = await this.hashPassword(userData.password);
+    }
     const newUser = this.userRepository.create({
       ...userData,
       provider: 'local',

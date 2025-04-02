@@ -44,6 +44,7 @@ export class AuthService {
 
   // 비밀번호 검증 받은 뒤에 로그인 확인
   async login(userInput: { userid: string; password: string }) {
+    console.log(userInput);
     // Repository를 사용해 데이터베이스에서 사용자 정보 조회
     const user = await this.userRepository.findOne({
       where: { userid: userInput.userid },
@@ -55,7 +56,7 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED, // 오류 코드 401
       );
     }
-
+    console.log(user, userInput.password, user.password);
     const validPass = await this.validatePassword(
       userInput.password,
       user.password,
