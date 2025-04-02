@@ -61,14 +61,14 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const result = await this.authService.login(userInput);
-
-    if (result.result) {
+    console.log(result);
+    if (result.token.accessToken) {
+      console.log(result.token.accessToken, 'adfsfsd');
       res.cookie('healthy_token', result.token.accessToken, {
         httpOnly: false,
         maxAge: 60 * 120 * 1000,
       });
     }
-
     return res.json(result); // 로그인 성공 시 result 반환 result의 값은 auth.service의 login의 return값
   }
   @ApiTags('google')
@@ -82,19 +82,13 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
     // 프론트엔드로 리디렉트 (토큰 전달) 회원이 아니면 signup에 boolean값 전달
-    if (req.user.signup) {
-      const jwt = req.user.jwt;
-      res.cookie('healthy_token', jwt, {
-        httpOnly: false,
-        maxAge: 60 * 120 * 1000,
-      });
-    }
+
     req.user.signup
       ? res.redirect(
-          `http://localhost:3000/main?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/login/social-login?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:4000/suss?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/login/social-login?signup=false&userid=${req.user.userid}`,
         );
   }
   @ApiTags('naver')
@@ -107,19 +101,12 @@ export class AuthController {
   @Get('naver/cb')
   @UseGuards(AuthGuard('naver'))
   async naverAuthRedirect(@Req() req, @Res() res: Response) {
-    if (req.user.signup) {
-      const jwt = req.user.jwtoken;
-      res.cookie('healthy_token', jwt, {
-        httpOnly: false,
-        maxAge: 60 * 120 * 1000,
-      });
-    }
     req.user.signup
       ? res.redirect(
-          `http://localhost:4000/suss?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/login/social-loginsuccess?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:4000/suss?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/login/social-loginsuccess?signup=false&userid=${req.user.userid}`,
         );
   }
 
@@ -142,10 +129,10 @@ export class AuthController {
     }
     req.user.signup
       ? res.redirect(
-          `http://localhost:4000/suss?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/login/social-login?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:4000/suss?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/login/social-login?signup=false&userid=${req.user.userid}`,
         );
   }
 

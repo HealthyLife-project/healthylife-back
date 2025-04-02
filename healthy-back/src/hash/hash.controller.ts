@@ -80,4 +80,14 @@ export class HashController {
 
     return res.result;
   }
+
+  @Get('hash/Allhash')
+  @ApiOperation({
+    summary: ' 해시태그 조회',
+  })
+  async findhash() {
+    const res = await this.hashService.AllHash();
+
+    return res;
+  }
 }
