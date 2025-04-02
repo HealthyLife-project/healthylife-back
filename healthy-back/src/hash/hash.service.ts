@@ -57,4 +57,10 @@ export class HashService {
 
     return { result: res.affected > 0 }; // affected 값으로 성공 여부 확인
   }
+
+  async AllHash(): Promise<Hashtag[]> {
+    const res: any = await this.hashRepository.find();
+
+    return res;
+  }
 }
