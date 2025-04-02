@@ -68,7 +68,7 @@ export class AuthController {
         maxAge: 60 * 120 * 1000,
       });
     }
-    console.log(result);
+
     return res.json(result); // 로그인 성공 시 result 반환 result의 값은 auth.service의 login의 return값
   }
   @ApiTags('google')
