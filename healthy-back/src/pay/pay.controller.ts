@@ -29,7 +29,7 @@ export class PayController {
       );
 
       if (payRes.success) {
-        // 결제 성공 시 페이지 리다이렉트
+        // 결제 성공 시 페이지 리다이렉트 // 주문번호
         res.redirect(
           `http://localhost:3000/payment/success?orderId=${orderId}`,
         );
@@ -42,6 +42,7 @@ export class PayController {
     } catch (error) {
       console.error(error);
       res.redirect(
+        //결제 실패시 페이지 리다이렉트 // 오류 메세지 (원인 포함)
         `http://localhost:3000/payment/fail?message=${error.message}`,
       );
     }
