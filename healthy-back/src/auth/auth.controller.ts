@@ -127,6 +127,7 @@ export class AuthController {
         maxAge: 60 * 120 * 1000,
       });
     }
+
     req.user.signup
       ? res.redirect(
           `http://localhost:3000/login/social-login?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,

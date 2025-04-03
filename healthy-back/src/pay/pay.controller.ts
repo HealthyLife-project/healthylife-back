@@ -9,8 +9,8 @@ import {
 import { PayService } from './pay.service';
 import { Response } from 'express';
 
-@Controller('payment')
-export class PaymentController {
+@Controller('pay')
+export class PayController {
   constructor(private readonly paymentService: PayService) {}
 
   @Get('success')
@@ -29,7 +29,7 @@ export class PaymentController {
       );
 
       if (payRes.success) {
-        // 결제 성공 시 처리 (DB 업데이트, 영수증 발행 등)
+        // 결제 성공 시 페이지 리다이렉트
         res.redirect(
           `http://localhost:3000/payment/success?orderId=${orderId}`,
         );
