@@ -19,8 +19,6 @@ import {
   ApiBody,
   ApiParam,
 } from '@nestjs/swagger';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 @ApiTags('auth')
 @Controller('auth') // '/auth' 경로로 요청을 처리
@@ -65,7 +63,7 @@ export class AuthController {
     if (result.token.accessToken) {
       console.log(result.token.accessToken, 'adfsfsd');
       res.cookie('healthy_token', result.token.accessToken, {
-        httpOnly: false,
+        httpOnly: true,
         maxAge: 60 * 120 * 1000,
       });
     }
@@ -81,14 +79,21 @@ export class AuthController {
   @Get('google/cb')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
+    if (req.user.signup) {
+      const jwt = req.user.jwt;
+      res.cookie('healthy_token', jwt, {
+        httpOnly: true,
+        maxAge: 60 * 120 * 1000,
+      });
+    }
     // 프론트엔드로 리디렉트 (토큰 전달) 회원이 아니면 signup에 boolean값 전달
 
     req.user.signup
       ? res.redirect(
-          `http://localhost:3000/login/social-login?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/login/social-login?signup=true&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:3000/login/social-login?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/login/social-login?signup=false&provider=google`,
         );
   }
   @ApiTags('naver')
@@ -101,12 +106,19 @@ export class AuthController {
   @Get('naver/cb')
   @UseGuards(AuthGuard('naver'))
   async naverAuthRedirect(@Req() req, @Res() res: Response) {
+    if (req.user.signup) {
+      const jwt = req.user.jwt;
+      res.cookie('healthy_token', jwt, {
+        httpOnly: true,
+        maxAge: 60 * 120 * 1000,
+      });
+    }
     req.user.signup
       ? res.redirect(
-          `http://localhost:3000/login/social-loginsuccess?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/login/social-loginsuccess?signup=true&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:3000/login/social-loginsuccess?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/login/social-loginsuccess?signup=false&provider=naver`,
         );
   }
 
@@ -123,24 +135,65 @@ export class AuthController {
     if (req.user.signup) {
       const jwt = req.user.jwt;
       res.cookie('healthy_token', jwt, {
-        httpOnly: false,
+        httpOnly: true,
         maxAge: 60 * 120 * 1000,
       });
     }
 
     req.user.signup
       ? res.redirect(
-          `http://localhost:3000/login/social-login?signup=true&userid=${req.user.userid}&token=${req.user.jwt}`,
+          `http://localhost:3000/login/social-login?signup=true&token=${req.user.jwt}`,
         )
       : res.redirect(
-          `http://localhost:3000/login/social-login?signup=false&userid=${req.user.userid}`,
+          `http://localhost:3000/login/social-login?signup=false&provider=kakao`,
         );
   }
 
   @Get('cookie')
-  getCookie(@Req() request: Request): string | null {
-    const healthy_token = request.cookies['healthy_token'];
+  @ApiOperation({
+    summary: '쿠키 조회',
+    description: 'healthy_token 쿠키 값',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '쿠키 값과 유저 데이터를 반환',
+    schema: {
+      example: {
+        result: true,
+        healthy_token: 'token',
+        user: {
+          id: 1,
+          userid: 'testuser',
+          nickname: '닉네임',
+          name: '홍길동',
+          age: 25,
+          gender: '남자',
+          email: 'test@example.com',
+          phone: '010-1234-5678',
+          address: '서울시 강남구',
+          provider: 'google',
+          reportCnt: 0,
+          inbodys: [],
+          hashtags: [],
+          reports: [],
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 204, description: '쿠키 없음' })
+  getCookie(@Req() req: Request): {} | null {
+    const healthy_token = req.cookies['healthy_token'];
+    const user = this.authService.validateToken(healthy_token);
+    console.log(healthy_token, user);
+    return healthy_token ? { result: true, healthy_token, user: user } : null;
+  }
 
-    return healthy_token ? healthy_token : null;
+  @Get('logout')
+  clearCookie(@Res() res: Response) {
+    res.clearCookie('token', {
+      httpOnly: true,
+      sameSite: 'strict',
+    });
+    return res.json({ return: true, message: '로그아웃' });
   }
 }

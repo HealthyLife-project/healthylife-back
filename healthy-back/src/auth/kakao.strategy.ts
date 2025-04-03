@@ -39,10 +39,10 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
 
     if (!user) {
       // 사용자가 없으면 회원가입 유도
-      done(null, { userid: email, signup: false });
+      done(null, { userid: email, signup: false, jwt: 'asdfasdfasasdf' });
     } else {
       // 이미 회원이면 JWT 발급
-      const payload = { sub: user.id, userid: user.userid };
+      const payload = { id: user.id, userid: user.userid };
       const jwt = this.jwtService.sign(payload);
       done(null, { userid: email, jwt, signup: true });
     }

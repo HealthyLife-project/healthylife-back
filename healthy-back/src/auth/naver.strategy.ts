@@ -38,7 +38,7 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
       done(null, { userid: email, signup: false, jwtoken });
     } else {
       // 이미 회원이면 JWT 발급
-      const payload = { sub: user.id, userid: user.userid }; // JWT payload
+      const payload = { id: user.id, userid: user.userid }; // JWT payload
       const jwt = this.jwtService.sign(payload); // JWT 토큰 발급
       done(null, { userid: email, jwt, signup: true });
     }

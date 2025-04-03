@@ -36,13 +36,32 @@ export class AuthService {
 
   // id를 이용해서 jwt token 생성
   async createJWTPASS(user: User): Promise<{ accessToken: string }> {
-    const payload = { sub: user.id, userid: user.userid };
+    const payload = { id: user.id, userid: user.userid };
     return {
       accessToken: this.jwtService.sign(payload),
     };
   }
-
   // 비밀번호 검증 받은 뒤에 로그인 확인
+
+  async validateToken(token: string) {
+    try {
+      // 1. 토큰 검증 및 해독
+      const decoded = this.jwtService.verify(token);
+
+      // 2. 해독된 정보에서 id로 user추출
+      const user = await this.userRepository.findOne(decoded.userid);
+
+      // 3. 유저가 존재하는지 확인
+      if (!user) {
+        throw new UnauthorizedException('존재하지 않는 유저');
+      }
+
+      return user;
+    } catch (error) {
+      throw new UnauthorizedException('유효하지 않은 토큰'); //error코드 확인 꼭 해야함 나오면
+    }
+  }
+
   async login(userInput: { userid: string; password: string }) {
     console.log(userInput);
     // Repository를 사용해 데이터베이스에서 사용자 정보 조회
