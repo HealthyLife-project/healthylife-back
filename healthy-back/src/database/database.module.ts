@@ -11,6 +11,7 @@ import { IpMiddle } from '../middle/logging.ip.middle'; // 미들웨어 경로 �
 import { IpLog } from './entities/iplog.entitiy';
 import { Report } from './entities/report.entity';
 
+import { RedisModule } from '@nestjs-modules/ioredis';
 import { HashModule } from 'src/hash/hash.module';
 import { UserModule } from '../user/user.module';
 import { ChatModule } from '../chat/chat.module';
@@ -18,9 +19,11 @@ import { LogModule } from 'src/log/log.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { AiModule } from 'src/ai/ai.module';
 import { PayModule } from 'src/pay/pay.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot(), // 환경 변수 사용
+
     TypeOrmModule.forRootAsync({
       imports: [
         ConfigModule,
@@ -45,6 +48,7 @@ import { PayModule } from 'src/pay/pay.module';
         entities: [User, UserHashtag, InBody, Hashtag, Category, IpLog, Report],
       }),
     }),
+
     TypeOrmModule.forFeature([IpLog]),
   ],
 })

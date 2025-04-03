@@ -96,6 +96,8 @@ export class AuthController {
           `http://localhost:3000/login/social-login?signup=false&provider=google`,
         );
   }
+  //google endpoint
+
   @ApiTags('naver')
   @Get('naver')
   @UseGuards(AuthGuard('naver'))
@@ -121,6 +123,7 @@ export class AuthController {
           `http://localhost:3000/login/social-loginsuccess?signup=false&provider=naver`,
         );
   }
+  // naver endpoint
 
   @ApiTags('kakao')
   @Get('kakao')
@@ -148,6 +151,7 @@ export class AuthController {
           `http://localhost:3000/login/social-login?signup=false&provider=kakao`,
         );
   }
+  //kakao endpoint
 
   @Get('cookie')
   @ApiOperation({
