@@ -15,8 +15,10 @@ export class PayService {
   }
 
   async verifyPay(paymentKey: string, orderId: string, amount: string) {
-    const secretKey = Buffer.from(`${this.TOSS_SECRET_KEY}`).toString('base64');
-    console.log(secretKey);
+    const secretKey = Buffer.from(
+      'test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:',
+    ).toString('base64');
+    console.log(secretKey, 'secret');
     try {
       // 결제 검증하는 곳
       const res = await axios.post(
@@ -24,7 +26,7 @@ export class PayService {
         {
           paymentKey,
           orderId,
-          amount: Number(amount),
+          amount: parseInt(amount, 10),
         },
         {
           headers: {
@@ -33,8 +35,11 @@ export class PayService {
           },
         },
       );
-
-      return res.data; // 결제정보
+      console.log(res.data, '결제정보');
+      return {
+        success: res.data.status === 'DONE',
+        data: res.data, // Toss 결제 응답 전체 반환
+      };
     } catch (error) {
       console.error('error', {
         status: error.response?.status, // HTTP 상태 코드
