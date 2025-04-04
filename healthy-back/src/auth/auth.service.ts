@@ -35,11 +35,9 @@ export class AuthService {
   }
 
   // id를 이용해서 jwt token 생성
-  async createJWTPASS(user: User): Promise<{ accessToken: string }> {
+  async createJWTPASS(user: User): Promise<string> {
     const payload = { id: user.id, userid: user.userid };
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
+    return this.jwtService.sign(payload);
   }
   // 비밀번호 검증 받은 뒤에 로그인 확인
 

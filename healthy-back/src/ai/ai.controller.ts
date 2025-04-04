@@ -20,4 +20,7 @@ export class AiController {
     console.log('ai/generate 콘솔 로그 확인용');
     return this.aiService.generateText(prompt);
   }
+
+  // @Post('imageText')
+  // async imageCreative(@Body())
 }
