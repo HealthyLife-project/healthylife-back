@@ -47,22 +47,23 @@ export class AiService {
     }
   }
 
-  // async imageCreate(requestBody: any): Promise<string> {
-  //   const engineId = 'stable-diffusion-v1-6';
-  //   const apiHost = 'https://api.stability.ai';
-  //   const apikey = this.configService.get<string>('STABLE_KEY');
-  //   const response = await fetch(
-  //     `${apiHost}/v1/generation/${engineId}/text-to-image`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Accept: 'application/json',
-  //         Authorization: `Bearer ${apikey}`,
-  //       },
-  //       body: JSON.stringify(requestBody),
-  //     },
-  //   );
-  //   return;
-  // }
+  async imageCreate(requestBody: any): Promise<any> {
+    const engineId = 'stable-diffusion-v1-6';
+    const apiHost = 'https://api.stability.ai';
+    const apikey = this.configService.get<string>('STABLE_KEY');
+    const res = await fetch(
+      `${apiHost}/v1/generation/${engineId}/text-to-image`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${apikey}`,
+        },
+        body: JSON.stringify(requestBody),
+      },
+    );
+
+    return res;
+  }
 }

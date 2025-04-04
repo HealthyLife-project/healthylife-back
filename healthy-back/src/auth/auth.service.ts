@@ -89,6 +89,7 @@ export class AuthService {
     return {
       result: true, // 로그인 성공
       token: jwt, // 생성된 토큰 반환
+      user: user,
     };
   }
 
