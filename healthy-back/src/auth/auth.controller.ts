@@ -184,7 +184,10 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({ status: 204, description: '쿠키 없음' })
+  @ApiResponse({
+    status: 204,
+    description: 'null',
+  })
   getCookie(@Req() req: Request): {} | null {
     const healthy_token = req.cookies['healthy_token'];
     const user = this.authService.validateToken(healthy_token);
@@ -193,8 +196,22 @@ export class AuthController {
   }
 
   @Get('logout')
+  @ApiOperation({
+    summary: '쿠키 제거',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '{}',
+    schema: {
+      type: 'object',
+      properties: {
+        return: { type: 'boolean', example: true },
+        message: { type: 'string', example: '로그아웃' },
+      },
+    },
+  })
   clearCookie(@Res() res: Response) {
-    res.clearCookie('token', {
+    res.clearCookie('healthy_token', {
       httpOnly: true,
       sameSite: 'strict',
     });

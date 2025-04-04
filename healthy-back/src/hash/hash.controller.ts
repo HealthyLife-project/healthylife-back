@@ -62,7 +62,7 @@ export class HashController {
   @Get('hash/:id')
   @ApiOperation({
     summary: '해시태그 조회',
-    description: '특정 id에 해당하는 해시태그 조회',
+    description: '카테고리 id에 해당하는 해시태그 조회',
   })
   @ApiParam({ name: 'id', description: '해시태그 ID' })
   async findAll(@Param('id') id: number): Promise<Hashtag[]> {
