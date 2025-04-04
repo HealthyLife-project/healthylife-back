@@ -60,9 +60,9 @@ export class AuthController {
   ) {
     const result = await this.authService.login(userInput);
     console.log(result);
-    if (result.token.accessToken) {
-      console.log(result.token.accessToken, 'adfsfsd');
-      res.cookie('healthy_token', result.token.accessToken, {
+    if (result.result) {
+      console.log(result.token, 'adfsfsd');
+      res.cookie('healthy_token', result.token, {
         httpOnly: true,
         maxAge: 60 * 120 * 1000,
       });
@@ -215,6 +215,6 @@ export class AuthController {
       httpOnly: true,
       sameSite: 'strict',
     });
-    return res.json({ return: true, message: '로그아웃' });
+    return res.json({ result: true, message: '로그아웃' });
   }
 }

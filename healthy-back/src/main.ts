@@ -17,7 +17,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document); // Swagger UI는 '/api' 경로에서 확인
 
   // CORS 설정 (모든 도메인 허용)
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://localhost:4000'],
+    credentials: true,
+  });
 
   // 5000번 포트에서 서버 실행
   await app.listen(5001);
