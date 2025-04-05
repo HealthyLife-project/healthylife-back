@@ -81,7 +81,7 @@ export class HashController {
     return res.result;
   }
 
-  @Get('hash/Allhash')
+  @Get('allhash')
   @ApiOperation({
     summary: ' 해시태그 조회',
   })

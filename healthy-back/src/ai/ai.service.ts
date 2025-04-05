@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-
+import fetch from 'node-fetch';
+import fs from 'node:fs';
 @Injectable()
 export class AiService {
   private readonly Gemini_API =
@@ -47,23 +48,34 @@ export class AiService {
     }
   }
 
-  async imageCreate(requestBody: any): Promise<any> {
-    const engineId = 'stable-diffusion-v1-6';
-    const apiHost = 'https://api.stability.ai';
-    const apikey = this.configService.get<string>('STABLE_KEY');
+  async imageCreate(text: string): Promise<string[]> {
+    const accessKey = this.configService.get<string>('UNSPLASH_KEY');
     const res = await fetch(
-      `${apiHost}/v1/generation/${engineId}/text-to-image`,
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(text)}&per_page=10`,
       {
-        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: `Bearer ${apikey}`,
+          Authorization: `Client-ID ${accessKey}`,
         },
-        body: JSON.stringify(requestBody),
       },
     );
 
-    return res;
+    const data = await res.json();
+
+    interface UnsplashResponse {
+      results: Array<{
+        urls: {
+          regular: string;
+          full: string;
+          thumb: string;
+        };
+      }>;
+    }
+
+    const responseJSON = data as UnsplashResponse;
+
+    const images = responseJSON.results.map((img) => img.urls.regular);
+    responseJSON.results.map((img) => console.log(img.urls, 'urls'));
+
+    return images; // 프론트에선 img.src로 바로 사용 가능
   }
 }

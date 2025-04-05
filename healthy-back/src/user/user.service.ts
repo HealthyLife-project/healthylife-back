@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../database/entities/user.entity';
 import { UserHashtag } from '../database/entities/hashtag.entity';
 import * as bcrypt from 'bcrypt';
+import { UpdatePasswordDto } from 'src/database/entities/dto/userdto';
 @Injectable()
 export class UserService {
   constructor(
@@ -15,6 +16,7 @@ export class UserService {
     const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(password, salt);
   }
+
   async create(userData: Partial<User>) {
     if (userData.password) {
       userData.password = await this.hashPassword(userData.password);
@@ -51,5 +53,29 @@ export class UserService {
     return res
       ? { result: false, message: '중복 닉네임입니다.' }
       : { result: true, message: '사용 가능한 닉네임입니다.' };
+  }
+
+  async updatePassword(
+    PassInput: UpdatePasswordDto,
+  ): Promise<{ result: boolean; message: string }> {
+    if (PassInput.password === PassInput.passwordCheck) {
+      const pass = await this.hashPassword(PassInput.password);
+      const user = await this.userRepository.findOne({
+        where: { id: PassInput.userid },
+      });
+
+      if (!user) {
+        throw new Error('존재하지 않는 유저입니다.');
+      }
+      user.password = pass;
+      await this.userRepository.save(user);
+
+      return {
+        result: true,
+        message: '비밀번호 변경이 성공적으로 완료되었습니다.',
+      };
+    } else {
+      return { result: false, message: '비밀번호 변경 실패' };
+    }
   }
 }
