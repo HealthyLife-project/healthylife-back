@@ -10,7 +10,21 @@ export class LogService {
     private ipLogRepository: Repository<IpLog>,
   ) {}
 
-  async getAllLogs(): Promise<IpLog[]> {
-    return this.ipLogRepository.find(); // 모든 로그를 조회
+  async getLogs(page: number, limit: number) {
+    const start = (page - 1) * limit;
+    const end = start + limit;
+
+    const [data, total] = await this.ipLogRepository.findAndCount({
+      order: { timestamp: 'DESC' }, // 최신순? 아니면 자연스럽게?
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 }

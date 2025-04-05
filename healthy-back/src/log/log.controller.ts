@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { LogService } from './log.service';
 import {
@@ -30,7 +31,10 @@ export class LogController {
     description: '해쉬태그명',
     type: UpdateLogDto,
   })
-  async getAllLogs() {
-    return await this.logService.getAllLogs();
+  async getLogs(@Query('page') page: string, @Query('limit') limit: string) {
+    const pageNum = parseInt(page) || 1;
+    const limitNum = parseInt(limit) || 10;
+
+    return this.logService.getLogs(pageNum, limitNum);
   }
 }
