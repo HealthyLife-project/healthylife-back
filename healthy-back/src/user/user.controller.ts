@@ -152,4 +152,17 @@ export class UserController {
   async updatePass(@Body() PasswordInput: UpdatePasswordDto) {
     return this.userService.updatePassword(PasswordInput);
   }
+
+  @Post('findUserEmail')
+  @ApiOperation({
+    summary: ' 이메일 업데이트',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '이메일로 유저 찾기',
+    schema: { example: { user: 'userdata' } },
+  })
+  async findEmailUser(@Body() email: string) {
+    return this.userService.findEmailUser(email);
+  }
 }

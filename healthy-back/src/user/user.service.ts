@@ -78,4 +78,10 @@ export class UserService {
       return { result: false, message: '비밀번호 변경 실패' };
     }
   }
+
+  async findEmailUser(email: string): Promise<{} | null> {
+    const user = await this.userRepository.findOne({ where: { email: email } });
+
+    return user ? user : null;
+  }
 }
