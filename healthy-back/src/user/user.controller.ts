@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../database/entities/user.entity';
+import { UpdatePasswordDto } from 'src/database/entities/dto/userdto';
 import {
   ApiTags,
   ApiOperation,
@@ -132,5 +133,23 @@ export class UserController {
     @Param('nickname') nickname: string,
   ): Promise<{ result: boolean; message: string }> {
     return this.userService.findNickname(nickname);
+  }
+
+  @Post('update/password')
+  @ApiOperation({
+    summary: '비밀번호 업데이트',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '비밀번호 업데이트 성공',
+    schema: { example: { result: true, message: '비밀번호 변경 성공' } },
+  })
+  @ApiResponse({
+    status: 204,
+    description: '비밀번호 업데이트 실패',
+    schema: { example: { result: false, message: '비밀번호 변경 실패' } },
+  })
+  async updatePass(@Body() PasswordInput: UpdatePasswordDto) {
+    return this.userService.updatePassword(PasswordInput);
   }
 }
