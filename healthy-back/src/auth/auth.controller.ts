@@ -190,9 +190,11 @@ export class AuthController {
   })
   getCookie(@Req() req: Request): {} | null {
     const healthy_token = req.cookies['healthy_token'];
-    const user = this.authService.validateToken(healthy_token);
+    const user = healthy_token
+      ? this.authService.validateToken(healthy_token)
+      : null;
     console.log(healthy_token, user);
-    return healthy_token ? { result: true, healthy_token, user: user } : null;
+    return user ? { result: true, healthy_token, user: user } : null;
   }
 
   @Get('logout')
