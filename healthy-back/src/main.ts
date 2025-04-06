@@ -2,27 +2,34 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cookieParser());
+
   // Swagger 설정
   const options = new DocumentBuilder()
-    .setTitle('My API') // API 제목
-    .setDescription('API documentation for My project') // API 설명
-    .setVersion('1.0') // 버전
-    .addTag('users') // 태그 추가 (예: users)
+    .setTitle('My API')
+    .setDescription('API documentation for My project')
+    .setVersion('1.0')
+    .addTag('users')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document); // Swagger UI는 '/api' 경로에서 확인
+  SwaggerModule.setup('api', app, document);
 
-  // CORS 설정 (모든 도메인 허용)
+  // 정적 파일 접근 (예: http://localhost:5001/uploads/ads/xxx.png)
+  app.useStaticAssets(join(__dirname, '..', 'uploads'));
+
+  // CORS
   app.enableCors({
     origin: ['http://localhost:3000', 'http://localhost:4000'],
     credentials: true,
   });
 
-  // 5000번 포트에서 서버 실행
   await app.listen(5001);
 }
+
 bootstrap();

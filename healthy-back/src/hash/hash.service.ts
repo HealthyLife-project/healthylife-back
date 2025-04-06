@@ -63,4 +63,11 @@ export class HashService {
 
     return res;
   }
+
+  async deleteCate(id: number): Promise<{ result: boolean }> {
+    await this.hashRepository.delete({ category: { id } });
+    const res: any = await this.cateRepository.delete(id); // DeleteResult로 반환값 지정
+
+    return { result: res.affected > 0 }; // affected 값으로 성공 여부 확인
+  }
 }

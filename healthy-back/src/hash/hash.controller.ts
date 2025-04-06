@@ -75,7 +75,7 @@ export class HashController {
     summary: '해시태그 제거',
   })
   @ApiParam({ name: 'id', description: '해시태그 ID' })
-  async delete(@Param('id') id: number): Promise<boolean> {
+  async deleteHashtag(@Param('id') id: number): Promise<boolean> {
     const res = await this.hashService.deleteHash(id);
 
     return res.result;
@@ -89,5 +89,16 @@ export class HashController {
     const res = await this.hashService.AllHash();
 
     return res;
+  }
+
+  @Delete('delCate/:id')
+  @ApiOperation({
+    summary: '카테고리 제거',
+  })
+  @ApiParam({ name: 'id', description: '카테고리 ID' })
+  async deleteCategory(@Param('id') id: number): Promise<boolean> {
+    const res = await this.hashService.deleteCate(id);
+
+    return res.result;
   }
 }

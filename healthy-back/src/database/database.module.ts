@@ -10,6 +10,7 @@ import { Category } from './entities/category.entity';
 import { IpMiddle } from '../middle/logging.ip.middle'; // 미들웨어 경로 확인
 import { IpLog } from './entities/iplog.entitiy';
 import { Report } from './entities/report.entity';
+import { Adb } from 'src/database/entities/ad.entity';
 
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { HashModule } from 'src/hash/hash.module';
@@ -19,6 +20,7 @@ import { LogModule } from 'src/log/log.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { AiModule } from 'src/ai/ai.module';
 import { PayModule } from 'src/pay/pay.module';
+import { AdModule } from 'src/ad/ad.module';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { PayModule } from 'src/pay/pay.module';
         AuthModule,
         AiModule,
         PayModule,
+        AdModule,
       ],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -45,7 +48,16 @@ import { PayModule } from 'src/pay/pay.module';
         database: configService.get('DB_NAME', 'healthy_db'),
         autoLoadEntities: true,
         synchronize: true, // 개발 환경에서만 true (배포 시에는 false)
-        entities: [User, UserHashtag, InBody, Hashtag, Category, IpLog, Report],
+        entities: [
+          User,
+          UserHashtag,
+          InBody,
+          Hashtag,
+          Category,
+          IpLog,
+          Report,
+          Adb,
+        ],
       }),
     }),
 

@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../database/entities/user.entity';
 import { UpdatePasswordDto } from 'src/database/entities/dto/userdto';
+import { UserDto } from 'src/database/entities/dto/userdto';
 import {
   ApiTags,
   ApiOperation,
@@ -155,14 +156,14 @@ export class UserController {
 
   @Post('findUserEmail')
   @ApiOperation({
-    summary: ' 이메일 업데이트',
+    summary: ' 이메일로 유저 찾기 ',
   })
   @ApiResponse({
     status: 200,
     description: '이메일로 유저 찾기',
-    schema: { example: { user: 'userdata' } },
+    type: UserDto,
   })
-  async findEmailUser(@Body() email: string) {
+  async findEmailUser(@Body() email: string): Promise<UserDto | null> {
     return this.userService.findEmailUser(email);
   }
 }
