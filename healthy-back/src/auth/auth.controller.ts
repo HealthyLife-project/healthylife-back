@@ -188,10 +188,12 @@ export class AuthController {
     status: 204,
     description: 'null',
   })
-  getCookie(@Req() req: Request): {} | null {
+  async getCookie(
+    @Req() req: Request,
+  ): Promise<{ result: boolean; healthy_token: string; user: any } | null> {
     const healthy_token = req.cookies['healthy_token'];
     const user = healthy_token
-      ? this.authService.validateToken(healthy_token)
+      ? await this.authService.validateToken(healthy_token)
       : null;
     console.log(healthy_token, user);
     return user ? { result: true, healthy_token, user: user } : null;
