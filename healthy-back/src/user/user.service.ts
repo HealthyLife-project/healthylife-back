@@ -5,6 +5,7 @@ import { User } from '../database/entities/user.entity';
 import { UserHashtag } from '../database/entities/hashtag.entity';
 import * as bcrypt from 'bcrypt';
 import { UpdatePasswordDto } from 'src/database/entities/dto/userdto';
+import { UserDto } from 'src/database/entities/dto/userdto';
 @Injectable()
 export class UserService {
   constructor(
@@ -79,7 +80,7 @@ export class UserService {
     }
   }
 
-  async findEmailUser(email: string): Promise<{} | null> {
+  async findEmailUser(email: string): Promise<UserDto | null> {
     const user = await this.userRepository.findOne({ where: { email: email } });
 
     return user ? user : null;
