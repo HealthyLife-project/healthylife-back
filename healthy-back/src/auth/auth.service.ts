@@ -45,9 +45,12 @@ export class AuthService {
     try {
       // 1. 토큰 검증 및 해독
       const decoded = this.jwtService.verify(token);
-
+      console.log(decoded, 'decoded');
       // 2. 해독된 정보에서 id로 user추출
-      const user = await this.userRepository.findOne(decoded.userid);
+      const user = await this.userRepository.findOne({
+        where: { userid: decoded.userid },
+      });
+      console.log(user);
 
       // 3. 유저가 존재하는지 확인
       if (!user) {
@@ -56,6 +59,7 @@ export class AuthService {
 
       return user;
     } catch (error) {
+      console.log(error, '필수에러');
       throw new UnauthorizedException('유효하지 않은 토큰'); //error코드 확인 꼭 해야함 나오면
     }
   }
