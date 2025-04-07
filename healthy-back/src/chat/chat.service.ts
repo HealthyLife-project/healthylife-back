@@ -64,9 +64,12 @@ export class ChatService {
 
   async createPetRoom(obj: any): Promise<{ result: boolean }> {
     try {
-      const room = this.PetChatRoomRepo.create(obj);
-      const data = { ...room, userid: obj.id };
-      await this.PetChatRoomRepo.save(data);
+      const room = this.PetChatRoomRepo.create({
+        title: obj.title,
+        userid: obj.id,
+      });
+
+      await this.PetChatRoomRepo.save(room);
 
       return { result: true };
     } catch (e) {
@@ -77,9 +80,11 @@ export class ChatService {
 
   async createPersonRoom(obj: any): Promise<{ result: boolean }> {
     try {
-      const room = this.PersonChatRoomRepo.create(obj);
-      const data = { ...room, userid: obj.id };
-      await this.PersonChatRoomRepo.save(data);
+      const room = this.PersonChatRoomRepo.create({
+        title: obj.title,
+        userid: obj.id,
+      });
+      await this.PersonChatRoomRepo.save(room);
 
       return { result: true };
     } catch (e) {
