@@ -4,6 +4,7 @@ import { Strategy, VerifyCallback } from 'passport-kakao';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service'; // UserService 추가
+import { UserService } from 'src/user/user.service';
 interface User {
   id: number;
   username: string;
@@ -14,7 +15,8 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
   constructor(
     configService: ConfigService,
     private readonly jwtService: JwtService,
-    private readonly userService: AuthService, // UserService를 주입받아 사용
+    private readonly authService: AuthService, // UserService를 주입받아 사용
+    private readonly userService: UserService,
   ) {
     super({
       clientID: configService.get<string>('KAKAO_KEY'),
@@ -31,19 +33,20 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     profile: any,
     done: VerifyCallback,
   ) {
-    const { id, displayName, _json } = profile;
-    const email = _json.kakao_account.email;
-
-    // 사용자 정보 처리 (이메일로 사용자 검색)
-    const user = await this.userService.findUser(email);
+    const { id, displayName, emails } = profile;
+    console.log(profile);
+    const email = profile._json.kakao_account.email; // 이메일 추출
+    const userCreate = { userid: email, email: email, provider: 'kakao' };
+    const user = await this.authService.findUser(email);
 
     if (!user) {
-      // 사용자가 없으면 회원가입 유도
-      done(null, { userid: email, signup: false, jwt: 'asdfasdfasasdf' });
-    } else {
-      // 이미 회원이면 JWT 발급
-      const payload = { id: user.id, userid: user.userid };
-      const jwt = this.jwtService.sign(payload);
+      const users = await this.userService.create(userCreate);
+      const payload = { id: users.id, userid: users.userid }; // JWT payload
+      const jwt = this.jwtService.sign(payload); // JWT 토큰 발급
+      done(null, { userid: email, jwt, signup: false });
+    } else if (user) {
+      const payload = { id: user.id, userid: user.userid }; // JWT payload
+      const jwt = this.jwtService.sign(payload); // JWT 토큰 발급
       done(null, { userid: email, jwt, signup: true });
     }
   }

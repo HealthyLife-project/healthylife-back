@@ -79,22 +79,14 @@ export class AuthController {
   @Get('google/cb')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
-    if (req.user.signup) {
-      const jwt = req.user.jwt;
-      res.cookie('healthy_token', jwt, {
-        httpOnly: true,
-        maxAge: 60 * 120 * 1000,
-      });
-    }
-    // 프론트엔드로 리디렉트 (토큰 전달) 회원이 아니면 signup에 boolean값 전달
-
+    const jwt = req.user.jwt;
+    res.cookie('healthy_token', jwt, {
+      httpOnly: true,
+      maxAge: 60 * 120 * 1000,
+    });
     req.user.signup
-      ? res.redirect(
-          `http://localhost:3000/login/social-login?signup=true&token=${req.user.jwt}`,
-        )
-      : res.redirect(
-          `http://localhost:3000/login/social-login?signup=false&provider=google`,
-        );
+      ? res.redirect(`http://localhost:3000/login/social-login?signup=true`)
+      : res.redirect(`http://localhost:3000/login/social-login?signup=false`);
   }
   //google endpoint
 
@@ -108,20 +100,14 @@ export class AuthController {
   @Get('naver/cb')
   @UseGuards(AuthGuard('naver'))
   async naverAuthRedirect(@Req() req, @Res() res: Response) {
-    if (req.user.signup) {
-      const jwt = req.user.jwt;
-      res.cookie('healthy_token', jwt, {
-        httpOnly: true,
-        maxAge: 60 * 120 * 1000,
-      });
-    }
+    const jwt = req.user.jwt;
+    res.cookie('healthy_token', jwt, {
+      httpOnly: true,
+      maxAge: 60 * 120 * 1000,
+    });
     req.user.signup
-      ? res.redirect(
-          `http://localhost:3000/login/social-loginsuccess?signup=true&token=${req.user.jwt}`,
-        )
-      : res.redirect(
-          `http://localhost:3000/login/social-loginsuccess?signup=false&provider=naver`,
-        );
+      ? res.redirect(`http://localhost:3000/login/social-login?signup=true`)
+      : res.redirect(`http://localhost:3000/login/social-login?signup=false`);
   }
   // naver endpoint
 
@@ -135,21 +121,14 @@ export class AuthController {
   @Get('kakao/cb')
   @UseGuards(AuthGuard('kakao'))
   async kakaoAuthRedirect(@Req() req, @Res() res: Response) {
-    if (req.user.signup) {
-      const jwt = req.user.jwt;
-      res.cookie('healthy_token', jwt, {
-        httpOnly: true,
-        maxAge: 60 * 120 * 1000,
-      });
-    }
-
+    const jwt = req.user.jwt;
+    res.cookie('healthy_token', jwt, {
+      httpOnly: true,
+      maxAge: 60 * 120 * 1000,
+    });
     req.user.signup
-      ? res.redirect(
-          `http://localhost:3000/login/social-login?signup=true&token=${req.user.jwt}`,
-        )
-      : res.redirect(
-          `http://localhost:3000/login/social-login?signup=false&provider=kakao`,
-        );
+      ? res.redirect(`http://localhost:3000/login/social-login?signup=true`)
+      : res.redirect(`http://localhost:3000/login/social-login?signup=false`);
   }
   //kakao endpoint
 
