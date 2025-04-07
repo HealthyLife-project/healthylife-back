@@ -9,16 +9,16 @@ import {
 export class PersonChatRoom {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   userid: string;
 
-  @Column()
+  @Column({ nullable: true })
   title: string;
 
-  @Column({ length: 255, unique: true })
+  @Column({ length: 255, unique: true, nullable: true })
   time: string;
 
-  @Column()
+  @Column({ nullable: true })
   cnt: Number;
   @CreateDateColumn()
   createdAt: Date;
