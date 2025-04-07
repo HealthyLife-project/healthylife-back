@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
+import { UserService } from 'src/user/user.service';
 import { AuthController } from './auth.controller';
 import { User } from 'src/database/entities/user.entity';
+import { UserHashtag } from 'src/database/entities/hashtag.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './google.strategy';
@@ -11,7 +13,7 @@ import { KakaoStrategy } from './kakao.strategy';
 import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]), // User 엔티티를 TypeORM에 등록
+    TypeOrmModule.forFeature([User, UserHashtag]), // User 엔티티를 TypeORM에 등록
     ConfigModule.forRoot(), // ConfigModule 추가 (기본적으로 .env 파일을 읽음)
     JwtModule.registerAsync({
       imports: [ConfigModule], // ConfigModule를 이용.
@@ -23,7 +25,13 @@ import { PassportModule } from '@nestjs/passport';
     }),
     PassportModule.register({ defaultStrategy: 'google' }),
   ],
-  providers: [AuthService, GoogleStrategy, NaverStrategy, KakaoStrategy], // AuthService를 providers에 등록
+  providers: [
+    AuthService,
+    GoogleStrategy,
+    NaverStrategy,
+    KakaoStrategy,
+    UserService,
+  ], // AuthService를 providers에 등록
   controllers: [AuthController], // AuthController를 controllers에 등록
 })
 export class AuthModule {}

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../database/entities/user.entity';
 import { UpdatePasswordDto } from 'src/database/entities/dto/userdto';
@@ -165,5 +165,17 @@ export class UserController {
   })
   async findEmailUser(@Body() email: string): Promise<UserDto | null> {
     return this.userService.findEmailUser(email);
+  }
+
+  @Put('mypage/modify/:id')
+  @ApiOperation({
+    summary: '개인정보 수정',
+  })
+  @ApiResponse({
+    status: 200,
+    schema: { example: { result: Boolean, message: String } },
+  })
+  async mypageModify(@Param('id') id: number, @Body() body: any) {
+    return await this.userService.updateUser(id, body);
   }
 }

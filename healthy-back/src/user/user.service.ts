@@ -24,7 +24,6 @@ export class UserService {
     }
     const newUser = this.userRepository.create({
       ...userData,
-      provider: 'local',
     });
     return this.userRepository.save(newUser);
   }
@@ -84,5 +83,11 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { email: email } });
 
     return user ? user : null;
+  }
+
+  async updateUser(body: any, id: number): Promise<{} | null> {
+    const user = await this.userRepository.update(id, body);
+
+    return user ? { result: true, message: '개인 정보 변경 성공' } : null;
   }
 }

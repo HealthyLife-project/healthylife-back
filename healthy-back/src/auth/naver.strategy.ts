@@ -4,13 +4,15 @@ import { Strategy, VerifyCallback } from 'passport-naver';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service'; // AuthService 추가
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
   constructor(
     configService: ConfigService,
     private readonly jwtService: JwtService, // JwtService 의존성 주입
-    private readonly userService: AuthService, // AuthService 의존성 주입
+    private readonly authService: AuthService, // AuthService 의존성 주입
+    private readonly userService: UserService,
   ) {
     super({
       clientID: configService.get<string>('NAVER_KEY'),
@@ -28,16 +30,15 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
   ) {
     const { id, displayName, emails } = profile;
     const email = emails[0].value; // 이메일 추출
+    const userCreate = { userid: email, email: email, provider: 'naver' };
+    const user = await this.authService.findUser(email);
 
-    // 사용자 정보 처리 (이메일로 사용자 검색)
-    const user = await this.userService.findUser(email);
-    const pay = { email };
-    const jwtoken = this.jwtService.sign(pay);
     if (!user) {
-      // 사용자가 없으면 회원가입 유도 (result: true, signup: false)
-      done(null, { userid: email, signup: false, jwtoken });
-    } else {
-      // 이미 회원이면 JWT 발급
+      const users = await this.userService.create(userCreate);
+      const payload = { id: users.id, userid: users.userid }; // JWT payload
+      const jwt = this.jwtService.sign(payload); // JWT 토큰 발급
+      done(null, { userid: email, jwt, signup: false });
+    } else if (user) {
       const payload = { id: user.id, userid: user.userid }; // JWT payload
       const jwt = this.jwtService.sign(payload); // JWT 토큰 발급
       done(null, { userid: email, jwt, signup: true });

@@ -8,13 +8,13 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   userid: string; // 사용자가 입력하는 ID
 
-  @Column()
+  @Column({ nullable: true })
   nickname: string;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
   @Column({ nullable: true })
@@ -26,10 +26,10 @@ export class User {
   @Column({ nullable: true })
   gender: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   email: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   phone: string;
 
   @Column({ nullable: true })
@@ -38,7 +38,7 @@ export class User {
   @Column({ nullable: true })
   provider: string;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, nullable: true })
   reportCnt: number;
 
   @OneToMany(() => InBody, (inbody) => inbody.user)
