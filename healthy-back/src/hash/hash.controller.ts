@@ -110,4 +110,12 @@ export class HashController {
   async pushTag(@Body('userid') id: number, @Body('hashtags') arr: []) {
     return await this.hashService.hashtagPush(id, arr);
   }
+
+  @Get('validata/:id')
+  @ApiOperation({ summary: '사용자의 해시태그 유효성 검사' })
+  @ApiParam({ name: 'id', description: '사용자 ID', example: 1 })
+  @ApiResponse({ type: Boolean })
+  async valiUser(@Param('id') id: number) {
+    return await this.hashService.hashtagValidate(id);
+  }
 }

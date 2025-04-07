@@ -15,21 +15,23 @@ export class InBody {
   @ManyToOne(() => User, (user) => user.inbodys, { onDelete: 'CASCADE' })
   user: User;
 
-  @Column('float')
-  weight: number;
+  @Column({ nullable: true })
+  weight: string;
 
-  @Column('float')
-  muscleMass: number;
+  @Column({ nullable: true })
+  muscleMass: string;
 
-  @Column('float')
-  bodyFat: number;
+  @Column({ nullable: true })
+  bodyFat: string;
 
-  @Column('float')
-  bmi: number;
+  @Column({ nullable: true })
+  bmi: string;
 
-  @Column('float')
-  bodyWater: number;
+  @Column({ nullable: true })
+  height: string;
 
+  @Column({ nullable: true })
+  bodyFatPer: string;
   @CreateDateColumn()
   createdAt: Date;
 }

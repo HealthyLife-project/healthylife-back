@@ -7,8 +7,9 @@ import { AiModule } from './ai/ai.module';
 import { PayModule } from './pay/pay.module';
 import { HashModule } from './hash/hash.module';
 import { AdModule } from './ad/ad.module';
+import { InbodyModule } from './inbody/inbody.module';
 @Module({
-  imports: [DatabaseModule, LogModule, AiModule, PayModule, HashModule, AdModule],
+  imports: [DatabaseModule, LogModule, AiModule, PayModule, HashModule, AdModule, InbodyModule],
   controllers: [AppController],
   providers: [AppService],
 })
