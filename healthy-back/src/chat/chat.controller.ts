@@ -72,7 +72,7 @@ export class ChatController {
     return await this.chatService.findPersonRoom(num);
   }
 
-  @Post('pet/create/')
+  @Post('pet/create')
   @ApiOperation({ summary: '반려동물 채팅방 생성' })
   @ApiBody({
     schema: {
@@ -87,7 +87,7 @@ export class ChatController {
     return await this.chatService.createPetRoom(obj);
   }
 
-  @Post('person/create/')
+  @Post('person/create')
   @ApiOperation({ summary: '일반 채팅방 생성' })
   @ApiBody({
     schema: {
