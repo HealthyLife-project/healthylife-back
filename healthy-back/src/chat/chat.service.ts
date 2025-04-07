@@ -58,4 +58,29 @@ export class ChatService {
     const room = await this.PetChatRoomRepo.findOne({ where: { id: num } });
     return room ? room : null;
   }
+
+  async createPetRoom(obj: any): Promise<{ result: boolean }> {
+    try {
+      const room = this.PetChatRoomRepo.create(obj);
+      const data = { ...room, userid: obj.id };
+      await this.PetChatRoomRepo.save(data);
+
+      return { result: true };
+    } catch (e) {
+      console.error(e);
+      return { result: false };
+    }
+  }
+
+  async createPersonRoom(obj: any): Promise<{ result: boolean }> {
+    try {
+      const room = this.PersonChatRoomRepo.create(obj);
+      const data = { ...room, userid: obj.id };
+      await this.PersonChatRoomRepo.save(data);
+
+      return { result: true };
+    } catch (e) {
+      return { result: false };
+    }
+  }
 }
