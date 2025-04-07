@@ -173,7 +173,15 @@ export class UserController {
   })
   @ApiResponse({
     status: 200,
-    schema: { example: { result: Boolean, message: String } },
+    description: '성공적으로 수정됨',
+    content: {
+      'application/json': {
+        example: {
+          result: true,
+          message: '수정 완료',
+        },
+      },
+    },
   })
   async mypageModify(@Param('id') id: number, @Body() body: any) {
     return await this.userService.updateUser(id, body);
