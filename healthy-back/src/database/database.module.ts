@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 import { UserHashtag } from './entities/hashtag.entity';
 import { Hashtag } from './entities/hash.entity';
 import { InBody } from './entities/inbody.entity';
+import { InBodyData } from './entities/inbodyData.entity';
 import { Category } from './entities/category.entity';
 import { IpMiddle } from '../middle/logging.ip.middle'; // 미들웨어 경로 확인
 import { IpLog } from './entities/iplog.entitiy';
@@ -21,6 +22,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { AiModule } from 'src/ai/ai.module';
 import { PayModule } from 'src/pay/pay.module';
 import { AdModule } from 'src/ad/ad.module';
+import { InbodyModule } from 'src/inbody/inbody.module';
 
 @Module({
   imports: [
@@ -37,6 +39,7 @@ import { AdModule } from 'src/ad/ad.module';
         AiModule,
         PayModule,
         AdModule,
+        InbodyModule,
       ],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -52,6 +55,7 @@ import { AdModule } from 'src/ad/ad.module';
           User,
           UserHashtag,
           InBody,
+          InBodyData,
           Hashtag,
           Category,
           IpLog,

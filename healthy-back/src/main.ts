@@ -23,7 +23,7 @@ async function bootstrap() {
 
   // 정적 파일 접근 (예: http://localhost:5001/uploads/ads/xxx.png)
   app.useStaticAssets(join(__dirname, '..', 'uploads'));
-  app.useGlobalPipes(new ValidationPipe());
+
   // CORS
   app.enableCors({
     origin: ['http://localhost:3000', 'http://localhost:4000'],

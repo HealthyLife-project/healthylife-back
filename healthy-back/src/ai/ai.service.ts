@@ -74,6 +74,7 @@ export class AiService {
     const responseJSON = data as UnsplashResponse;
 
     const images = responseJSON.results.map((img) => img.urls.regular);
+
     responseJSON.results.map((img) => console.log(img.urls, 'urls'));
 
     return images; // 프론트에선 img.src로 바로 사용 가능
