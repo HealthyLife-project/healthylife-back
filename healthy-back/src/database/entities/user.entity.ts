@@ -21,7 +21,7 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
-  age: number;
+  age: string;
 
   @Column({ nullable: true })
   gender: string;

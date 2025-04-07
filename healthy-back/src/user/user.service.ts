@@ -85,9 +85,20 @@ export class UserService {
     return user ? user : null;
   }
 
-  async updateUser(body: any, id: number): Promise<{} | null> {
-    const user = await this.userRepository.update(id, body);
+  async updateUser(
+    id: number,
+    body: any,
+  ): Promise<{ result: boolean; message: string }> {
+    console.log('body', body);
+    const result = await this.userRepository.update(id, body);
 
-    return user ? { result: true, message: '개인 정보 변경 성공' } : null;
+    if (result.affected && result.affected > 0) {
+      return { result: true, message: '개인 정보 변경 성공' };
+    } else {
+      return {
+        result: false,
+        message: '해당 유저가 존재하지 않거나 변경사항 없음',
+      };
+    }
   }
 }

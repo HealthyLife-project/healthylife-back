@@ -167,7 +167,7 @@ export class UserController {
     return this.userService.findEmailUser(email);
   }
 
-  @Put('mypage/modify/:id')
+  @Post('mypage/modify/:id')
   @ApiOperation({
     summary: '개인정보 수정',
   })
