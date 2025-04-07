@@ -24,7 +24,7 @@ export class ChatController {
     type: [PersonChatRoom],
   })
   async findPerson() {
-    return this.chatService.findallPerson();
+    return await this.chatService.findallPerson();
   }
 
   @Get('chatlist/pet')
@@ -35,7 +35,7 @@ export class ChatController {
     type: [PetChatRoom],
   })
   async findPet() {
-    return this.chatService.findallPet();
+    return await this.chatService.findallPet();
   }
 
   @Post('search')
@@ -45,7 +45,7 @@ export class ChatController {
   })
   @ApiResponse({ status: 200, description: '검색된 채팅방 목록 반환' })
   async paramsSearch(@Body('value') str: string) {
-    return this.chatService.searchPerson(str);
+    return await this.chatService.searchPerson(str);
   }
 
   @Get('pet/:id')
@@ -57,7 +57,7 @@ export class ChatController {
     type: PetChatRoom,
   })
   async titlePet(@Param('id') num: number) {
-    return this.chatService.findPetRoom(num);
+    return await this.chatService.findPetRoom(num);
   }
 
   @Get('person/:id')
@@ -69,6 +69,6 @@ export class ChatController {
     type: PersonChatRoom,
   })
   async titlePerson(@Param('id') num: number) {
-    return this.chatService.findPersonRoom(num);
+    return await this.chatService.findPersonRoom(num);
   }
 }

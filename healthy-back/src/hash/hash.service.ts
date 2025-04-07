@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
 import { Hashtag } from '../database/entities/hash.entity';
 import { Category } from '../database/entities/category.entity';
+import { UserHashtag } from 'src/database/entities/hashtag.entity';
 @Injectable()
 export class HashService {
   constructor(
@@ -11,6 +12,9 @@ export class HashService {
 
     @InjectRepository(Category)
     private readonly cateRepository: Repository<Category>, // cateRepository 의존성 주입
+
+    @InjectRepository(UserHashtag)
+    private readonly userHashRepo: Repository<UserHashtag>,
   ) {}
 
   // Category 모두 조회
@@ -69,5 +73,13 @@ export class HashService {
     const res: any = await this.cateRepository.delete(id); // DeleteResult로 반환값 지정
 
     return { result: res.affected > 0 }; // affected 값으로 성공 여부 확인
+  }
+
+  async hashtagPush(id: number, arr: []): Promise<{ result: boolean }> {
+    for (const item of arr) {
+      const value = this.userHashRepo.create({ hashtag: item, id: id });
+      await this.userHashRepo.save(value);
+    }
+    return { result: true };
   }
 }

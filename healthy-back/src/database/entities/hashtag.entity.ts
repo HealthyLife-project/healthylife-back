@@ -9,9 +9,9 @@ export class UserHashtag {
   @ManyToOne(() => User, (user) => user.hashtags, { onDelete: 'CASCADE' })
   user: User;
 
-  @Column()
+  @Column({ nullable: true })
   hashtag: string;
 
-  @Column()
+  @Column({ nullable: true })
   category: string;
 }
