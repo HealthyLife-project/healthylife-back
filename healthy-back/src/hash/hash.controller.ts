@@ -101,4 +101,13 @@ export class HashController {
 
     return res.result;
   }
+
+  @Post('selectedTags')
+  @ApiOperation({
+    summary: '유저 해쉬태그 추가',
+  })
+  @ApiResponse({ type: Boolean })
+  async pushTag(@Body('userid') id: number, @Body('hashtags') arr: []) {
+    return await this.hashService.hashtagPush(id, arr);
+  }
 }
