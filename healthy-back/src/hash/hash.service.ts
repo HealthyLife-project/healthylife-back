@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
 import { Hashtag } from '../database/entities/hash.entity';
 import { Category } from '../database/entities/category.entity';
+import { User } from 'src/database/entities/user.entity';
 import { UserHashtag } from 'src/database/entities/hashtag.entity';
 @Injectable()
 export class HashService {
@@ -15,6 +16,9 @@ export class HashService {
 
     @InjectRepository(UserHashtag)
     private readonly userHashRepo: Repository<UserHashtag>,
+
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
   // Category 모두 조회
@@ -81,5 +85,11 @@ export class HashService {
       await this.userHashRepo.save(value);
     }
     return { result: true };
+  }
+
+  async hashtagValidate(id: number): Promise<{ result: boolean }> {
+    const user = await this.userRepo.findOne({ where: { id: id } });
+
+    return user ? { result: true } : { result: false };
   }
 }
