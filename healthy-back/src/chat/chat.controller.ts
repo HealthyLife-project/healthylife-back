@@ -84,7 +84,7 @@ export class ChatController {
     },
   })
   async petRoomCreate(@Body() obj: any) {
-    return this.chatService.createPetRoom(obj);
+    return await this.chatService.createPetRoom(obj);
   }
 
   @Post('person/create/')
@@ -99,6 +99,6 @@ export class ChatController {
     },
   })
   async personRoomCreate(@Body() obj: any) {
-    return this.chatService.createPersonRoom(obj);
+    return await this.chatService.createPersonRoom(obj);
   }
 }
