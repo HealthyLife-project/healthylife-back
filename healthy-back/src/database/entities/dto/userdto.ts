@@ -41,10 +41,10 @@ export class UserDto {
   userid: string;
 
   @ApiProperty({ example: '헬스킹', description: '닉네임' })
-  nickname: string;
+  nickname?: string;
 
   @ApiProperty({ example: '홍길동', description: '실명' })
-  name: string;
+  name?: string;
 
   @ApiProperty({
     example: 'password123!',
@@ -54,7 +54,7 @@ export class UserDto {
   password?: string;
 
   @ApiProperty({ example: 28, description: '나이', required: false })
-  age?: number;
+  age?: string;
 
   @ApiProperty({ example: 'male', description: '성별', required: false })
   gender?: string;
@@ -63,7 +63,7 @@ export class UserDto {
   email: string;
 
   @ApiProperty({ example: '01012345678', description: '전화번호' })
-  phone: string;
+  phone?: string;
 
   @ApiProperty({
     example: '서울시 강남구',
