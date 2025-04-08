@@ -9,6 +9,7 @@ import {
   ApiResponse,
   ApiBody,
   ApiParam,
+  ApiCreatedResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('User') // User 관련 API
@@ -21,19 +22,15 @@ export class UserController {
     summary: '회원가입',
     description: '새로운 사용자 계정을 생성',
   })
-  @ApiBody({ type: User })
-  @ApiResponse({
-    status: 201,
+  @ApiCreatedResponse({
     description: '회원가입 성공',
-    schema: {
-      example: { UserDto },
-    },
+    type: UserDto,
   })
   @ApiResponse({
     status: 400,
     description: '회원가입 실패',
     schema: {
-      example: { UserDto },
+      example: { return: false },
     },
   })
   create(@Body() userData: Partial<User>) {
