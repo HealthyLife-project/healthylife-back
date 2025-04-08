@@ -81,7 +81,7 @@ export class HashService {
 
   async hashtagPush(id: number, arr: []): Promise<{ result: boolean }> {
     for (const item of arr) {
-      const value = this.userHashRepo.create({ hashtag: item, id: id });
+      const value = this.userHashRepo.create({ hashtag: item, userId: id });
       await this.userHashRepo.save(value);
     }
     return { result: true };
