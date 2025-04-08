@@ -14,14 +14,20 @@ export class InbodyService {
     private readonly inbodydatarep: Repository<InBodyData>,
   ) {}
 
-  async inbodyUpdate(id: number, obj: CreateInbodyDto): Promise<InBody> {
-    console.log(obj);
+  async inbodyUpdate(id: number, obj: any): Promise<InBody> {
+    console.log('obj', obj);
+
     const inbody = this.inbodyrep.create({
-      ...obj,
+      weight: obj.weight,
+      muscleMass: obj.musclemass,
+      bodyFat: obj.fatmass,
+      bodyFatPer: obj.fatper,
+      bmi: obj.bmi,
+      height: obj.height,
       userId: id,
     });
 
-    console.log(inbody);
+    console.log('inbody', inbody);
 
     await this.inbodyrep.save(inbody);
 
