@@ -15,10 +15,13 @@ export class InbodyService {
   ) {}
 
   async inbodyUpdate(id: number, obj: CreateInbodyDto): Promise<InBody> {
+    console.log(obj);
     const inbody = this.inbodyrep.create({
       ...obj,
-      user: { id },
-    } as DeepPartial<InBody>);
+      userId: id,
+    });
+
+    console.log(inbody);
 
     await this.inbodyrep.save(inbody);
 

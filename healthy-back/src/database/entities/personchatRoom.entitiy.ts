@@ -9,13 +9,13 @@ import {
 export class PersonChatRoom {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ unique: true, nullable: true })
+  @Column({ nullable: true })
   userid: string;
 
   @Column({ nullable: true })
   title: string;
 
-  @Column({ length: 255, unique: true, nullable: true })
+  @Column({ length: 255, nullable: true })
   time: string;
 
   @Column({ nullable: true })
