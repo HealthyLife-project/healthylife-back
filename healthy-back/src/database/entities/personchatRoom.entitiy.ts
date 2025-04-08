@@ -18,7 +18,9 @@ export class PersonChatRoom {
   @Column({ length: 255, nullable: true })
   time: string;
 
-  @Column({ nullable: true })
+  @Column()
+  imgsrc: string;
+  @Column({ nullable: true, default: 1 })
   cnt: Number;
   @CreateDateColumn()
   createdAt: Date;

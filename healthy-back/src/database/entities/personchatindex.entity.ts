@@ -1,9 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class PersonChatIndex {
@@ -12,8 +7,8 @@ export class PersonChatIndex {
   @Column({})
   userid: number;
 
-  @Column({ length: 255, unique: true })
-  roomid: string;
+  @Column({ unique: true })
+  roomid: number;
 
   @Column({})
   text: string;
@@ -21,6 +16,6 @@ export class PersonChatIndex {
   @Column({})
   userNickname: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({})
+  time: string;
 }
