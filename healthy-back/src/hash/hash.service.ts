@@ -88,7 +88,7 @@ export class HashService {
   }
 
   async hashtagValidate(id: number): Promise<{ result: boolean }> {
-    const user = await this.userRepo.findOne({ where: { id: id } });
+    const user = await this.userHashRepo.findOne({ where: { userId: id } });
 
     return user ? { result: true } : { result: false };
   }
