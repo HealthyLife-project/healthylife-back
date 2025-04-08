@@ -19,6 +19,7 @@ import {
   ApiBody,
   ApiParam,
 } from '@nestjs/swagger';
+import { hash } from 'crypto';
 
 @ApiTags('auth')
 @Controller('auth') // '/auth' 경로로 요청을 처리
