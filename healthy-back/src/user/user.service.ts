@@ -25,7 +25,8 @@ export class UserService {
     const newUser = this.userRepository.create({
       ...userData,
     });
-    return this.userRepository.save(newUser);
+
+    return await this.userRepository.save(newUser);
   }
   async findAll() {
     return this.userRepository.find();

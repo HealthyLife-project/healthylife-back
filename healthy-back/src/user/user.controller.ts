@@ -26,14 +26,14 @@ export class UserController {
     status: 201,
     description: '회원가입 성공',
     schema: {
-      example: { result: true, message: '회원가입이 완료되었습니다.' },
+      example: { UserDto },
     },
   })
   @ApiResponse({
     status: 400,
     description: '회원가입 실패',
     schema: {
-      example: { result: false, message: '이미 존재하는 사용자입니다.' },
+      example: { UserDto },
     },
   })
   create(@Body() userData: Partial<User>) {

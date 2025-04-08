@@ -1,3 +1,4 @@
+import { uptime } from 'process';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -14,22 +15,7 @@ export class PersonChat {
   userid: number;
 
   @Column({ unique: true })
-  chatCreateUserid: number;
-
-  @Column({ length: 255, unique: true })
-  time: string;
-
-  @Column({ length: 255, unique: true })
-  imgsrc: string;
-
-  @Column({})
-  check: boolean;
-
-  @Column({ nullable: true })
-  password: string;
-
-  @Column({})
-  title: string;
+  chatid: number;
 
   @CreateDateColumn()
   createdAt: Date;

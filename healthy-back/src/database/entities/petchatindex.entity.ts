@@ -21,6 +21,6 @@ export class PetChatIndex {
   @Column({})
   userNickname: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column()
+  time: string;
 }
