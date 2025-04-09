@@ -15,11 +15,6 @@ export class PetChatRoom {
   @Column({ nullable: true })
   title: string;
 
-  @Column()
-  imgsrc: string;
-
-  @Column({ length: 255, nullable: true })
-  time: string;
   @Column({ nullable: true, default: 1 })
   cnt: number;
   @CreateDateColumn()
