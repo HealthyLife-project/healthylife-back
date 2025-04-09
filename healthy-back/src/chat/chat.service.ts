@@ -71,6 +71,18 @@ export class ChatService {
 
       await this.PetChatRoomRepo.save(room);
 
+      const userRoom = await this.PetChatRoomRepo.findOne({
+        where: { userid: obj.id },
+      });
+      if (!userRoom) {
+        return { result: false };
+      }
+      const insertRoom = this.PetChatRepo.create({
+        roomid: userRoom.id,
+        userid: Number(obj.id),
+      });
+      await this.PetChatRepo.save(insertRoom);
+
       return { result: true };
     } catch (e) {
       console.error(e);
@@ -86,9 +98,156 @@ export class ChatService {
       });
       await this.PersonChatRoomRepo.save(room);
 
+      const userRoom = await this.PersonChatRoomRepo.findOne({
+        where: { userid: obj.id },
+      });
+      if (!userRoom) {
+        return { result: false };
+      }
+      const insertRoom = this.PersonChatRepo.create({
+        roomid: userRoom.id,
+        userid: Number(obj.id),
+      });
+      await this.PetChatRepo.save(insertRoom);
       return { result: true };
     } catch (e) {
       return { result: false };
+    }
+  }
+
+  async createPetMessage(
+    arr: any,
+  ): Promise<{ result: boolean; message: string }> {
+    try {
+      for (const item of arr) {
+        const message = this.PersonChatIndexRepo.create(item);
+        await this.PersonChatIndexRepo.save(message);
+      }
+      return { result: true, message: '메세지 저장 성공' };
+    } catch (e) {
+      return { result: false, message: `${e}` };
+    }
+  }
+
+  async createPersonMessage(
+    arr: any,
+  ): Promise<{ result: boolean; message: string }> {
+    try {
+      for (const item of arr) {
+        const message = this.PersonChatIndexRepo.create(item);
+        await this.PersonChatIndexRepo.save(message);
+      }
+      return { result: true, message: '메세지 저장 성공' };
+    } catch (e) {
+      return { result: false, message: `${e}` };
+    }
+  }
+
+  async deletePetRoom(
+    id: number,
+  ): Promise<{ result: boolean; message: string }> {
+    try {
+      await this.PetChatRepo.delete({ roomid: id });
+      const room = await this.PetChatRoomRepo.findOne({ where: { id } });
+
+      if (!room) {
+        return { result: false, message: `채팅방을 찾을 수 없습니다` };
+      }
+
+      // 인원 수 감소
+      room.cnt -= 1;
+
+      // 인원 수가 0이면 방도 삭제
+      if (room.cnt <= 0) {
+        await this.PetChatRoomRepo.delete({ id: id });
+      } else {
+        await this.PetChatRoomRepo.save(room);
+      }
+
+      return { result: true, message: '채팅방을 나갔습니다' };
+    } catch (e) {
+      return { result: false, message: `${e}` };
+    }
+  }
+
+  async deletePersonRoom(
+    id: number,
+  ): Promise<{ result: boolean; message: string }> {
+    try {
+      await this.PersonChatRepo.delete({ roomid: id });
+      const room = await this.PetChatRoomRepo.findOne({ where: { id } });
+
+      if (!room) {
+        return { result: false, message: `채팅방을 찾을 수 없습니다` };
+      }
+
+      // 인원 수 감소
+      room.cnt -= 1;
+
+      // 인원 수가 0이면 방도 삭제
+      if (room.cnt <= 0) {
+        await this.PersonChatRoomRepo.delete({ id: id });
+      } else {
+        await this.PersonChatRoomRepo.save(room);
+      }
+
+      return { result: true, message: '채팅방을 나갔습니다' };
+    } catch (e) {
+      return { result: false, message: `${e}` };
+    }
+  }
+
+  async insertPetRoom(obj: any): Promise<{ result: boolean; message: string }> {
+    try {
+      const join = this.PetChatRepo.create({
+        userid: obj.userid,
+        roomid: obj.roomid,
+      });
+      await this.PetChatRepo.save(join);
+
+      const room = await this.PetChatRoomRepo.findOne({
+        where: { id: obj.roomid },
+      });
+
+      if (!room) {
+        return { result: false, message: '채팅방을 찾을 수 없습니다' };
+      }
+
+      room.cnt += 1;
+
+      await this.PetChatRoomRepo.save(room);
+
+      return { result: true, message: '채팅방에 입장했습니다' };
+    } catch (e) {
+      return { result: false, message: `${e}` };
+    }
+  }
+
+  async insertPersonRoom(
+    obj: any,
+  ): Promise<{ result: boolean; message: string }> {
+    try {
+      const join = this.PersonChatRepo.create({
+        userid: obj.userid,
+        roomid: obj.roomid,
+      });
+      await this.PersonChatRepo.save(join);
+
+      const room = await this.PersonChatRoomRepo.findOne({
+        where: { id: obj.roomid },
+      });
+
+      if (!room) {
+        return { result: false, message: '채팅방을 찾을 수 없습니다' };
+      }
+
+      room.cnt += 1;
+
+      await this.PersonChatRoomRepo.save(room);
+
+      return { result: true, message: '채팅방에 입장했습니다' };
+    } catch (e) {
+      return { result: false, message: `${e}` };
     }
   }
 }

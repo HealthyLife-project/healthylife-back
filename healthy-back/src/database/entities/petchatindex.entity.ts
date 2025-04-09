@@ -12,8 +12,8 @@ export class PetChatIndex {
   @Column({})
   userid: number;
 
-  @Column({ length: 255, unique: true })
-  roomid: string;
+  @Column({})
+  roomid: number;
 
   @Column({})
   text: string;

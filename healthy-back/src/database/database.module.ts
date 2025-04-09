@@ -23,6 +23,7 @@ import { AiModule } from 'src/ai/ai.module';
 import { PayModule } from 'src/pay/pay.module';
 import { AdModule } from 'src/ad/ad.module';
 import { InbodyModule } from 'src/inbody/inbody.module';
+import { MapsModule } from 'src/maps/maps.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { InbodyModule } from 'src/inbody/inbody.module';
         PayModule,
         AdModule,
         InbodyModule,
+        MapsModule,
       ],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({

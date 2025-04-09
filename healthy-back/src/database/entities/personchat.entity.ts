@@ -14,8 +14,8 @@ export class PersonChat {
   @Column({ unique: true })
   userid: number;
 
-  @Column({ unique: true })
-  chatid: number;
+  @Column({})
+  roomid: number;
 
   @CreateDateColumn()
   createdAt: Date;
