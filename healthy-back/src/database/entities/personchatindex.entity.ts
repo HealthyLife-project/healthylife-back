@@ -7,7 +7,7 @@ export class PersonChatIndex {
   @Column({})
   userid: number;
 
-  @Column({ unique: true })
+  @Column({})
   roomid: number;
 
   @Column({})

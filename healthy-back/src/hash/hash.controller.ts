@@ -111,7 +111,7 @@ export class HashController {
     return await this.hashService.hashtagPush(id, arr);
   }
 
-  @Get('validata/:id')
+  @Get('validate/:id')
   @ApiOperation({ summary: '사용자의 해시태그 유효성 검사' })
   @ApiParam({ name: 'id', description: '사용자 ID', example: 1 })
   @ApiResponse({ schema: { type: 'boolean' } })

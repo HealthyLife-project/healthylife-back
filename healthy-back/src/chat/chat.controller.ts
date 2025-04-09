@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -10,6 +10,7 @@ import {
 import { ChatService } from './chat.service';
 import { PetChatRoom } from 'src/database/entities/petchatRoom.entity';
 import { PersonChatRoom } from 'src/database/entities/personchatRoom.entitiy';
+import { InsertRoomDto } from 'src/database/entities/dto/chatdto';
 
 @ApiTags('chat')
 @Controller('chat')
@@ -100,5 +101,47 @@ export class ChatController {
   })
   async personRoomCreate(@Body() obj: any) {
     return await this.chatService.createPersonRoom(obj);
+  }
+
+  @Post('person/saveMessage')
+  @ApiOperation({ summary: '사람 채팅 메시지 저장' })
+  @ApiBody({ description: '저장할 메시지 배열', type: [Object] })
+  async savePersonMessage(@Body() arr: any) {
+    return await this.chatService.createPersonMessage(arr);
+  }
+
+  @Post('pet/saveMessage')
+  @ApiOperation({ summary: '반려동물 채팅 메시지 저장' })
+  @ApiBody({ description: '저장할 메시지 배열', type: [Object] })
+  async savePetMessage(@Body() arr: any) {
+    return await this.chatService.createPetMessage(arr);
+  }
+
+  @Delete('person/delete/:id')
+  @ApiOperation({ summary: '사람 채팅방 삭제' })
+  @ApiParam({ name: 'id', description: '삭제할 채팅방 ID' })
+  async deletePersonRoom(@Param('id') id: number) {
+    return await this.chatService.deletePersonRoom(id);
+  }
+
+  @Delete('pet/delete/:id')
+  @ApiOperation({ summary: '반려동물 채팅방 삭제' })
+  @ApiParam({ name: 'id', description: '삭제할 채팅방 ID' })
+  async deletePetRoom(@Param('id') id: number) {
+    return await this.chatService.deletePetRoom(id);
+  }
+
+  @Post('pet/insert')
+  @ApiOperation({ summary: '반려동물 채팅방 입장 처리' })
+  @ApiBody({ description: '입장할 유저 정보 요청시 Body', type: InsertRoomDto })
+  async insertPersonRoom(@Body() obj: any) {
+    return await this.chatService.insertPetRoom(obj);
+  }
+
+  @Post('person/insert')
+  @ApiOperation({ summary: '사람 채팅방 입장 처리' })
+  @ApiBody({ description: '입장할 유저 정보 요청시 Body', type: InsertRoomDto })
+  async insertPetRoom(@Body() obj: any) {
+    return await this.chatService.insertPetRoom(obj);
   }
 }

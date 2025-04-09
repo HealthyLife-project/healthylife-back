@@ -8,8 +8,9 @@ import { PayModule } from './pay/pay.module';
 import { HashModule } from './hash/hash.module';
 import { AdModule } from './ad/ad.module';
 import { InbodyModule } from './inbody/inbody.module';
+import { MapsModule } from './maps/maps.module';
 @Module({
-  imports: [DatabaseModule, LogModule, AiModule, PayModule, HashModule, AdModule, InbodyModule],
+  imports: [DatabaseModule, LogModule, AiModule, PayModule, HashModule, AdModule, InbodyModule, MapsModule],
   controllers: [AppController],
   providers: [AppService],
 })
