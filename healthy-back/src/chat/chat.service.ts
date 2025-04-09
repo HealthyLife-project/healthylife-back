@@ -197,27 +197,44 @@ export class ChatService {
     }
   }
 
-  async insertPetRoom(obj: any): Promise<{ result: boolean; message: string }> {
+  async insertPetRoom(
+    obj: any,
+  ): Promise<{ result: boolean; message: string; data?: {} }> {
     try {
-      const join = this.PetChatRepo.create({
-        userid: obj.userid,
-        roomid: obj.roomid,
+      const data = await this.PetChatRepo.findOne({
+        where: { userid: obj.userid, roomid: obj.roomid },
       });
-      await this.PetChatRepo.save(join);
+      if (!data) {
+        const join = this.PetChatRepo.create({
+          userid: obj.userid,
+          roomid: obj.roomid,
+        });
+        await this.PetChatRepo.save(join);
 
-      const room = await this.PetChatRoomRepo.findOne({
-        where: { id: obj.roomid },
-      });
+        const room = await this.PetChatRoomRepo.findOne({
+          where: { id: obj.roomid },
+        });
 
-      if (!room) {
-        return { result: false, message: '채팅방을 찾을 수 없습니다' };
+        if (!room) {
+          return { result: false, message: '채팅방을 찾을 수 없습니다' };
+        }
+
+        room.cnt += 1;
+
+        await this.PetChatRoomRepo.save(room);
+
+        return { result: true, message: '채팅방에 입장했습니다' };
+      } else {
+        const message = await this.PetChatIndexRepo.find({
+          where: { roomid: obj.roomid },
+        });
+
+        return {
+          result: true,
+          message: '채팅방에 입장했습니다',
+          data: message,
+        };
       }
-
-      room.cnt += 1;
-
-      await this.PetChatRoomRepo.save(room);
-
-      return { result: true, message: '채팅방에 입장했습니다' };
     } catch (e) {
       return { result: false, message: `${e}` };
     }
@@ -225,27 +242,42 @@ export class ChatService {
 
   async insertPersonRoom(
     obj: any,
-  ): Promise<{ result: boolean; message: string }> {
+  ): Promise<{ result: boolean; message: string; data?: {} }> {
     try {
-      const join = this.PersonChatRepo.create({
-        userid: obj.userid,
-        roomid: obj.roomid,
+      const data = await this.PersonChatRepo.findOne({
+        where: { userid: obj.userid, roomid: obj.roomid },
       });
-      await this.PersonChatRepo.save(join);
+      if (!data) {
+        const join = this.PersonChatRepo.create({
+          userid: obj.userid,
+          roomid: obj.roomid,
+        });
+        await this.PersonChatRepo.save(join);
 
-      const room = await this.PersonChatRoomRepo.findOne({
-        where: { id: obj.roomid },
-      });
+        const room = await this.PersonChatRoomRepo.findOne({
+          where: { id: obj.roomid },
+        });
 
-      if (!room) {
-        return { result: false, message: '채팅방을 찾을 수 없습니다' };
+        if (!room) {
+          return { result: false, message: '채팅방을 찾을 수 없습니다' };
+        }
+
+        room.cnt += 1;
+
+        await this.PersonChatRoomRepo.save(room);
+
+        return { result: true, message: '채팅방에 입장했습니다' };
+      } else {
+        const message = await this.PersonChatIndexRepo.find({
+          where: { roomid: obj.roomid },
+        });
+
+        return {
+          result: true,
+          message: '채팅방에 입장했습니다',
+          data: message,
+        };
       }
-
-      room.cnt += 1;
-
-      await this.PersonChatRoomRepo.save(room);
-
-      return { result: true, message: '채팅방에 입장했습니다' };
     } catch (e) {
       return { result: false, message: `${e}` };
     }
