@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../database/entities/user.entity';
@@ -6,12 +6,14 @@ import { UserHashtag } from '../database/entities/hashtag.entity';
 import * as bcrypt from 'bcrypt';
 import { UpdatePasswordDto } from 'src/database/entities/dto/userdto';
 import { UserDto } from 'src/database/entities/dto/userdto';
+import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>, // UserRepository 의존성 주입
     @InjectRepository(UserHashtag)
     private readonly hashRepository: Repository<UserHashtag>,
+    private readonly mailerService: MailerService,
   ) {}
   async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
@@ -82,7 +84,15 @@ export class UserService {
 
   async findEmailUser(email: string): Promise<UserDto | null> {
     const user = await this.userRepository.findOne({ where: { email: email } });
-
+    if (user) {
+      this.mailerService.sendMail({
+        to: 'tkdgys1234@gmail.com',
+        from: 'noreply@gmail.com',
+        subject: '안녕?',
+        text: '나는 비밀번호 변경해주는 사람이야',
+        html: '<a href ="http://localhost:3000/forgot-password/reset-password">여기로 가</a>',
+      });
+    }
     return user ? user : null;
   }
 
