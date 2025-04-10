@@ -202,6 +202,6 @@ export class AuthController {
     return res.json({ result: true, message: '로그아웃' });
   }
 
-  @Post('')
-  async validateEmail(@Param() email: string) {}
+  // @Post('')
+  // async validateEmail(@Param() email: string) {}
 }
