@@ -17,5 +17,8 @@ export class Hashtag {
 
   @ManyToOne(() => Category, (category) => category.hashtags) // 외래키 설정
   @JoinColumn({ name: 'categoryid' }) // 외래키 컬럼명을 categoryid로 설정
+  @Column()
+  categoryid: number;
+
   category: Category;
 }
