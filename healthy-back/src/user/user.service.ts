@@ -90,7 +90,7 @@ export class UserService {
         from: 'noreply@gmail.com',
         subject: '안녕?',
         text: '나는 비밀번호 변경해주는 사람이야',
-        html: '<a href ="http://localhost:3000/forgot-password/reset-password">여기로 가</a>',
+        html: `<a href ="http://localhost:3000/forgot-password/reset-password/${user.id}">여기로 가</a>`,
       });
     }
     return user ? user : null;
