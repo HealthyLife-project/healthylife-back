@@ -26,7 +26,7 @@ export class User {
   @Column({ nullable: true })
   gender: string;
 
-  @Column({ unique: true, nullable: true })
+  @Column({ nullable: true })
   email: string;
 
   @Column({ unique: true, nullable: true })
