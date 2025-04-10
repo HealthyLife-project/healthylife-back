@@ -199,7 +199,7 @@ export class ChatService {
 
   async insertPetRoom(
     obj: any,
-  ): Promise<{ result: boolean; message: string; data?: {} }> {
+  ): Promise<{ result: boolean; message: string; data?: any }> {
     try {
       const data = await this.PetChatRepo.findOne({
         where: { userid: obj.userid, roomid: obj.roomid },
@@ -242,7 +242,7 @@ export class ChatService {
 
   async insertPersonRoom(
     obj: any,
-  ): Promise<{ result: boolean; message: string; data?: {} }> {
+  ): Promise<{ result: boolean; message: string; data?: any }> {
     try {
       const data = await this.PersonChatRepo.findOne({
         where: { userid: obj.userid, roomid: obj.roomid },

@@ -131,17 +131,17 @@ export class ChatController {
     return await this.chatService.deletePetRoom(id);
   }
 
-  @Post('pet/insert')
-  @ApiOperation({ summary: '반려동물 채팅방 입장 처리' })
-  @ApiBody({ description: '입장할 유저 정보 요청시 Body', type: InsertRoomDto })
-  async insertPersonRoom(@Body() obj: any) {
-    return await this.chatService.insertPetRoom(obj);
-  }
-
   @Post('person/insert')
   @ApiOperation({ summary: '사람 채팅방 입장 처리' })
   @ApiBody({ description: '입장할 유저 정보 요청시 Body', type: InsertRoomDto })
   async insertPetRoom(@Body() obj: any) {
+    return await this.chatService.insertPersonRoom(obj);
+  }
+
+  @Post('pet/insert')
+  @ApiOperation({ summary: '반려동물 채팅방 입장 처리' })
+  @ApiBody({ description: '입장할 유저 정보 요청시 Body', type: InsertRoomDto })
+  async insertPersonRoom(@Body() obj: any) {
     return await this.chatService.insertPetRoom(obj);
   }
 }
