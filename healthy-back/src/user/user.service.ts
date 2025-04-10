@@ -86,11 +86,15 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { email: email } });
     if (user) {
       this.mailerService.sendMail({
-        to: 'tkdgys1234@gmail.com',
+        to: `${user.email}`,
         from: 'noreply@gmail.com',
-        subject: '안녕?',
-        text: '나는 비밀번호 변경해주는 사람이야',
-        html: `<a href ="http://localhost:3000/forgot-password/reset-password?id=${user.id}">여기로 가</a>`,
+        subject: 'HEALTHYLIFE Password Update',
+        text: '이메일 인증이 완료되었습니다.',
+        html: `
+        <p>이메일 인증이 완료되었습니다.</p>
+        <p>아래 링크를 클릭하여 비밀번호를 재설정하세요:</p>
+        <a href="http://localhost:3000/forgot-password/reset-password?id=${user.id}">Reset your Healthy Life password</a>
+      `,
       });
     }
     return user ? user : null;
