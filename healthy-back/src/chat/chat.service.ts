@@ -133,10 +133,9 @@ export class ChatService {
     arr: any,
   ): Promise<{ result: boolean; message: string }> {
     try {
-      for (const item of arr) {
-        const message = this.PersonChatIndexRepo.create(item);
-        await this.PersonChatIndexRepo.save(message);
-      }
+      const message = this.PersonChatIndexRepo.create(arr);
+      await this.PersonChatIndexRepo.save(message);
+
       return { result: true, message: '메세지 저장 성공' };
     } catch (e) {
       return { result: false, message: `${e}` };
