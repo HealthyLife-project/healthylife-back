@@ -160,7 +160,7 @@ export class UserController {
     description: '이메일로 유저 찾기',
     type: UserDto,
   })
-  async findEmailUser(@Body() email: string): Promise<UserDto | null> {
+  async findEmailUser(@Body('email') email: string): Promise<UserDto | null> {
     return this.userService.findEmailUser(email);
   }
 
