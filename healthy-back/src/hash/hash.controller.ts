@@ -107,7 +107,10 @@ export class HashController {
     summary: '유저 해쉬태그 추가',
   })
   @ApiResponse({ schema: { type: 'boolean' } })
-  async pushTag(@Body('userid') id: number, @Body('hashtags') arr: []) {
+  async pushTag(
+    @Body('userid') id: number,
+    @Body('hashtagsAndCategories') arr: [],
+  ) {
     return await this.hashService.hashtagPush(id, arr);
   }
 
