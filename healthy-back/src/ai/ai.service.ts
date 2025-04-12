@@ -11,11 +11,13 @@ export class AiService {
 
   async generateText(prompt: string): Promise<string> {
     const apiKey = this.configService.get<string>('GOOGLE_GEMINI_KEY');
+    //보낼 때 프롬포트 양식
     const requestData = {
       contents: [{ parts: [{ text: prompt }] }],
     };
 
     try {
+      //요청 보낼 때 headers 양식
       const res = await axios.post(
         `${this.Gemini_API}?key=${apiKey}`,
         requestData,

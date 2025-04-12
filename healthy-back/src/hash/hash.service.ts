@@ -79,9 +79,13 @@ export class HashService {
     return { result: res.affected > 0 }; // affected 값으로 성공 여부 확인
   }
 
-  async hashtagPush(id: number, arr: []): Promise<{ result: boolean }> {
+  async hashtagPush(id: number, arr: any): Promise<{ result: boolean }> {
     for (const item of arr) {
-      const value = this.userHashRepo.create({ hashtag: item, userId: id });
+      const value = this.userHashRepo.create({
+        hashtag: item.hashtag,
+        category: item.category,
+        userId: id,
+      });
       await this.userHashRepo.save(value);
     }
     return { result: true };
