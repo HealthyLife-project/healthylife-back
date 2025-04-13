@@ -41,8 +41,8 @@ export class User {
   @Column({ default: 0, nullable: true })
   reportCnt: number;
 
-  @Column({ nullable: true })
-  premium: string;
+  @Column({ default: false, nullable: true })
+  premium: boolean;
   @OneToMany(() => InBody, (inbody) => inbody.user)
   inbodys: InBody[];
 

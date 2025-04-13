@@ -40,4 +40,8 @@ export class InbodyController {
   async getInbodyInfo(@Param('id') id: number) {
     return await this.inbodyService.inbodyInfoGet(id);
   }
+  @Get('currentinfo/:id')
+  async getInbodyInfoAll(@Param('id') id: number) {
+    return await this.inbodyService.inbodyInfoGetAll(id);
+  }
 }

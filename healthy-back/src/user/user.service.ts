@@ -116,4 +116,18 @@ export class UserService {
       };
     }
   }
+
+  async premiumUser(id: number): Promise<{ result: boolean; message: string }> {
+    await this.userRepository.update(id, { premium: true });
+
+    return { result: true, message: '구독 완료되었습니다.' };
+  }
+
+  async premiumCancelUser(
+    id: number,
+  ): Promise<{ result: boolean; message: string }> {
+    await this.userRepository.update(id, { premium: false });
+
+    return { result: true, message: '구독 취소되었습니다.' };
+  }
 }

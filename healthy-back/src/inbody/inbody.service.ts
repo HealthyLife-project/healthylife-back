@@ -34,7 +34,12 @@ export class InbodyService {
     return inbody;
   }
 
-  async inbodyInfoGet(id: number): Promise<InBody[] | null> {
+  async inbodyInfoGet(id: number): Promise<InBody | null> {
+    const data = await this.inbodyrep.findOne({ where: { userId: id } });
+    return data ? data : null;
+  }
+
+  async inbodyInfoGetAll(id: number): Promise<InBody[] | null> {
     const data = await this.inbodyrep.find({ where: { userId: id } });
     return data ? data : null;
   }

@@ -183,4 +183,38 @@ export class UserController {
   async mypageModify(@Param('id') id: number, @Body() body: any) {
     return await this.userService.updateUser(id, body);
   }
+
+  @Put('premium/:id')
+  @ApiOperation({ summary: '프리미엄 구독' })
+  @ApiParam({ name: 'id', type: Number, description: '유저 ID' })
+  @ApiResponse({
+    status: 200,
+    description: '구독 완료',
+    schema: {
+      example: {
+        result: true,
+        message: '구독 완료되었습니다.',
+      },
+    },
+  })
+  async premiumUser(@Param('id') id: number) {
+    return await this.userService.premiumUser(id);
+  }
+
+  @Put('premium/cancel/:id')
+  @ApiOperation({ summary: '프리미엄 구독 취소' })
+  @ApiParam({ name: 'id', type: Number, description: '유저 ID' })
+  @ApiResponse({
+    status: 200,
+    description: '구독 완료',
+    schema: {
+      example: {
+        result: true,
+        message: '구독 취소되었습니다.',
+      },
+    },
+  })
+  async premiumCancelUser(@Param('id') id: number) {
+    return await this.userService.premiumCancelUser(id);
+  }
 }
