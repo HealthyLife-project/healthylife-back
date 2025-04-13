@@ -1,0 +1,377 @@
+[33mcommit 52564ce94ff1250878acf41dd0b8a0d6a330f308[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sat Apr 12 12:08:16 2025 +0900
+
+    selectedTags
+
+[33mcommit ecf03f5e2367e99bc054eb0486f80ed986297438[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 19:20:57 2025 +0900
+
+    entity수정
+
+[33mcommit f8bb3617ec20eea44e9ac43c526203dabe8daf2e[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 18:40:26 2025 +0900
+
+    이메일 인증 수정
+
+[33mcommit d1693a060d42ae0a416716601fff8c91f6c528da[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 17:07:30 2025 +0900
+
+    오타 수정
+
+[33mcommit 420530810d086f4250ccbc8e20b0bdee74f39d7b[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 16:58:13 2025 +0900
+
+    ID 수정
+
+[33mcommit e2f3c8e646af460170e84813584a4e20971f7576[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 16:55:01 2025 +0900
+
+    chatservice 오타 수정
+
+[33mcommit 3d8691e01826dd32fbf40d7edf55b90d2dd894b0[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 16:54:09 2025 +0900
+
+    메세지 저장 데이터 타입 변경
+
+[33mcommit ebce2415c48030e38b4831106c51a836e51299df[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 16:49:55 2025 +0900
+
+    Feat nodemodules 수정
+
+[33mcommit 3594db88ddcc5cd4f5a00f644690e28a7d82e2c0[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 16:32:15 2025 +0900
+
+    nodemailer 테스트
+
+[33mcommit a67a94f71acb731f3ca757e9453690f00ce46460[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 16:07:40 2025 +0900
+
+    test
+
+[33mcommit 561201e3aed6216e11221ad1bf56d72acde4767c[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 16:07:12 2025 +0900
+
+    수정
+
+[33mcommit c67c015a1df7cc4e12ed53aa56868836a228ae00[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 15:58:50 2025 +0900
+
+    inbody 데이터
+
+[33mcommit 6843b4117bcf536d0559c08ff9f521daf6449c86[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 10 00:31:02 2025 +0900
+
+    채팅 메세지 로그 부분 수정
+
+[33mcommit 49709cfbd7a86f4380a88439a741f56e8e5fe706[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Wed Apr 9 19:28:49 2025 +0900
+
+    chatRoom 엔티티 수정
+
+[33mcommit a3985949131d797e3d642547b07f6195e69da08b[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Wed Apr 9 16:19:29 2025 +0900
+
+    chat 관련 DB 생성, 오타 수정
+
+[33mcommit aed18f120a81d4bfd89b817fce850790dc80ad62[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 20:38:52 2025 +0900
+
+    fix selectedTags 수정
+
+[33mcommit 2b3b3f69188e2a5528095f99c5802ff660d8cd02[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 20:20:08 2025 +0900
+
+    hashService 수정
+
+[33mcommit 02beccc8cac5406e7e298e837a78e944cf349e34[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 19:38:55 2025 +0900
+
+    Fix hash 검증 함수 받아오는 타입 변경, chat.gateway 수정
+
+[33mcommit c715aabf598475035e94196f73379864925b3fec[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 17:12:26 2025 +0900
+
+    swagger 수정
+
+[33mcommit 2701b6fb05245c3a1983adaa75f8b1367cfea4db[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 17:08:45 2025 +0900
+
+    회원가입시 return값 수정
+
+[33mcommit 85dc7c6b4675e36c49ed66e7c353d77be8cc766d[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 15:00:15 2025 +0900
+
+    fix: data 받는 부분 수정
+
+[33mcommit 4a1d9714675850c1be299b839835de7d971796bb[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 14:41:30 2025 +0900
+
+    inbody 테이블 외래키 변경
+
+[33mcommit af67401c81dc52264af8769cb48438bb6a1d4a5f[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 01:42:17 2025 +0900
+
+    user DB 타입 수정, dto 수정
+
+[33mcommit 4a34212f4f2d0f7989bd59e7a1dde16f6c7c95df[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 01:02:22 2025 +0900
+
+    chat.controller 모듈 등록
+
+[33mcommit ee8c8b5e5234f1aa534c3cd697543b47ef6a2db7[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 00:51:30 2025 +0900
+
+    /제거
+
+[33mcommit db0e1e17de2920ad5456a66b92da5b28f712346a[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 8 00:47:52 2025 +0900
+
+    방 생성 부분 수정
+
+[33mcommit 408e3227b913578dcc9b8f90db90f9ab689eed0f[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Mon Apr 7 23:00:27 2025 +0900
+
+    swagger 부분 수정
+
+[33mcommit 122b2a984cfa24cfe3dd2e3dbcb6b48ffff8c28d[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Mon Apr 7 20:29:52 2025 +0900
+
+    swagger 오류 해결
+
+[33mcommit d3cd6257f54638c3d676ed821902208951dc3ad4[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Mon Apr 7 19:24:27 2025 +0900
+
+    InbodyDto 타입 수정
+
+[33mcommit 1a9a164abdaee8d0ff63e13cba7deef4faa3aa05[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Mon Apr 7 19:21:30 2025 +0900
+
+    채팅방 생성
+
+[33mcommit 42cc438c327fa66c67b15ebed09d9939868acc98[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Mon Apr 7 19:01:53 2025 +0900
+
+    유저 검증, 업데이트
+
+[33mcommit c2cad0574f92ea334712a2f2459e1e9ff0f5071f[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Mon Apr 7 17:07:21 2025 +0900
+
+    userHashtag 추가
+
+[33mcommit e5e6a57cb909fa2fb5e269dc33c5e14829996d76[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Mon Apr 7 16:48:05 2025 +0900
+
+    요청 추가
+
+[33mcommit b8fe1b943cb762382207889ba67b38ea6ab72462[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sun Apr 6 22:14:33 2025 +0900
+
+    비동기 변경
+
+[33mcommit 77a0d6cf5b885b3eed7514f1636f87cae1321afb[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sun Apr 6 21:51:21 2025 +0900
+
+    쿠키 검증 변경
+
+[33mcommit 39835227666dc9789104491a0fab74c6f343d425[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sun Apr 6 21:37:15 2025 +0900
+
+    feat auth/cookie 조건 변경
+
+[33mcommit ea8aa1568fb3efa99ee3635319f74f3a810a496b[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sun Apr 6 19:42:52 2025 +0900
+
+    관리자 페이지 수정
+
+[33mcommit 940f3bd45f3469efd7600c30664e3aa6b5103f6a[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sun Apr 6 01:36:05 2025 +0900
+
+    iplog 페이지네이션 추가
+
+[33mcommit 71ff0c7b4881113451401f4ebfdb6d8a516d66a0[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sat Apr 5 19:12:17 2025 +0900
+
+    이메일로 유저 찾기 추가
+
+[33mcommit d09b1d4a5ef306bea8b6cd99c3a03e0fa2626cb2[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sat Apr 5 19:08:05 2025 +0900
+
+    allhash 경로 수정
+
+[33mcommit 04bc4f5172da045354ba1781c065ab0a026cde58[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Fri Apr 4 19:45:13 2025 +0900
+
+    로그인시 데이터 수정
+
+[33mcommit dd9ff2ffc4fa62f8cd515b69b6ae0b7c8eb2be2a[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Fri Apr 4 18:54:24 2025 +0900
+
+    cors 수정
+
+[33mcommit 6eee564415fe37cc981830e842d882cfce5a8cdb[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Fri Apr 4 15:30:21 2025 +0900
+
+    수정
+
+[33mcommit 1b330f238380fb4303aa0e8eae9beffbfef5eaaf[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Fri Apr 4 02:00:06 2025 +0900
+
+    DB 생성
+
+[33mcommit a5cf05e9a453c95802efed6b9876433c8a39633d[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 3 23:28:17 2025 +0900
+
+    소셜로그인 로직 변경
+
+[33mcommit c477b6d47d2144a0cb479b859565853db63c3582[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Apr 3 15:53:17 2025 +0900
+
+    수정
+
+[33mcommit 94bd425f078022adf0f8907a3d99bef62cc4d6aa[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Wed Apr 2 23:57:16 2025 +0900
+
+    결제 검증까지, 나머진 시크릿 키 필요
+
+[33mcommit 6dd0ef3aad46e77c33c191a873a430b6f99f884f[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Wed Apr 2 20:38:05 2025 +0900
+
+    토큰 설정 변경
+
+[33mcommit f1e7539ac78925748c52652f8a89a371c1cf928d[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Wed Apr 2 15:36:21 2025 +0900
+
+    로그인 수정
+
+[33mcommit a4dce4fb622b43081e9891f3df3bc4b18f1dc2c6[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Wed Apr 2 15:25:54 2025 +0900
+
+    login 수정
+
+[33mcommit d6d46376babb08c2c7774bdc56ba452061cfb5e7[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Wed Apr 2 00:59:07 2025 +0900
+
+    AI 테스트
+
+[33mcommit 9040f65d80065990ccc88520f390260f0738dec5[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 1 20:41:13 2025 +0900
+
+    cookieparser 제거
+
+[33mcommit 5a73fc31e666cfba6506b039ccc58ceea7e57aeb[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 1 19:57:20 2025 +0900
+
+    쿠키 발행
+
+[33mcommit d1f393f681c238822010b46637b21cde40ff51c2[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 1 18:51:06 2025 +0900
+
+    로그인 테스트
+
+[33mcommit 431fa25f9cc0533af64d5a8b5092d755401efafd[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 1 18:45:10 2025 +0900
+
+    cookie 추가
+
+[33mcommit 6dd7b49900542c12273a4e53f5630dfe8b4bc0f4[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 1 17:04:29 2025 +0900
+
+    경로 변경
+
+[33mcommit 3a195b7539fa2467c4d42ae65a08f60679ef32c2[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Tue Apr 1 14:52:06 2025 +0900
+
+    소셜 로그인 작성
+
+[33mcommit b0ae79d0d5789ff992ddfd517fe6b755bb369de7[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Mon Mar 31 20:02:48 2025 +0900
+
+    유저 중복 검사 추가
+
+[33mcommit 4fd8677d069f91b0520ec5b465d46573ee88fb36[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Sun Mar 30 17:15:11 2025 +0900
+
+    Feat 로그인 로직 대강
+
+[33mcommit 8c4b37fb09da44d1389bcf6af986ac342a105545[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Fri Mar 28 19:57:43 2025 +0900
+
+    nestjs DB 생성
+
+[33mcommit 4d169273fbbbfe66f2407cd0065f9d21d863101b[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Mar 27 00:19:59 2025 +0900
+
+    초기 세팅
+
+[33mcommit 7e06991ac857117f7812660bba38eb9c9a0f2652[m
+Author: ash <tkdgys1234@gamil.com>
+Date:   Thu Mar 27 00:03:25 2025 +0900
+
+    초기 세팅
+
+[33mcommit da75099aa51ead58e4858ef42b374a21eb46ea8b[m
+Author: EILE23 <tkdgys1234@gmail.com>
+Date:   Wed Mar 26 23:07:59 2025 +0900
+
+    Initial commit
