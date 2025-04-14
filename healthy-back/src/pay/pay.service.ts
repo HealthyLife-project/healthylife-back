@@ -1,10 +1,17 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
+import { User } from 'src/database/entities/user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class PayService {
   private readonly TOSS_SECRET_KEY: string;
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    @InjectRepository(User)
+    private readonly userRefo: Repository<User>,
+  ) {
     this.TOSS_SECRET_KEY = this.configService.get<string>(
       'TOSS_SECRET_KEY',
       '',
@@ -14,7 +21,12 @@ export class PayService {
     }
   }
 
-  async verifyPay(paymentKey: string, orderId: string, amount: string) {
+  async verifyPay(
+    id: number,
+    paymentKey: string,
+    orderId: string,
+    amount: string,
+  ) {
     const secretKey = Buffer.from(
       'test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:',
     ).toString('base64');
@@ -36,6 +48,9 @@ export class PayService {
         },
       );
       console.log(res.data, '결제정보');
+      if (res.data.status === 'DONE') {
+        await this.userRefo.update(id, { premium: true });
+      }
       return {
         success: res.data.status === 'DONE',
         data: res.data, // Toss 결제 응답 전체 반환
