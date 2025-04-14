@@ -34,7 +34,8 @@ export class UserController {
     },
   })
   create(@Body() userData: Partial<User>) {
-    return this.userService.create(userData);
+    const user = { ...userData, provider: 'local' };
+    return this.userService.create(user);
   }
 
   @Get('findall')
