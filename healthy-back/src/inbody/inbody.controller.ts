@@ -38,10 +38,10 @@ export class InbodyController {
     description: '사용자의 인바디 정보를 찾을 수 없음',
   })
   async getInbodyInfo(@Param('id') id: number) {
-    return await this.inbodyService.inbodyInfoGet(id);
+    return await this.inbodyService.inbodyInfoGetAll(id);
   }
   @Get('currentinfo/:id')
   async getInbodyInfoAll(@Param('id') id: number) {
-    return await this.inbodyService.inbodyInfoGetAll(id);
+    return await this.inbodyService.inbodyInfoGet(id);
   }
 }

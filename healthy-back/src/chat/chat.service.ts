@@ -119,10 +119,9 @@ export class ChatService {
     arr: any,
   ): Promise<{ result: boolean; message: string }> {
     try {
-      for (const item of arr) {
-        const message = this.PetChatIndexRepo.create(item);
-        await this.PetChatIndexRepo.save(message);
-      }
+      const message = this.PetChatIndexRepo.create(arr);
+      await this.PetChatIndexRepo.save(message);
+
       return { result: true, message: '메세지 저장 성공' };
     } catch (e) {
       return { result: false, message: `${e}` };
