@@ -55,12 +55,19 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('sendMessage')
   handleMessage(
     @MessageBody()
-    data: { room: string; userNickname: string; message: string },
+    data: {
+      room: string;
+      userNickname: string;
+      message: string;
+      aopen?: string;
+    },
     @ConnectedSocket() client: Socket,
   ) {
-    const { room, userNickname, message } = data;
+    const { room, userNickname, message, aopen } = data;
     console.log(`Message from ${userNickname} in room ${room}: ${message}`);
-    this.server.to(room).emit('receiveMessage', { userNickname, message });
+    this.server
+      .to(room)
+      .emit('receiveMessage', { userNickname, message, aopen });
   }
 
   // 방 안 유저 리스트 가져오기
