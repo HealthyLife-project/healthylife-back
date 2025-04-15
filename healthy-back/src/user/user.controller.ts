@@ -185,7 +185,7 @@ export class UserController {
     return await this.userService.updateUser(id, body);
   }
 
-  @Put('premium/:id')
+  @Get('premium/:id')
   @ApiOperation({ summary: '프리미엄 구독' })
   @ApiParam({ name: 'id', type: Number, description: '유저 ID' })
   @ApiResponse({
@@ -202,7 +202,7 @@ export class UserController {
     return await this.userService.premiumUser(id);
   }
 
-  @Put('premium/cancel/:id')
+  @Get('premium/cancel/:id')
   @ApiOperation({ summary: '프리미엄 구독 취소' })
   @ApiParam({ name: 'id', type: Number, description: '유저 ID' })
   @ApiResponse({

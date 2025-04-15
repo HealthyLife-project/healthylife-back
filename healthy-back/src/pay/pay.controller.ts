@@ -16,7 +16,6 @@ export class PayController {
 
   @Get('success')
   async paymentSuccess(
-    @Param('id') id: number,
     @Query('paymentKey') paymentKey: string,
     @Query('orderId') orderId: string,
     @Query('amount') amount: string,
@@ -25,7 +24,6 @@ export class PayController {
     try {
       // 결제 검증 (결제 금액과 주문 ID가 올바른지 확인)
       const payRes = await this.paymentService.verifyPay(
-        id,
         paymentKey,
         orderId,
         amount,

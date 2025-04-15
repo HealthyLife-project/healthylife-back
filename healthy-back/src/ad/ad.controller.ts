@@ -46,7 +46,7 @@ export class AdController {
   async uploadAdImage(@UploadedFile() file: Express.Multer.File) {
     //위 함수를 토대로 이미지 세이브
     const imgPath = `/uploads/ads/${file.filename}`;
-    const saved = await this.adService.saveAdImage(imgPath);
+    const saved = await this.adService.saveAdImage(imgPath); //이미지 경로만 DB에 저장
 
     return {
       message: '파일 업로드 성공',

@@ -39,7 +39,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     const userCreate = { userid: email, email: email, provider: 'kakao' };
     const user = await this.authService.findUser(email);
 
-    if (!user) {
+    if (!user || !user.address || !user.gender) {
       const users = await this.userService.create(userCreate);
       const payload = { id: users.id, userid: users.userid }; // JWT payload
       const jwt = this.jwtService.sign(payload); // JWT 토큰 발급

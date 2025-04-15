@@ -21,12 +21,7 @@ export class PayService {
     }
   }
 
-  async verifyPay(
-    id: number,
-    paymentKey: string,
-    orderId: string,
-    amount: string,
-  ) {
+  async verifyPay(paymentKey: string, orderId: string, amount: string) {
     const secretKey = Buffer.from(
       'test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:',
     ).toString('base64');
@@ -48,9 +43,7 @@ export class PayService {
         },
       );
       console.log(res.data, '결제정보');
-      if (res.data.status === 'DONE') {
-        await this.userRefo.update(id, { premium: true });
-      }
+
       return {
         success: res.data.status === 'DONE',
         data: res.data, // Toss 결제 응답 전체 반환

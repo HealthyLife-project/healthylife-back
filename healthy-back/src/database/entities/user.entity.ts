@@ -43,6 +43,7 @@ export class User {
 
   @Column({ default: false, nullable: true })
   premium: boolean;
+
   @OneToMany(() => InBody, (inbody) => inbody.user)
   inbodys: InBody[];
 
