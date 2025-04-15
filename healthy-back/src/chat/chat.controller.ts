@@ -11,7 +11,9 @@ import { ChatService } from './chat.service';
 import { PetChatRoom } from 'src/database/entities/petchatRoom.entity';
 import { PersonChatRoom } from 'src/database/entities/personchatRoom.entitiy';
 import { InsertRoomDto } from 'src/database/entities/dto/chatdto';
-
+import { GetPersonMessageDto } from 'src/database/entities/dto/chatdto';
+import { GetMessageCntDto } from 'src/database/entities/dto/chatdto';
+import { ChatIndexDto } from 'src/database/entities/dto/chatdto';
 @ApiTags('chat')
 @Controller('chat')
 export class ChatController {
@@ -143,5 +145,80 @@ export class ChatController {
   @ApiBody({ description: '입장할 유저 정보 요청시 Body', type: InsertRoomDto })
   async insertPersonRoom(@Body() obj: any) {
     return await this.chatService.insertPetRoom(obj);
+  }
+
+  @Post('person/getMessage')
+  @ApiOperation({ summary: '사람 채팅방 메시지 조회' })
+  @ApiBody({ type: GetPersonMessageDto })
+  @ApiResponse({
+    status: 200,
+    description: '메세지 목록 반환 [{},{}...]',
+    type: [ChatIndexDto],
+  })
+  async getPersonMessage(
+    @Body()
+    body: {
+      roomid: number;
+      userid: number;
+      page: number;
+      limit: number;
+    },
+  ) {
+    const { roomid, userid, page, limit } = body;
+    return await this.chatService.getPersonMessages(
+      roomid,
+      userid,
+      page,
+      limit,
+    );
+  }
+
+  @Post('pet/getMessage')
+  @ApiOperation({ summary: '사람 채팅방 메시지 조회' })
+  @ApiBody({ type: GetPersonMessageDto })
+  @ApiResponse({
+    status: 200,
+    description: '메세지 목록 반환 [{},{}...]',
+    type: [ChatIndexDto],
+  })
+  async getPetMessage(
+    @Body()
+    body: {
+      roomid: number;
+      userid: number;
+      page: number;
+      limit: number;
+    },
+  ) {
+    const { roomid, userid, page, limit } = body;
+    return await this.chatService.getPersonMessages(
+      roomid,
+      userid,
+      page,
+      limit,
+    );
+  }
+
+  @Post('person/write')
+  @ApiOperation({ summary: '사람 안읽은 메세지 카운트' })
+  @ApiBody({ type: GetMessageCntDto, isArray: true })
+  @ApiResponse({
+    status: 200,
+    description: '메시지 카운트 결과 배열로 반환 [1,2,3...]',
+    type: [Number],
+  })
+  async getPersonMessageCnt(@Body() arr: any) {
+    return this.chatService.getPersonMessageCnt(arr);
+  }
+  @Post('pet/write')
+  @ApiOperation({ summary: '반려동물 안읽은 메세지 카운트' })
+  @ApiBody({ type: GetMessageCntDto, isArray: true })
+  @ApiResponse({
+    status: 200,
+    description: '메시지 카운트 결과 배열로 반환 [1,2,3...]',
+    type: [Number],
+  })
+  async getPetMessageCnt(@Body() arr: any) {
+    return this.chatService.getPetMessageCnt(arr);
   }
 }

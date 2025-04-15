@@ -5,13 +5,19 @@ import { Repository } from 'typeorm';
 import { PersonChat } from 'src/database/entities/personchat.entity';
 import { PersonChatIndex } from 'src/database/entities/personchatindex.entity';
 import { PersonChatRoom } from 'src/database/entities/personchatRoom.entitiy';
+import { PersonChatWrite } from 'src/database/entities/personchatwrite.entity';
+
 import { PetChat } from 'src/database/entities/petchat.entity';
 import { PetChatIndex } from 'src/database/entities/petchatindex.entity';
 import { PetChatRoom } from 'src/database/entities/petchatRoom.entity';
+import { PetChatWrite } from 'src/database/entities/petchatwrite.entity';
 
+import { User } from 'src/database/entities/user.entity';
 @Injectable()
 export class ChatService {
   constructor(
+    @InjectRepository(User)
+    private readonly UserRepo: Repository<User>,
     @InjectRepository(PersonChat)
     private readonly PersonChatRepo: Repository<PersonChat>,
 
@@ -21,6 +27,9 @@ export class ChatService {
     @InjectRepository(PersonChatRoom)
     private readonly PersonChatRoomRepo: Repository<PersonChatRoom>,
 
+    @InjectRepository(PersonChatWrite)
+    private readonly PersonChatWriteRepo: Repository<PersonChatWrite>,
+
     @InjectRepository(PetChat)
     private readonly PetChatRepo: Repository<PetChat>,
 
@@ -29,6 +38,9 @@ export class ChatService {
 
     @InjectRepository(PetChatRoom)
     private readonly PetChatRoomRepo: Repository<PetChatRoom>,
+
+    @InjectRepository(PetChatWrite)
+    private readonly PetChatWriteRepo: Repository<PetChatWrite>,
   ) {}
 
   async findallPerson(): Promise<PersonChatRoom[] | null> {
@@ -279,5 +291,172 @@ export class ChatService {
     } catch (e) {
       return { result: false, message: `${e}` };
     }
+  }
+  async getPetMessages(
+    roomid: number,
+    userid: number,
+    page: number,
+    limit: number,
+  ) {
+    // 1. 메시지를 최신순으로 가져오기 (pagination)
+    const messages = await this.PetChatWriteRepo.find({
+      where: { id: roomid },
+    });
+
+    // 2. 기존에 읽은 chatid 목록 가져오기
+    const written = await this.PetChatWriteRepo.find({
+      where: { roomid: { id: roomid }, userid: { id: userid } },
+    });
+    const writeChatId = written.map((w) => w.chatid.id);
+
+    // 3. 안 읽은 메시지 필터링
+    const unreadMessages = messages.filter(
+      (msg) => !writeChatId.includes(msg.id),
+    );
+
+    // 4. 읽은 메시지로 저장
+    const WritesMessage = await Promise.all(
+      unreadMessages.map(async (msg) => {
+        // 사용자, 채팅방, 채팅을 객체로 가져옴
+        const user = await this.UserRepo.findOne({ where: { id: userid } });
+        const room = await this.PetChatRoomRepo.findOne({
+          where: { id: roomid },
+        });
+        const chat = await this.PetChatIndexRepo.findOne({
+          where: { id: msg.id },
+        });
+
+        // 객체가 null이 아니어야만 create 메서드에 전달할 수 있음
+        if (user && room && chat) {
+          return this.PersonChatWriteRepo.create({
+            userid: user, // User 객체 전달
+            roomid: room, // PersonChatRoom 객체 전달
+            chatid: chat, // PersonChatIndex 객체 전달
+          });
+        } else {
+          throw new Error('error');
+        }
+      }),
+    );
+    await this.PetChatWriteRepo.save(WritesMessage);
+
+    // 5. 오름차순 정렬해서 반환
+    const totalMessages = messages.length;
+    const totalPages = Math.ceil(totalMessages / limit); // 전체 페이지 수 계산
+
+    // 페이지 번호가 마지막 페이지를 넘지 않도록 처리
+    const currentPage = Math.min(page, totalPages); // 마지막 페이지가 넘지 않도록 보장
+
+    // 메시지 잘라내기 (최신순으로 정렬된 상태에서)
+    const paginated = messages.slice(
+      (currentPage - 1) * limit,
+      currentPage * limit,
+    );
+
+    // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
+    return paginated;
+  }
+
+  async getPersonMessages(
+    roomid: number,
+    userid: number,
+    page: number,
+    limit: number,
+  ) {
+    // 1. 메시지를 최신순으로 가져오기 (pagination)
+    const messages = await this.PersonChatWriteRepo.find({
+      where: { id: roomid },
+    });
+
+    // 2. 기존에 읽은 chatid 목록 가져오기
+    const written = await this.PersonChatWriteRepo.find({
+      where: { roomid: { id: roomid }, userid: { id: userid } },
+    });
+    const writeChatId = written.map((w) => w.chatid.id);
+
+    // 3. 안 읽은 메시지 필터링
+    const unreadMessages = messages.filter(
+      (msg) => !writeChatId.includes(msg.id),
+    );
+
+    // 4. 읽은 메시지로 저장
+    const WritesMessage = await Promise.all(
+      unreadMessages.map(async (msg) => {
+        // 사용자, 채팅방, 채팅을 객체로 가져옴
+        const user = await this.UserRepo.findOne({ where: { id: userid } });
+        const room = await this.PersonChatRoomRepo.findOne({
+          where: { id: roomid },
+        });
+        const chat = await this.PersonChatIndexRepo.findOne({
+          where: { id: msg.id },
+        });
+
+        // 객체가 null이 아니어야만 create 메서드에 전달할 수 있음
+        if (user && room && chat) {
+          return this.PersonChatWriteRepo.create({
+            userid: user, // User 객체 전달
+            roomid: room, // PersonChatRoom 객체 전달
+            chatid: chat, // PersonChatIndex 객체 전달
+          });
+        } else {
+          throw new Error('error');
+        }
+      }),
+    );
+    await this.PersonChatWriteRepo.save(WritesMessage);
+
+    // 5. 오름차순 정렬해서 반환
+    const totalMessages = messages.length;
+    const totalPages = Math.ceil(totalMessages / limit); // 전체 페이지 수 계산
+
+    // 페이지 번호가 마지막 페이지를 넘지 않도록 처리
+    const currentPage = Math.min(page, totalPages); // 마지막 페이지가 넘지 않도록 보장
+
+    // 메시지 잘라내기 (최신순으로 정렬된 상태에서)
+    const paginated = messages.slice(
+      (currentPage - 1) * limit,
+      currentPage * limit,
+    );
+
+    // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
+    return paginated;
+  }
+
+  async getPersonMessageCnt(arr: any): Promise<any[]> {
+    const results = await Promise.all(
+      arr.map(async (item) => {
+        const { userid, roomid } = item;
+        // 비동기 작업 예시: 예를 들어, 메시지 개수를 조회한다고 가정
+        const messageCount = await this.PersonChatIndexRepo.find({
+          where: { roomid: roomid, userid: userid },
+        });
+        const writeCount = await this.PersonChatWriteRepo.find({
+          where: { roomid: { id: roomid }, userid: { id: userid } },
+        });
+
+        return messageCount.length - writeCount.length;
+      }),
+    );
+    console.log(results);
+    return results;
+  }
+
+  async getPetMessageCnt(arr: any): Promise<any[]> {
+    const results = await Promise.all(
+      arr.map(async (item) => {
+        const { userid, roomid } = item;
+        // 비동기 작업 예시: 예를 들어, 메시지 개수를 조회한다고 가정
+        const messageCount = await this.PetChatIndexRepo.find({
+          where: { roomid: roomid, userid: userid },
+        });
+        const writeCount = await this.PetChatWriteRepo.find({
+          where: { roomid: { id: roomid }, userid: { id: userid } },
+        });
+
+        return messageCount.length - writeCount.length;
+      }),
+    );
+    console.log(results);
+    return results;
   }
 }

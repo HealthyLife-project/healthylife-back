@@ -8,9 +8,11 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { ChatService } from './chat.service';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(private readonly chatService: ChatService) {}
   @WebSocketServer()
   server: Server;
 
@@ -36,11 +38,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   // 방 입장 및 유저 등록
   @SubscribeMessage('joinRoom')
-  handleJoinRoom(
-    @MessageBody() data: { room: string; userNickname: string },
+  async handleJoinRoom(
+    @MessageBody()
+    data: {
+      room: string;
+      userNickname: string;
+      category: string;
+      roomid: number;
+      userid: number;
+    },
     @ConnectedSocket() client: Socket,
   ) {
-    const { room, userNickname } = data;
+    const { room, userNickname, category, roomid, userid } = data;
     client.join(room);
     this.users.set(client.id, { userNickname, room });
 
@@ -49,6 +58,28 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.to(room).emit('userList', roomUsers);
 
     console.log(`${userNickname} joined room: ${room}`);
+    if (category === 'person') {
+      const obj = { roomid, userid };
+      const res = await this.chatService.insertPersonRoom(obj);
+      if (res.data.result) {
+        this.server.to(room).emit('receiveMessage', {
+          userNickname,
+          message: '',
+          aopen: `${userNickname}님이 입장했습니다.`,
+        });
+      }
+    }
+    if (category === 'pet') {
+      const obj = { roomid, userid };
+      const res = await this.chatService.insertPetRoom(obj);
+      if (res.data.result) {
+        this.server.to(room).emit('receiveMessage', {
+          userNickname,
+          message: '',
+          aopen: `${userNickname}님이 입장했습니다.`,
+        });
+      }
+    }
   }
 
   // 메시지 전송
@@ -59,15 +90,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       room: string;
       userNickname: string;
       message: string;
-      aopen?: string;
     },
     @ConnectedSocket() client: Socket,
   ) {
-    const { room, userNickname, message, aopen } = data;
+    const { room, userNickname, message } = data;
     console.log(`Message from ${userNickname} in room ${room}: ${message}`);
     this.server
       .to(room)
-      .emit('receiveMessage', { userNickname, message, aopen });
+      .emit('receiveMessage', { userNickname, message, boolean: false });
   }
 
   // 방 안 유저 리스트 가져오기
