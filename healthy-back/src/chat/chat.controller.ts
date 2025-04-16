@@ -120,14 +120,14 @@ export class ChatController {
   }
 
   @Delete('person/delete/:id')
-  @ApiOperation({ summary: '사람 채팅방 삭제' })
+  @ApiOperation({ summary: '사람 채팅방 나가기' })
   @ApiParam({ name: 'id', description: '삭제할 채팅방 ID' })
   async deletePersonRoom(@Param('id') id: number) {
     return await this.chatService.deletePersonRoom(id);
   }
 
   @Delete('pet/delete/:id')
-  @ApiOperation({ summary: '반려동물 채팅방 삭제' })
+  @ApiOperation({ summary: '반려동물 채팅방 나가기' })
   @ApiParam({ name: 'id', description: '삭제할 채팅방 ID' })
   async deletePetRoom(@Param('id') id: number) {
     return await this.chatService.deletePetRoom(id);

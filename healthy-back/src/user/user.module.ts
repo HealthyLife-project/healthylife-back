@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { User } from '../database/entities/user.entity';
+import { UserAdmin } from 'src/database/entities/useradmin.entity';
 import { UserHashtag } from '../database/entities/hashtag.entity';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
@@ -10,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, UserHashtag]),
+    TypeOrmModule.forFeature([User, UserHashtag, UserAdmin]),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -1,5 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { PersonChatRoom } from './personchatRoom.entitiy';
 @Entity()
 export class PersonChatIndex {
   @PrimaryGeneratedColumn()
@@ -7,6 +13,9 @@ export class PersonChatIndex {
   @Column({})
   userid: number;
 
+  @ManyToOne(() => PersonChatRoom, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'roomid' })
+  room: PersonChatRoom;
   @Column({})
   roomid: number;
 

@@ -15,10 +15,12 @@ export class Hashtag {
   @Column()
   hash: string;
 
-  @ManyToOne(() => Category, (category) => category.hashtags) // 외래키 설정
-  @JoinColumn({ name: 'categoryid' }) // 외래키 컬럼명을 categoryid로 설정
+  @ManyToOne(() => Category, (category) => category.hashtags, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'categoryid' })
+  category: Category;
+
   @Column()
   categoryid: number;
-
-  category: Category;
 }

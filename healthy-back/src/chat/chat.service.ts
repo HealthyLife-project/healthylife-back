@@ -305,9 +305,9 @@ export class ChatService {
 
     // 2. 기존에 읽은 chatid 목록 가져오기
     const written = await this.PetChatWriteRepo.find({
-      where: { roomid: { id: roomid }, userid: { id: userid } },
+      where: { roomid: roomid, userid: userid },
     });
-    const writeChatId = written.map((w) => w.chatid.id);
+    const writeChatId = written.map((w) => w.chatid);
 
     // 3. 안 읽은 메시지 필터링
     const unreadMessages = messages.filter(
@@ -328,10 +328,10 @@ export class ChatService {
 
         // 객체가 null이 아니어야만 create 메서드에 전달할 수 있음
         if (user && room && chat) {
-          return this.PersonChatWriteRepo.create({
-            userid: user, // User 객체 전달
-            roomid: room, // PersonChatRoom 객체 전달
-            chatid: chat, // PersonChatIndex 객체 전달
+          return this.PetChatWriteRepo.create({
+            userid: user.id, // User 객체 전달
+            roomid: room.id, // PersonChatRoom 객체 전달
+            chatid: chat.id, // PersonChatIndex 객체 전달
           });
         } else {
           throw new Error('error');
@@ -370,9 +370,9 @@ export class ChatService {
 
     // 2. 기존에 읽은 chatid 목록 가져오기
     const written = await this.PersonChatWriteRepo.find({
-      where: { roomid: { id: roomid }, userid: { id: userid } },
+      where: { roomid: roomid, userid: userid },
     });
-    const writeChatId = written.map((w) => w.chatid.id);
+    const writeChatId = written.map((w) => w.chatid);
 
     // 3. 안 읽은 메시지 필터링
     const unreadMessages = messages.filter(
@@ -394,9 +394,9 @@ export class ChatService {
         // 객체가 null이 아니어야만 create 메서드에 전달할 수 있음
         if (user && room && chat) {
           return this.PersonChatWriteRepo.create({
-            userid: user, // User 객체 전달
-            roomid: room, // PersonChatRoom 객체 전달
-            chatid: chat, // PersonChatIndex 객체 전달
+            userid: user.id, // User 객체 전달
+            roomid: room.id, // PersonChatRoom 객체 전달
+            chatid: chat.id, // PersonChatIndex 객체 전달
           });
         } else {
           throw new Error('error');
@@ -431,7 +431,7 @@ export class ChatService {
           where: { roomid: roomid, userid: userid },
         });
         const writeCount = await this.PersonChatWriteRepo.find({
-          where: { roomid: { id: roomid }, userid: { id: userid } },
+          where: { roomid: roomid, userid: userid },
         });
 
         return messageCount.length - writeCount.length;
@@ -450,7 +450,7 @@ export class ChatService {
           where: { roomid: roomid, userid: userid },
         });
         const writeCount = await this.PetChatWriteRepo.find({
-          where: { roomid: { id: roomid }, userid: { id: userid } },
+          where: { roomid: roomid, userid: userid },
         });
 
         return messageCount.length - writeCount.length;
