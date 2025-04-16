@@ -130,4 +130,10 @@ export class UserService {
 
     return { result: true, message: '구독 취소되었습니다.' };
   }
+
+  async userOut(id: number): Promise<{ result: boolean; message: string }> {
+    await this.userRepository.delete(id);
+
+    return { result: true, message: '회원 탈퇴 성공' };
+  }
 }

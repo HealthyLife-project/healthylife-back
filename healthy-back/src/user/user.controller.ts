@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '../database/entities/user.entity';
 import { UpdatePasswordDto } from 'src/database/entities/dto/userdto';
@@ -217,5 +225,10 @@ export class UserController {
   })
   async premiumCancelUser(@Param('id') id: number) {
     return await this.userService.premiumCancelUser(id);
+  }
+
+  @Delete('out/:id')
+  async outUser(@Param('id') id: number) {
+    return await this.userService.userOut(id);
   }
 }
