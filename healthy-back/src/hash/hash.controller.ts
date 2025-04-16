@@ -121,4 +121,9 @@ export class HashController {
   async valiUser(@Param('id') id: number) {
     return await this.hashService.hashtagValidate(id);
   }
+
+  @Get('most')
+  async mostHash() {
+    return await this.hashService.mostHashtags();
+  }
 }

@@ -65,7 +65,6 @@ export class AuthService {
   }
 
   async login(userInput: { userid: string; password: string }) {
-    console.log(userInput);
     // Repository를 사용해 데이터베이스에서 사용자 정보 조회
     const user = await this.userRepository.findOne({
       where: { userid: userInput.userid },

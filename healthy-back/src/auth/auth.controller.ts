@@ -60,9 +60,8 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const result = await this.authService.login(userInput);
-    console.log(result);
+
     if (result.result) {
-      console.log(result.token, 'adfsfsd');
       res.cookie('healthy_token', result.token, {
         httpOnly: true,
         maxAge: 60 * 120 * 1000,

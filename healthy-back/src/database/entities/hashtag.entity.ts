@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-
+import { Hashtag } from './hash.entity';
 @Entity()
 export class UserHashtag {
   @PrimaryGeneratedColumn()
@@ -19,8 +19,9 @@ export class UserHashtag {
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @Column({ nullable: true })
-  hashtag: string;
+  @ManyToOne(() => Hashtag, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'hashtagId' })
+  hashtag: Hashtag;
 
   @Column({ nullable: true })
   category: string;

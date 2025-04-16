@@ -81,8 +81,11 @@ export class HashService {
 
   async hashtagPush(id: number, arr: any): Promise<{ result: boolean }> {
     for (const item of arr) {
+      const hashEntity = await this.hashRepository.findOne({
+        where: { hash: item.hashtag },
+      });
       const value = this.userHashRepo.create({
-        hashtag: item.hashtag,
+        hashtag: hashEntity ? hashEntity : {},
         category: item.category,
         userId: id,
       });
@@ -95,5 +98,29 @@ export class HashService {
     const user = await this.userHashRepo.findOne({ where: { userId: id } });
 
     return user ? { result: true } : { result: false };
+  }
+
+  async mostHashtags(): Promise<any[]> {
+    const result = await this.userHashRepo
+      .createQueryBuilder('userHashtag') //sql문을 여기서 사용하겠다 하는 함수
+      .select('hashtag.id', 'hashtagId')
+      .addSelect('COUNT(hashtag.id)', 'count')
+      .leftJoin('userHashtag.hashtag', 'hashtag')
+      .groupBy('hashtag.id') // 해시태그 id별로 그룹화
+      .orderBy('count', 'DESC') // 선택 횟수 기준 내림차순 정렬
+      .getRawMany();
+
+    // 각 해시태그의 이름과 선택 횟수를 결합하여 반환
+    const hashtags = await Promise.all(
+      result.map(async (item) => {
+        const hashtag = await this.hashRepository.findOne(item.hashtagId);
+        return {
+          hashtag: hashtag?.hash,
+          cnt: item.count,
+        };
+      }),
+    );
+
+    return hashtags;
   }
 }
