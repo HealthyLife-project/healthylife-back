@@ -44,6 +44,9 @@ export class User {
   @Column({ default: false, nullable: true })
   premium: boolean;
 
+  @Column({ default: false, nullable: true })
+  admin: boolean;
+
   @OneToMany(() => InBody, (inbody) => inbody.user)
   inbodys: InBody[];
 

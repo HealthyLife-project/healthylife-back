@@ -155,13 +155,17 @@ export class ChatService {
 
   async deletePetRoom(
     id: number,
-  ): Promise<{ result: boolean; message: string }> {
+  ): Promise<{ result: boolean; message: string; chat: any[] | null }> {
     try {
       await this.PetChatRepo.delete({ roomid: id });
       const room = await this.PetChatRoomRepo.findOne({ where: { id } });
 
       if (!room) {
-        return { result: false, message: `채팅방을 찾을 수 없습니다` };
+        return {
+          result: false,
+          message: `채팅방을 찾을 수 없습니다`,
+          chat: null,
+        };
       }
 
       // 인원 수 감소
@@ -171,24 +175,30 @@ export class ChatService {
       if (room.cnt <= 0) {
         await this.PetChatRoomRepo.delete({ id: id });
       } else {
-        await this.PetChatRoomRepo.save(room);
+        await this.PetChatRoomRepo.update(room.id, {
+          cnt: room.cnt,
+        });
       }
-
-      return { result: true, message: '채팅방을 나갔습니다' };
+      const chat = (await this.PetChatRoomRepo.find()) || null;
+      return { result: true, message: '채팅방을 나갔습니다', chat };
     } catch (e) {
-      return { result: false, message: `${e}` };
+      return { result: false, message: `${e}`, chat: null };
     }
   }
 
   async deletePersonRoom(
     id: number,
-  ): Promise<{ result: boolean; message: string }> {
+  ): Promise<{ result: boolean; message: string; chat: any[] | null }> {
     try {
       await this.PersonChatRepo.delete({ roomid: id });
       const room = await this.PetChatRoomRepo.findOne({ where: { id } });
 
       if (!room) {
-        return { result: false, message: `채팅방을 찾을 수 없습니다` };
+        return {
+          result: false,
+          message: `채팅방을 찾을 수 없습니다`,
+          chat: null,
+        };
       }
 
       // 인원 수 감소
@@ -198,12 +208,14 @@ export class ChatService {
       if (room.cnt <= 0) {
         await this.PersonChatRoomRepo.delete({ id: id });
       } else {
-        await this.PersonChatRoomRepo.save(room);
+        await this.PersonChatRoomRepo.update(room.id, {
+          cnt: room.cnt,
+        });
       }
-
-      return { result: true, message: '채팅방을 나갔습니다' };
+      const chat = (await this.PersonChatRoomRepo.find()) || null;
+      return { result: true, message: '채팅방을 나갔습니다', chat };
     } catch (e) {
-      return { result: false, message: `${e}` };
+      return { result: false, message: `${e}`, chat: null };
     }
   }
 
