@@ -81,7 +81,9 @@ export class ChatService {
         userid: obj.id,
       });
 
-      await this.PetChatRoomRepo.save(room);
+      const roomData = await this.PetChatRoomRepo.save(room);
+      const data = { userid: obj.id, roomid: roomData.id };
+      await this.PetChatRepo.save(data);
 
       const userRoom = await this.PetChatRoomRepo.findOne({
         where: { userid: obj.id },
@@ -108,7 +110,9 @@ export class ChatService {
         title: obj.title,
         userid: obj.id,
       });
-      await this.PersonChatRoomRepo.save(room);
+      const roomData = await this.PersonChatRoomRepo.save(room);
+      const data = { userid: obj.id, roomid: roomData.id };
+      await this.PersonChatRepo.save(data);
 
       const userRoom = await this.PersonChatRoomRepo.findOne({
         where: { userid: obj.id },
@@ -132,7 +136,7 @@ export class ChatService {
   ): Promise<{ result: boolean; message: string }> {
     try {
       const message = this.PetChatIndexRepo.create(arr);
-      await this.PetChatIndexRepo.save(message);
+      const room = await this.PetChatIndexRepo.save(message);
 
       return { result: true, message: '메세지 저장 성공' };
     } catch (e) {
@@ -154,11 +158,14 @@ export class ChatService {
   }
 
   async deletePetRoom(
-    id: number,
+    userid: number,
+    roomid: number,
   ): Promise<{ result: boolean; message: string; chat: any[] | null }> {
     try {
-      await this.PetChatRepo.delete({ roomid: id });
-      const room = await this.PetChatRoomRepo.findOne({ where: { id } });
+      await this.PetChatRepo.delete({ userid: userid, roomid: roomid });
+      const room = await this.PetChatRoomRepo.findOne({
+        where: { id: roomid },
+      });
 
       if (!room) {
         return {
@@ -173,7 +180,7 @@ export class ChatService {
 
       // 인원 수가 0이면 방도 삭제
       if (room.cnt <= 0) {
-        await this.PetChatRoomRepo.delete({ id: id });
+        await this.PetChatRoomRepo.delete({ id: roomid });
       } else {
         await this.PetChatRoomRepo.update(room.id, {
           cnt: room.cnt,
@@ -187,12 +194,15 @@ export class ChatService {
   }
 
   async deletePersonRoom(
-    id: number,
+    userid: number,
+    roomid: number,
   ): Promise<{ result: boolean; message: string; chat: any[] | null }> {
     try {
-      await this.PersonChatRepo.delete({ roomid: id });
-      const room = await this.PetChatRoomRepo.findOne({ where: { id } });
-
+      await this.PersonChatRepo.delete({ userid: userid, roomid: roomid });
+      const room = await this.PersonChatRoomRepo.findOne({
+        where: { id: roomid },
+      });
+      console.log(room, '방 있어');
       if (!room) {
         return {
           result: false,
@@ -206,7 +216,7 @@ export class ChatService {
 
       // 인원 수가 0이면 방도 삭제
       if (room.cnt <= 0) {
-        await this.PersonChatRoomRepo.delete({ id: id });
+        await this.PersonChatRoomRepo.delete({ id: roomid });
       } else {
         await this.PersonChatRoomRepo.update(room.id, {
           cnt: room.cnt,

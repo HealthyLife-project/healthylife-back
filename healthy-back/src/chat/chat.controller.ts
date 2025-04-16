@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -122,28 +130,35 @@ export class ChatController {
   @Delete('person/delete/:id')
   @ApiOperation({ summary: '사람 채팅방 나가기' })
   @ApiParam({ name: 'id', description: '삭제할 채팅방 ID' })
-  async deletePersonRoom(@Param('id') id: number) {
-    return await this.chatService.deletePersonRoom(id);
+  async deletePersonRoom(
+    @Param('id') userid: number,
+    @Query('roomid') roomid: number,
+  ) {
+    console.log(userid, 'userid', roomid, 'roomid');
+    return await this.chatService.deletePersonRoom(userid, roomid);
   }
 
   @Delete('pet/delete/:id')
   @ApiOperation({ summary: '반려동물 채팅방 나가기' })
   @ApiParam({ name: 'id', description: '삭제할 채팅방 ID' })
-  async deletePetRoom(@Param('id') id: number) {
-    return await this.chatService.deletePetRoom(id);
+  async deletePetRoom(
+    @Param('id') userid: number,
+    @Param('roomid') roomid: number,
+  ) {
+    return await this.chatService.deletePetRoom(userid, roomid);
   }
 
   @Post('person/insert')
   @ApiOperation({ summary: '사람 채팅방 입장 처리' })
   @ApiBody({ description: '입장할 유저 정보 요청시 Body', type: InsertRoomDto })
-  async insertPetRoom(@Body() obj: any) {
+  async insertPersonRoom(@Body() obj: any) {
     return await this.chatService.insertPersonRoom(obj);
   }
 
   @Post('pet/insert')
   @ApiOperation({ summary: '반려동물 채팅방 입장 처리' })
   @ApiBody({ description: '입장할 유저 정보 요청시 Body', type: InsertRoomDto })
-  async insertPersonRoom(@Body() obj: any) {
+  async insertPetRoom(@Body() obj: any) {
     return await this.chatService.insertPetRoom(obj);
   }
 
