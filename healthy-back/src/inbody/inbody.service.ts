@@ -3,7 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { InBody } from 'src/database/entities/inbody.entity';
 import { InBodyData } from 'src/database/entities/inbodyData.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeleteResult, DeepPartial } from 'typeorm';
+import {
+  Repository,
+  DeleteResult,
+  DeepPartial,
+  MoreThanOrEqual,
+} from 'typeorm';
 import { CreateInbodyDto } from 'src/database/entities/dto/inbodydtop';
 import { User } from 'src/database/entities/user.entity';
 @Injectable()
@@ -40,7 +45,12 @@ export class InbodyService {
   }
 
   async inbodyInfoGetAll(id: number): Promise<InBody[] | null> {
-    const data = await this.inbodyrep.find({ where: { userId: id } });
+    const nowYear = new Date();
+    nowYear.setFullYear(nowYear.getFullYear() - 1);
+
+    const data = await this.inbodyrep.find({
+      where: { userId: id, createdAt: MoreThanOrEqual(nowYear) },
+    });
     return data ? data : null;
   }
 }
