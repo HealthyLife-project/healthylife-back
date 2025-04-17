@@ -27,5 +27,8 @@ export class UserHashtag {
   hashtag: Hashtag;
 
   @Column({ nullable: true })
+  hashtagName: string;
+
+  @Column({ nullable: true })
   category: string;
 }

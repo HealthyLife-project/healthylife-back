@@ -18,7 +18,7 @@ export class PersonChat {
   @JoinColumn({ name: 'userid' })
   user: User;
 
-  @Column({ unique: true })
+  @Column({})
   userid: number;
 
   @ManyToOne(() => PersonChatRoom, { onDelete: 'CASCADE' })

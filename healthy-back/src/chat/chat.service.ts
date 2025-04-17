@@ -231,12 +231,12 @@ export class ChatService {
 
   async insertPetRoom(
     obj: any,
-  ): Promise<{ result: boolean; message: string; data?: any }> {
+  ): Promise<{ result: boolean; message: string; boolean?: any }> {
     try {
       const data = await this.PetChatRepo.findOne({
         where: { userid: obj.userid, roomid: obj.roomid },
       });
-      if (!data) {
+      if (data == null) {
         const join = this.PetChatRepo.create({
           userid: obj.userid,
           roomid: obj.roomid,
@@ -255,7 +255,11 @@ export class ChatService {
 
         await this.PetChatRoomRepo.save(room);
 
-        return { result: true, message: '채팅방에 입장했습니다' };
+        return {
+          result: true,
+          message: '채팅방에 입장했습니다',
+          boolean: false,
+        };
       } else {
         const message = await this.PetChatIndexRepo.find({
           where: { roomid: obj.roomid },
@@ -264,7 +268,7 @@ export class ChatService {
         return {
           result: true,
           message: '채팅방에 입장했습니다',
-          data: message,
+          boolean: true,
         };
       }
     } catch (e) {
@@ -279,13 +283,15 @@ export class ChatService {
       const data = await this.PersonChatRepo.findOne({
         where: { userid: obj.userid, roomid: obj.roomid },
       });
-      if (!data) {
+      console.log(data, 'data');
+      if (data == null) {
         const join = this.PersonChatRepo.create({
           userid: obj.userid,
           roomid: obj.roomid,
         });
-        await this.PersonChatRepo.save(join);
-
+        console.log('null 내부 들어옴, ', join);
+        const data = await this.PersonChatRepo.save(join);
+        console.log(data, 'data저장 됨');
         const room = await this.PersonChatRoomRepo.findOne({
           where: { id: obj.roomid },
         });
@@ -298,16 +304,12 @@ export class ChatService {
 
         await this.PersonChatRoomRepo.save(room);
 
-        return { result: true, message: '채팅방에 입장했습니다' };
+        return { result: true, message: '채팅방에 입장했습니다', data: true };
       } else {
-        const message = await this.PersonChatIndexRepo.find({
-          where: { roomid: obj.roomid },
-        });
-
         return {
           result: true,
           message: '채팅방에 입장했습니다',
-          data: message,
+          data: false,
         };
       }
     } catch (e) {
@@ -377,7 +379,7 @@ export class ChatService {
     );
 
     // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
-    return paginated;
+    return paginated.reverse();
   }
 
   async getPersonMessages(
@@ -390,7 +392,7 @@ export class ChatService {
     const messages = await this.PersonChatIndexRepo.find({
       where: { roomid: roomid },
     });
-    console.log(messages, '안읽은 최신 메세지');
+
     // 2. 기존에 읽은 chatid 목록 가져오기
     const written = await this.PersonChatWriteRepo.find({
       where: { roomid: roomid, userid: userid },
@@ -443,7 +445,7 @@ export class ChatService {
     );
 
     // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
-    return paginated;
+    return paginated.reverse();
   }
 
   async getPersonMessageCnt(arr: any): Promise<any[]> {
@@ -461,7 +463,7 @@ export class ChatService {
         return messageCount.length - writeCount.length;
       }),
     );
-    console.log(results);
+
     return results;
   }
 
@@ -480,7 +482,23 @@ export class ChatService {
         return messageCount.length - writeCount.length;
       }),
     );
-    console.log(results);
+
     return results;
+  }
+
+  async validatePetRoom(obj: any): Promise<boolean> {
+    const data = await this.PetChatRepo.findOne({
+      where: { userid: obj.userid, roomid: obj.roomid },
+    });
+
+    return data ? true : false;
+  }
+
+  async validatePersonRoom(obj: any): Promise<boolean> {
+    const data = await this.PersonChatRepo.findOne({
+      where: { userid: obj.userid, roomid: obj.roomid },
+    });
+
+    return data ? true : false;
   }
 }

@@ -46,10 +46,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       category: string;
       roomid: number;
       userid: number;
+      boolean: boolean;
     },
     @ConnectedSocket() client: Socket,
   ) {
-    const { room, userNickname, category, roomid, userid } = data;
+    const { room, userNickname, category, roomid, userid, boolean } = data;
+    console.log(data, 'datata');
     client.join(room);
     this.users.set(client.id, { userNickname, room });
 
@@ -57,29 +59,54 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const roomUsers = this.getUsersInRoom(room);
     this.server.to(room).emit('userList', roomUsers);
 
+    if (category == 'person') {
+      const obj = { roomid, userid };
+      await this.chatService.insertPersonRoom(obj);
+
+      const messages = await this.chatService.getPersonMessages(
+        roomid,
+        userid,
+        1,
+        10,
+      );
+
+      !boolean
+        ? this.server.to(room).emit('receiveMessage', {
+            userNickname,
+            message: '',
+            aopen: `${userNickname}님이 입장하셨습니다.`,
+          })
+        : messages.map((item) => {
+            this.server.to(room).emit('receiveMessage', {
+              userNickname,
+              message: item.text,
+            });
+          });
+    }
+    if (category == 'pet') {
+      const obj = { roomid, userid };
+      await this.chatService.insertPetRoom(obj);
+      const messages = await this.chatService.getPetMessages(
+        roomid,
+        userid,
+        1,
+        10,
+      );
+      !boolean
+        ? messages.map((item) => {
+            this.server.to(room).emit('receiveMessage', {
+              userNickname,
+              message: item.text,
+            });
+          })
+        : this.server.to(room).emit('receiveMessage', {
+            userNickname,
+            message: '',
+            aopen: `${userNickname}님이 입장하셨습니다.`,
+          });
+    }
+
     console.log(`${userNickname} joined room: ${room}`);
-    if (category === 'person') {
-      const obj = { roomid, userid };
-      const res = await this.chatService.insertPersonRoom(obj);
-      if (res.data.result) {
-        this.server.to(room).emit('receiveMessage', {
-          userNickname,
-          message: '',
-          aopen: `${userNickname}님이 입장했습니다.`,
-        });
-      }
-    }
-    if (category === 'pet') {
-      const obj = { roomid, userid };
-      const res = await this.chatService.insertPetRoom(obj);
-      if (res.data.result) {
-        this.server.to(room).emit('receiveMessage', {
-          userNickname,
-          message: '',
-          aopen: `${userNickname}님이 입장했습니다.`,
-        });
-      }
-    }
   }
 
   // 메시지 전송

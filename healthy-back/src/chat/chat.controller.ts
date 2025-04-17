@@ -233,4 +233,14 @@ export class ChatController {
   async getPetMessageCnt(@Body() arr: any) {
     return this.chatService.getPetMessageCnt(arr);
   }
+
+  @Post('pet/validate')
+  async validatePetRoom(@Body() obj: any) {
+    return this.chatService.validatePetRoom(obj);
+  }
+
+  @Post('person/validate')
+  async validatePersonRoom(@Body() obj: any) {
+    return this.chatService.validatePersonRoom(obj);
+  }
 }

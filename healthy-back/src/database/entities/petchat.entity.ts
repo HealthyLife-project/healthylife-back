@@ -17,7 +17,7 @@ export class PetChat {
   @JoinColumn({ name: 'userid' })
   user: User;
 
-  @Column({ unique: true })
+  @Column({})
   userid: number;
 
   @ManyToOne(() => PetChatRoom, { onDelete: 'CASCADE' })

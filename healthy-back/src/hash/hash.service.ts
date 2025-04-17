@@ -91,6 +91,7 @@ export class HashService {
         userId: id,
         hashtagId: hashEntity.id, // 수정된 부분
         category: item.category,
+        hashtagName: hashEntity.hash,
       });
 
       await this.userHashRepo.save(value);
