@@ -45,12 +45,11 @@ export class AuthService {
     try {
       // 1. 토큰 검증 및 해독
       const decoded = this.jwtService.verify(token);
-      console.log(decoded, 'decoded');
+
       // 2. 해독된 정보에서 id로 user추출
       const user = await this.userRepository.findOne({
         where: { userid: decoded.userid },
       });
-      console.log(user);
 
       // 3. 유저가 존재하는지 확인
       if (!user) {
@@ -76,7 +75,7 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED, // 오류 코드 401
       );
     }
-    console.log(user, userInput.password, user.password);
+
     const validPass = await this.validatePassword(
       userInput.password,
       user.password,

@@ -321,8 +321,8 @@ export class ChatService {
     limit: number,
   ) {
     // 1. 메시지를 최신순으로 가져오기 (pagination)
-    const messages = await this.PetChatWriteRepo.find({
-      where: { id: roomid },
+    const messages = await this.PetChatIndexRepo.find({
+      where: { roomid: roomid },
     });
 
     // 2. 기존에 읽은 chatid 목록 가져오기
@@ -386,10 +386,10 @@ export class ChatService {
     limit: number,
   ) {
     // 1. 메시지를 최신순으로 가져오기 (pagination)
-    const messages = await this.PersonChatWriteRepo.find({
-      where: { id: roomid },
+    const messages = await this.PersonChatIndexRepo.find({
+      where: { roomid: roomid },
     });
-
+    console.log(messages, '안읽은 최신 메세지');
     // 2. 기존에 읽은 chatid 목록 가져오기
     const written = await this.PersonChatWriteRepo.find({
       where: { roomid: roomid, userid: userid },
@@ -428,7 +428,8 @@ export class ChatService {
     await this.PersonChatWriteRepo.save(WritesMessage);
 
     // 5. 오름차순 정렬해서 반환
-    const totalMessages = messages.length;
+    const messagesReverse = messages.reverse();
+    const totalMessages = messagesReverse.length;
     const totalPages = Math.ceil(totalMessages / limit); // 전체 페이지 수 계산
 
     // 페이지 번호가 마지막 페이지를 넘지 않도록 처리
@@ -439,7 +440,7 @@ export class ChatService {
       (currentPage - 1) * limit,
       currentPage * limit,
     );
-
+    console.log(paginated, 'masdf');
     // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
     return paginated;
   }

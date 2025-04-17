@@ -174,7 +174,7 @@ export class AuthController {
     const user = healthy_token
       ? await this.authService.validateToken(healthy_token)
       : null;
-    console.log(healthy_token, user);
+
     return user ? { result: true, healthy_token, user: user } : null;
   }
 
