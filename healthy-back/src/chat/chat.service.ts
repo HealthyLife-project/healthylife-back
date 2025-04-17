@@ -363,14 +363,15 @@ export class ChatService {
     await this.PetChatWriteRepo.save(WritesMessage);
 
     // 5. 오름차순 정렬해서 반환
-    const totalMessages = messages.length;
+    const messagesReverse = messages.reverse();
+    const totalMessages = messagesReverse.length;
     const totalPages = Math.ceil(totalMessages / limit); // 전체 페이지 수 계산
 
     // 페이지 번호가 마지막 페이지를 넘지 않도록 처리
     const currentPage = Math.min(page, totalPages); // 마지막 페이지가 넘지 않도록 보장
 
     // 메시지 잘라내기 (최신순으로 정렬된 상태에서)
-    const paginated = messages.slice(
+    const paginated = messagesReverse.slice(
       (currentPage - 1) * limit,
       currentPage * limit,
     );
@@ -436,11 +437,11 @@ export class ChatService {
     const currentPage = Math.min(page, totalPages); // 마지막 페이지가 넘지 않도록 보장
 
     // 메시지 잘라내기 (최신순으로 정렬된 상태에서)
-    const paginated = messages.slice(
+    const paginated = messagesReverse.slice(
       (currentPage - 1) * limit,
       currentPage * limit,
     );
-    console.log(paginated, 'masdf');
+
     // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
     return paginated;
   }

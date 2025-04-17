@@ -180,7 +180,7 @@ export class ChatController {
     },
   ) {
     const { roomid, userid, page, limit } = body;
-
+    console.log(body, '나는 바디');
     return await this.chatService.getPersonMessages(
       roomid,
       userid,
@@ -207,12 +207,8 @@ export class ChatController {
     },
   ) {
     const { roomid, userid, page, limit } = body;
-    return await this.chatService.getPersonMessages(
-      roomid,
-      userid,
-      page,
-      limit,
-    );
+    console.log(body, '나는 바디');
+    return await this.chatService.getPetMessages(roomid, userid, page, limit);
   }
 
   @Post('person/write')
