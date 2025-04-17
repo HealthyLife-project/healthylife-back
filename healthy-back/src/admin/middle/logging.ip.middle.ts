@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { IpLog } from '../database/entities/iplog.entitiy';
+import { IpLog } from '../../database/entities/iplog.entitiy';
 
 @Injectable()
 export class IpMiddle implements NestMiddleware {

@@ -109,7 +109,7 @@ export class HashService {
       .groupBy('hashtag.id') // 해시태그 id별로 그룹화
       .orderBy('count', 'DESC') // 선택 횟수 기준 내림차순 정렬
       .getRawMany();
-
+    console.log(result);
     // 각 해시태그의 이름과 선택 횟수를 결합하여 반환
     const hashtags = await Promise.all(
       result.map(async (item) => {

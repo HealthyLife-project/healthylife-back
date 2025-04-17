@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { IpLog } from '../database/entities/iplog.entitiy';
+import { IpLog } from '../../database/entities/iplog.entitiy';
 import { moveCursor } from 'readline';
 
 @Injectable()
