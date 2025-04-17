@@ -105,7 +105,7 @@ export class HashService {
     return user ? { result: true } : { result: false };
   }
 
-  async mostHashtags(): Promise<any[]> {
+  async mostHashtags(): Promise<any[] | null> {
     const result = await this.userHashRepo
       .createQueryBuilder('userHashtag') //sql문을 여기서 사용하겠다 하는 함수
       .select('hashtag.id', 'hashtagId')
@@ -114,7 +114,9 @@ export class HashService {
       .groupBy('hashtag.id') // 해시태그 id별로 그룹화
       .orderBy('count', 'DESC') // 선택 횟수 기준 내림차순 정렬
       .getRawMany();
-
+    if (!result) {
+      return null;
+    }
     // 각 해시태그의 이름과 선택 횟수를 결합하여 반환
     const hashtags = await Promise.all(
       result.map(async (item) => {
