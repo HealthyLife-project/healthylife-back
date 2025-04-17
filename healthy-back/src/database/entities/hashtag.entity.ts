@@ -12,12 +12,15 @@ export class UserHashtag {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column() // <- userId를 명시적으로 선언
+  @Column()
   userId: number;
 
   @ManyToOne(() => User, (user) => user.hashtags, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
+
+  @Column({ nullable: true })
+  hashtagId: number;
 
   @ManyToOne(() => Hashtag, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'hashtagId' })

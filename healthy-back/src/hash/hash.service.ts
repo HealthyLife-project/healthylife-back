@@ -79,18 +79,23 @@ export class HashService {
     return { result: res.affected > 0 }; // affected 값으로 성공 여부 확인
   }
 
-  async hashtagPush(id: number, arr: any): Promise<{ result: boolean }> {
+  async hashtagPush(id: number, arr: any[]): Promise<{ result: boolean }> {
     for (const item of arr) {
       const hashEntity = await this.hashRepository.findOne({
         where: { hash: item.hashtag },
       });
+
+      if (!hashEntity) continue;
+
       const value = this.userHashRepo.create({
-        hashtag: hashEntity ? hashEntity : {},
-        category: item.category,
         userId: id,
+        hashtagId: hashEntity.id, // 수정된 부분
+        category: item.category,
       });
+
       await this.userHashRepo.save(value);
     }
+
     return { result: true };
   }
 
@@ -109,18 +114,19 @@ export class HashService {
       .groupBy('hashtag.id') // 해시태그 id별로 그룹화
       .orderBy('count', 'DESC') // 선택 횟수 기준 내림차순 정렬
       .getRawMany();
-    console.log(result);
+
     // 각 해시태그의 이름과 선택 횟수를 결합하여 반환
     const hashtags = await Promise.all(
       result.map(async (item) => {
-        const hashtag = await this.hashRepository.findOne(item.hashtagId);
+        const hashtag = await this.hashRepository.findOneBy({
+          id: item.hashtagId,
+        });
         return {
           hashtag: hashtag?.hash,
           cnt: item.count,
         };
       }),
     );
-
     return hashtags;
   }
 }
