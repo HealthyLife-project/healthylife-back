@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'; // Injectable 데코레이터를 사용하여 이 클래스가 서비스로 사용될 수 있도록 정의
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Equal } from 'typeorm';
 
 import { PersonChat } from 'src/database/entities/personchat.entity';
 import { PersonChatIndex } from 'src/database/entities/personchatindex.entity';
@@ -64,13 +64,13 @@ export class ChatService {
     return result;
   }
 
-  async findPersonRoom(num: number): Promise<PersonChatRoom | null> {
-    const room = await this.PersonChatRoomRepo.findOne({ where: { id: num } });
+  async findPersonRoom(num: number): Promise<PersonChat[] | null> {
+    const room = await this.PersonChatRepo.find({ where: { userid: num } });
     return room ? room : null;
   }
 
-  async findPetRoom(num: number): Promise<PetChatRoom | null> {
-    const room = await this.PetChatRoomRepo.findOne({ where: { id: num } });
+  async findPetRoom(num: number): Promise<PetChat[] | null> {
+    const room = await this.PetChatRepo.find({ where: { userid: num } });
     return room ? room : null;
   }
 

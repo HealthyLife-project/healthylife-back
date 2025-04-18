@@ -61,7 +61,7 @@ export class ChatController {
 
   @Get('pet/:id')
   @ApiOperation({ summary: '특정 반려동물 채팅방 조회' })
-  @ApiParam({ name: 'id', type: Number, description: '채팅방 ID' })
+  @ApiParam({ name: 'id', type: Number, description: '유저 ID' })
   @ApiResponse({
     status: 200,
     description: '해당 반려동물 채팅방 반환',
@@ -73,7 +73,7 @@ export class ChatController {
 
   @Get('person/:id')
   @ApiOperation({ summary: '특정 사용자 채팅방 조회' })
-  @ApiParam({ name: 'id', type: Number, description: '채팅방 ID' })
+  @ApiParam({ name: 'id', type: Number, description: '유저 ID' })
   @ApiResponse({
     status: 200,
     description: '해당 사용자 채팅방 반환',
