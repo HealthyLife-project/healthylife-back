@@ -50,8 +50,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     },
     @ConnectedSocket() client: Socket,
   ) {
-    const { room, userNickname, category, roomid, userid, boolean } = data;
-    console.log(data, 'datata');
+    const { userNickname, category, roomid, userid, boolean } = data;
+    const room = `${roomid}-${category}`;
     client.join(room);
     this.users.set(client.id, { userNickname, room });
 
