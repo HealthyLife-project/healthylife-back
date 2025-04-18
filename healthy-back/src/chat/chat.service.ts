@@ -166,7 +166,7 @@ export class ChatService {
       const room = await this.PetChatRoomRepo.findOne({
         where: { id: roomid },
       });
-
+      console.log(room, '방 있어');
       if (!room) {
         return {
           result: false,

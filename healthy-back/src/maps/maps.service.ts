@@ -15,7 +15,7 @@ export class MapsService {
         KA: 'sdk/1.0 os=web origin=http://localhost:4000 lang=ko-KR',
       },
     });
-    console.log(res.data.documents, '결괏값');
+
     return res.data.documents;
   }
 
