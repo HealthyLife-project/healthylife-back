@@ -9,4 +9,4 @@ import { ReportController } from './report.controller';
   providers: [ReportService],
   controllers: [ReportController],
 })
-export class HashModule {}
+export class ReportModule {}

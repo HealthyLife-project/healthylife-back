@@ -29,4 +29,7 @@ export class PetChatIndex {
 
   @Column()
   time: string;
+
+  @Column({ nullable: true })
+  aopen: string;
 }

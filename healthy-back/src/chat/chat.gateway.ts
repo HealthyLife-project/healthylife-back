@@ -69,7 +69,30 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         1,
         10,
       );
+      const today = new Date();
 
+      const formatDate = (date: Date) => {
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); // 0~11이니까 +1
+        const dd = String(date.getDate()).padStart(2, '0');
+
+        const hh = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+        const sec = String(date.getSeconds()).padStart(2, '0');
+
+        return `${yyyy}.${mm}.${dd} ${hh}:${min}:${sec}`;
+      };
+
+      if (!boolean) {
+        let arr = {
+          userid: userid,
+          userNickname: userNickname,
+          time: formatDate(today),
+          roomid: roomid,
+          aopen: `${userNickname}님이 입장하셨습니다.`,
+        };
+        await this.chatService.createPersonMessage(arr);
+      }
       !boolean
         ? this.server.to(room).emit('receiveMessage', {
             userNickname,
@@ -80,6 +103,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             this.server.to(room).emit('receiveMessage', {
               userNickname,
               message: item.text,
+              aopen: item.aopen,
             });
           });
     }
@@ -92,17 +116,42 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         1,
         10,
       );
+      const today = new Date();
+
+      const formatDate = (date: Date) => {
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); // 0~11이니까 +1
+        const dd = String(date.getDate()).padStart(2, '0');
+
+        const hh = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+        const sec = String(date.getSeconds()).padStart(2, '0');
+
+        return `${yyyy}.${mm}.${dd} ${hh}:${min}:${sec}`;
+      };
+
+      if (!boolean) {
+        let arr = {
+          userid: userid,
+          userNickname: userNickname,
+          time: formatDate(today),
+          roomid: roomid,
+          aopen: `${userNickname}님이 입장하셨습니다.`,
+        };
+        await this.chatService.createPetMessage(arr);
+      }
       !boolean
-        ? messages.map((item) => {
-            this.server.to(room).emit('receiveMessage', {
-              userNickname,
-              message: item.text,
-            });
-          })
-        : this.server.to(room).emit('receiveMessage', {
+        ? this.server.to(room).emit('receiveMessage', {
             userNickname,
             message: '',
             aopen: `${userNickname}님이 입장하셨습니다.`,
+          })
+        : messages.map((item) => {
+            this.server.to(room).emit('receiveMessage', {
+              userNickname,
+              message: item.text,
+              aopen: item.aopen,
+            });
           });
     }
 
@@ -132,6 +181,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const usersInRoom: string[] = [];
     for (const [, value] of this.users) {
       if (value.room === room) {
+        console.log(value, 'JOINROOMTEST');
         usersInRoom.push(value.userNickname);
       }
     }

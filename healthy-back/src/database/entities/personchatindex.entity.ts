@@ -19,12 +19,15 @@ export class PersonChatIndex {
   @Column({})
   roomid: number;
 
-  @Column({})
+  @Column({ nullable: true })
   text: string;
 
   @Column({})
   userNickname: string;
 
-  @Column({})
+  @Column({ nullable: true })
   time: string;
+
+  @Column({ nullable: true })
+  aopen: string;
 }
