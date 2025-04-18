@@ -136,4 +136,16 @@ export class UserService {
 
     return { result: true, message: '회원 탈퇴 성공' };
   }
+
+  async findUserID(
+    phone: string,
+  ): Promise<
+    { result: boolean; userid: string } | { result: boolean; message: string }
+  > {
+    const user = await this.userRepository.findOne({ where: { phone: phone } });
+
+    return user
+      ? { result: true, userid: user.userid }
+      : { result: false, message: '존재하지 않는 사용자입니다.' };
+  }
 }

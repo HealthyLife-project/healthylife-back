@@ -231,4 +231,9 @@ export class UserController {
   async outUser(@Param('id') id: number) {
     return await this.userService.userOut(id);
   }
+
+  @Post('findID')
+  async findIDUser(@Body('phone') phone: string) {
+    return await this.userService.findUserID(phone);
+  }
 }
