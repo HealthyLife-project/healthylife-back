@@ -163,16 +163,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleMessage(
     @MessageBody()
     data: {
-      room: string;
+      roomid: string;
       userNickname: string;
       message: string;
     },
     @ConnectedSocket() client: Socket,
   ) {
-    const { room, userNickname, message } = data;
-    console.log(`Message from ${userNickname} in room ${room}: ${message}`);
+    const { roomid, userNickname, message } = data;
+    console.log(`Message from ${userNickname} in room ${roomid}: ${message}`);
     this.server
-      .to(room)
+      .to(roomid)
       .emit('receiveMessage', { userNickname, message, boolean: false });
   }
 
