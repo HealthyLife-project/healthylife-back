@@ -32,7 +32,7 @@ export class AdminController {
     res.cookie('admin_token', result.jwt, {
       httpOnly: false,
       maxAge: 1000 * 60 * 60,
-      sameSite: 'lax', // 또는 'strict' / 'none'
+      sameSite: 'none', // 또는 'strict' / 'none'
     });
 
     return result;
