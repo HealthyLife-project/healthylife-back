@@ -33,6 +33,7 @@ export class AdminController {
       httpOnly: false,
       maxAge: 1000 * 60 * 60,
       sameSite: 'none', // 또는 'strict' / 'none'
+      secure: false,
     });
 
     return result;
