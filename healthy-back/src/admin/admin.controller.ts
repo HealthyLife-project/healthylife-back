@@ -8,13 +8,25 @@ import {
   Delete,
   UnauthorizedException,
   Res,
+  Req,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import * as jwt from 'jsonwebtoken';
+import { JwtService } from '@nestjs/jwt';
+
+declare namespace NodeJS {
+  interface ProcessEnv {
+    JWT_SECRET: string;
+  }
+}
 
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Post('signup')
   async signupAdmin(@Body() obj: any) {
@@ -30,12 +42,25 @@ export class AdminController {
     }
 
     res.cookie('admin_token', result.jwt, {
-      httpOnly: false,
+      httpOnly: true,
       maxAge: 1000 * 60 * 60,
-      sameSite: 'none', // 또는 'strict' / 'none'
+      sameSite: 'lax', // 또는 'strict' / 'none'
       secure: false,
     });
 
     return result;
+  }
+
+  @Get('check')
+  checkLogin(@Req() req: Request) {
+    const token = req.cookies['admin_token'];
+    if (!token) return { login: false };
+
+    try {
+      const user = this.jwtService.verify(token);
+      return { login: true, user };
+    } catch {
+      return { login: false };
+    }
   }
 }
