@@ -20,8 +20,12 @@ import { PetChatRoom } from 'src/database/entities/petchatRoom.entity';
 import { PersonChatRoom } from 'src/database/entities/personchatRoom.entitiy';
 import { InsertRoomDto } from 'src/database/entities/dto/chatdto';
 import { GetPersonMessageDto } from 'src/database/entities/dto/chatdto';
-import { GetMessageCntDto } from 'src/database/entities/dto/chatdto';
-import { ChatIndexDto } from 'src/database/entities/dto/chatdto';
+import {
+  GetMessageCntDto,
+  findChat,
+  ChatIndexDto,
+} from 'src/database/entities/dto/chatdto';
+
 @ApiTags('chat')
 @Controller('chat')
 export class ChatController {
@@ -65,7 +69,7 @@ export class ChatController {
   @ApiResponse({
     status: 200,
     description: '해당 반려동물 채팅방 반환',
-    type: PetChatRoom,
+    type: findChat,
   })
   async titlePet(@Param('id') num: number) {
     return await this.chatService.findPetRoom(num);
@@ -77,7 +81,7 @@ export class ChatController {
   @ApiResponse({
     status: 200,
     description: '해당 사용자 채팅방 반환',
-    type: PersonChatRoom,
+    type: findChat,
   })
   async titlePerson(@Param('id') num: number) {
     return await this.chatService.findPersonRoom(num);

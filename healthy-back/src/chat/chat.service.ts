@@ -64,14 +64,40 @@ export class ChatService {
     return result;
   }
 
-  async findPersonRoom(num: number): Promise<PersonChat[] | null> {
+  async findPersonRoom(num: number): Promise<any[] | null> {
     const room = await this.PersonChatRepo.find({ where: { userid: num } });
-    return room ? room : null;
+    const data = await Promise.all(
+      room.map(async (item) => {
+        const res = await this.PersonChatRoomRepo.findOne({
+          where: { id: item.roomid },
+        });
+        return {
+          id: item.id,
+          userid: item.userid,
+          roomid: item.roomid,
+          title: res?.title || null,
+        };
+      }),
+    );
+    return room ? data : null;
   }
 
-  async findPetRoom(num: number): Promise<PetChat[] | null> {
+  async findPetRoom(num: number): Promise<any[] | null> {
     const room = await this.PetChatRepo.find({ where: { userid: num } });
-    return room ? room : null;
+    const data = await Promise.all(
+      room.map(async (item) => {
+        const res = await this.PetChatRoomRepo.findOne({
+          where: { id: item.roomid },
+        });
+        return {
+          id: item.id,
+          userid: item.userid,
+          roomid: item.roomid,
+          title: res?.title || null,
+        };
+      }),
+    );
+    return room ? data : null;
   }
 
   async createPetRoom(obj: any): Promise<{ result: boolean }> {

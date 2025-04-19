@@ -67,3 +67,14 @@ export class ChatIndexDto {
   })
   time: string;
 }
+
+export class findChat {
+  @ApiProperty({ description: '입장 ID', example: 1 })
+  id: number;
+  @ApiProperty({ description: '채팅방 ID', example: 1 })
+  roomid: number;
+  @ApiProperty({ description: '유저 ID', example: 4 })
+  userid: number;
+  @ApiProperty({ description: '채팅방 이름', example: 4 })
+  title: number;
+}
