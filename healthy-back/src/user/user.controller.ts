@@ -18,6 +18,7 @@ import {
   ApiBody,
   ApiParam,
   ApiCreatedResponse,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('User') // User 관련 API
@@ -228,11 +229,68 @@ export class UserController {
   }
 
   @Delete('out/:id')
+  @ApiOperation({
+    summary: '회원 탈퇴',
+    description: 'ID로 회원 탈퇴 처리합니다.',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: '탈퇴할 회원 ID',
+    example: 1,
+  })
+  @ApiOkResponse({
+    description: '회원 탈퇴 성공 여부를 반환합니다.',
+    schema: {
+      type: 'object',
+      properties: {
+        result: { type: 'boolean', example: true },
+        message: { type: 'string', example: '회원 탈퇴 성공' },
+      },
+    },
+  })
   async outUser(@Param('id') id: number) {
     return await this.userService.userOut(id);
   }
 
   @Post('findID')
+  @ApiOperation({
+    summary: '아이디 찾기',
+    description: '전화번호로 아이디를 찾습니다.',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        phone: {
+          type: 'string',
+          example: '01012345678',
+          description: '사용자 전화번호',
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: '사용자 존재 여부 및 아이디 반환',
+    schema: {
+      oneOf: [
+        {
+          type: 'object',
+          properties: {
+            result: { type: 'boolean', example: true },
+            userid: { type: 'string', example: 'user1234' },
+          },
+        },
+        {
+          type: 'object',
+          properties: {
+            result: { type: 'boolean', example: false },
+            message: { type: 'string', example: '존재하지 않는 사용자입니다.' },
+          },
+        },
+      ],
+    },
+  })
   async findIDUser(@Body('phone') phone: string) {
     return await this.userService.findUserID(phone);
   }

@@ -239,11 +239,43 @@ export class ChatController {
   }
 
   @Post('pet/validate')
+  @ApiOperation({ summary: '반려동물 채팅방 유효성 검사' })
+  @ApiBody({
+    description: '유저 정보와 룸 ID를 포함한 요청',
+    schema: {
+      type: 'object',
+      properties: {
+        userid: { type: 'number', example: 1 },
+        roomid: { type: 'number', example: 123 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: '유효성 검사 결과 반환',
+    type: Boolean,
+  })
   async validatePetRoom(@Body() obj: any) {
     return this.chatService.validatePetRoom(obj);
   }
 
   @Post('person/validate')
+  @ApiOperation({ summary: '일반 채팅방 유효성 검사' })
+  @ApiBody({
+    description: '유저 정보와 룸 ID를 포함한 요청',
+    schema: {
+      type: 'object',
+      properties: {
+        userid: { type: 'number', example: 1 },
+        roomid: { type: 'number', example: 456 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: '유효성 검사 결과 반환',
+    type: Boolean,
+  })
   async validatePersonRoom(@Body() obj: any) {
     return this.chatService.validatePersonRoom(obj);
   }

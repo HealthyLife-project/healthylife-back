@@ -12,6 +12,7 @@ import {
   ApiResponse,
   ApiBody,
   ApiParam,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('hashtag')
@@ -123,6 +124,16 @@ export class HashController {
   }
 
   @Get('most')
+  @ApiOkResponse({
+    description: '가장 많이 사용된 해시태그',
+    schema: {
+      type: 'object',
+      properties: {
+        hashtag: { type: 'string', example: '운동' },
+        cnt: { type: 'number', example: 42 },
+      },
+    },
+  })
   async mostHash() {
     return await this.hashService.mostHashtags();
   }
