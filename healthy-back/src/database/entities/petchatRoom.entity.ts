@@ -15,7 +15,7 @@ export class PetChatRoom {
   @Column({ nullable: true })
   title: string;
 
-  @Column({ nullable: true, default: 1 })
+  @Column({ nullable: true, default: 0 })
   cnt: number;
   @CreateDateColumn()
   createdAt: Date;
