@@ -41,7 +41,11 @@ export class AdminService {
     });
 
     return user
-      ? { result: true, message: '로그인 성공', jwt: this.createJWTPASS(user) }
+      ? {
+          result: true,
+          message: '로그인 성공',
+          jwt: await this.createJWTPASS(user),
+        }
       : { result: false };
   }
 }

@@ -132,4 +132,8 @@ export class HashService {
     );
     return hashtags;
   }
+
+  async userSelectedHash(id: number): Promise<UserHashtag[]> {
+    return await this.userHashRepo.find({ where: { userId: id } });
+  }
 }

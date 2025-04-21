@@ -22,8 +22,8 @@ export class ReportController {
     summary: 'report 목록',
   })
   @ApiResponse({ status: 200, type: [Report] })
-  getReport() {
-    return this.reportService.reportGet();
+  async getReport() {
+    return await this.reportService.reportGet();
   }
 
   @Post('push')

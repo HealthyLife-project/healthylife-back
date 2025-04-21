@@ -15,10 +15,9 @@ async function bootstrap() {
 
   // Swagger 설정
   const options = new DocumentBuilder()
-    .setTitle('My API')
-    .setDescription('API documentation for My project')
+    .setTitle('healthy')
+    .setDescription('healthy project')
     .setVersion('1.0')
-    .addTag('users')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

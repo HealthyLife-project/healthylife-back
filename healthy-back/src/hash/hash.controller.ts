@@ -137,4 +137,23 @@ export class HashController {
   async mostHash() {
     return await this.hashService.mostHashtags();
   }
+
+  @Get('user/:id')
+  @ApiParam({ name: 'id', description: '사용자 ID', example: 1 })
+  @ApiOkResponse({
+    description: '해당하는 유저가 선택한 hashtag',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'number', example: 'id' },
+        userId: { type: 'number', example: 'userId' },
+        hashtagId: { type: 'number', example: 'hashtagId' },
+        category: { type: 'number', example: 'category' },
+        hashtagName: { type: 'string', example: 'hashtagName' },
+      },
+    },
+  })
+  async userSelectedHash(@Param('id') id: number) {
+    return await this.hashService.userSelectedHash(id);
+  }
 }

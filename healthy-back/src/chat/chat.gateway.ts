@@ -98,12 +98,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             userNickname,
             message: '',
             aopen: `${userNickname}님이 입장하셨습니다.`,
+            time: formatDate(today),
+            userid: userid,
           })
         : messages.map((item) => {
             this.server.to(room).emit('receiveMessage', {
               userNickname,
               message: item.text,
               aopen: item.aopen,
+              time: formatDate(today),
+              userid: userid,
             });
           });
     }
@@ -145,12 +149,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             userNickname,
             message: '',
             aopen: `${userNickname}님이 입장하셨습니다.`,
+            time: formatDate(today),
+            userid: userid,
           })
         : messages.map((item) => {
             this.server.to(room).emit('receiveMessage', {
               userNickname,
               message: item.text,
               aopen: item.aopen,
+              time: formatDate(today),
+              userid: userid,
             });
           });
     }
@@ -166,14 +174,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       roomid: string;
       userNickname: string;
       message: string;
+      userid: number;
+      time: string;
     },
     @ConnectedSocket() client: Socket,
   ) {
-    const { roomid, userNickname, message } = data;
+    const { roomid, userNickname, message, userid, time } = data;
     console.log(`Message from ${userNickname} in room ${roomid}: ${message}`);
-    this.server
-      .to(roomid)
-      .emit('receiveMessage', { userNickname, message, boolean: false });
+    this.server.to(roomid).emit('receiveMessage', {
+      userNickname,
+      message,
+      boolean: false,
+      userid,
+      time,
+    });
   }
 
   // 방 안 유저 리스트 가져오기
