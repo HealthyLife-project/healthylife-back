@@ -162,7 +162,7 @@ export class ChatService {
   ): Promise<{ result: boolean; message: string }> {
     try {
       const message = this.PetChatIndexRepo.create(arr);
-      const room = await this.PetChatIndexRepo.save(message);
+      await this.PetChatIndexRepo.save(message);
 
       return { result: true, message: '메세지 저장 성공' };
     } catch (e) {
@@ -405,7 +405,7 @@ export class ChatService {
     );
 
     // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
-    return paginated.reverse();
+    return paginated.length !== 0 ? paginated.reverse() : null;
   }
 
   async getPersonMessages(
@@ -471,7 +471,7 @@ export class ChatService {
     );
 
     // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
-    return paginated.reverse();
+    return paginated.length !== 0 ? paginated.reverse() : null;
   }
 
   async getPersonMessageCnt(arr: any): Promise<any[]> {

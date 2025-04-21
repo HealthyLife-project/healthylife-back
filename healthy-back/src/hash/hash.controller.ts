@@ -108,6 +108,24 @@ export class HashController {
     summary: '유저 해쉬태그 추가',
   })
   @ApiResponse({ schema: { type: 'boolean' } })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        userid: { type: 'number', example: 1 },
+        hashtagsAndCategories: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              hashtag: { type: 'string', example: '운동' },
+              category: { type: 'string', example: '헬스' },
+            },
+          },
+        },
+      },
+    },
+  })
   async pushTag(
     @Body('userid') id: number,
     @Body('hashtagsAndCategories') arr: [],
@@ -155,5 +173,31 @@ export class HashController {
   })
   async userSelectedHash(@Param('id') id: number) {
     return await this.hashService.userSelectedHash(id);
+  }
+
+  @Post('update')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'number', example: 'userid' },
+        arr: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              hashtag: { type: 'string', example: '운동' },
+              category: { type: 'string', example: '헬스' },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: '해쉬태그 업데이트',
+  })
+  async updateHashTagUser(@Body('id') id: number, @Body('arr') arr: any) {
+    return await this.hashService.userHashtagUpdate(id, arr);
   }
 }

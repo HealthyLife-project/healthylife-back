@@ -101,7 +101,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             time: formatDate(today),
             userid: userid,
           })
-        : messages.map((item) => {
+        : messages?.map((item) => {
             this.server.to(room).emit('receiveMessage', {
               userNickname,
               message: item.text,
@@ -152,7 +152,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             time: formatDate(today),
             userid: userid,
           })
-        : messages.map((item) => {
+        : messages?.map((item) => {
             this.server.to(room).emit('receiveMessage', {
               userNickname,
               message: item.text,
