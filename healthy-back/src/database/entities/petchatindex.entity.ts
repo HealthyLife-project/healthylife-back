@@ -21,13 +21,13 @@ export class PetChatIndex {
   room: PetChatRoom;
   @Column({})
   roomid: number;
-  @Column({})
+  @Column({ nullable: true })
   text: string;
 
   @Column({})
   userNickname: string;
 
-  @Column()
+  @Column({ nullable: true })
   time: string;
 
   @Column({ nullable: true })
