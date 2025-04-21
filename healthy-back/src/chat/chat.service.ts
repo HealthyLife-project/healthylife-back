@@ -100,7 +100,7 @@ export class ChatService {
     return room ? data : null;
   }
 
-  async createPetRoom(obj: any): Promise<{ result: boolean }> {
+  async createPetRoom(obj: any): Promise<any> {
     try {
       const room = this.PetChatRoomRepo.create({
         title: obj.title,
@@ -117,20 +117,20 @@ export class ChatService {
       if (!userRoom) {
         return { result: false };
       }
-      const insertRoom = this.PetChatRepo.create({
-        roomid: userRoom.id,
-        userid: Number(obj.id),
-      });
-      await this.PetChatRepo.save(insertRoom);
+      // const insertRoom = this.PetChatRepo.create({
+      //   roomid: userRoom.id,
+      //   userid: Number(obj.id),
+      // });
+      // await this.PetChatRepo.save(insertRoom);
 
-      return { result: true };
+      return { result: true, roomData };
     } catch (e) {
       console.error(e);
       return { result: false };
     }
   }
 
-  async createPersonRoom(obj: any): Promise<{ result: boolean }> {
+  async createPersonRoom(obj: any): Promise<any> {
     try {
       const room = this.PersonChatRoomRepo.create({
         title: obj.title,
@@ -146,12 +146,12 @@ export class ChatService {
       if (!userRoom) {
         return { result: false };
       }
-      const insertRoom = this.PersonChatRepo.create({
-        roomid: userRoom.id,
-        userid: Number(obj.id),
-      });
-      await this.PetChatRepo.save(insertRoom);
-      return { result: true };
+      // const insertRoom = this.PersonChatRepo.create({
+      //   roomid: userRoom.id,
+      //   userid: Number(obj.id),
+      // });
+      // await this.PetChatRepo.save(insertRoom);
+      return { result: true, roomData };
     } catch (e) {
       return { result: false };
     }
