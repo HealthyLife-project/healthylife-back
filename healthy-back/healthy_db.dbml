@@ -1,0 +1,188 @@
+Table "adb" {
+  "id" int [pk, not null, increment]
+  "imgsrc" varchar(255)
+  "imgsrcAder" varchar(255)
+}
+
+Table "category" {
+  "id" int [pk, not null, increment]
+  "category" varchar(255) [not null]
+}
+
+Table "hashtag" {
+  "id" int [pk, not null, increment]
+  "hash" varchar(255) [not null]
+  "categoryid" int [not null]
+}
+
+Table "in_body" {
+  "id" int [pk, not null, increment]
+  "userId" int [not null]
+  "weight" varchar(255)
+  "muscleMass" varchar(255)
+  "bodyFat" varchar(255)
+  "bmi" varchar(255)
+  "height" varchar(255)
+  "bodyFatPer" varchar(255)
+  "createdAt" datetime(6) [not null, default: `CURRENT_TIMESTAMP(6)`]
+}
+
+Table "in_body_data" {
+  "id" int [pk, not null, increment]
+  "value" float [not null]
+  "createdAt" datetime(6) [not null, default: `CURRENT_TIMESTAMP(6)`]
+  "userId" int
+}
+
+Table "ip_log" {
+  "id" int [pk, not null, increment]
+  "ipAddress" longtext [not null]
+  "url" longtext [not null]
+  "timestamp" timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table "person_chat" {
+  "id" int [pk, not null, increment]
+  "userid" int [not null]
+  "roomid" int [not null]
+  "createdAt" datetime(6) [not null, default: `CURRENT_TIMESTAMP(6)`]
+}
+
+Table "person_chat_index" {
+  "id" int [pk, not null, increment]
+  "userid" int [not null]
+  "roomid" int [not null]
+  "text" varchar(255)
+  "userNickname" varchar(255) [not null]
+  "time" varchar(255)
+  "aopen" varchar(255)
+  "createdAt" datetime(6) [not null, default: `CURRENT_TIMESTAMP(6)`]
+}
+
+Table "person_chat_room" {
+  "id" int [pk, not null, increment]
+  "userid" varchar(255)
+  "title" varchar(255)
+  "cnt" int [default: 1]
+  "createdAt" datetime(6) [not null, default: `CURRENT_TIMESTAMP(6)`]
+}
+
+Table "person_chat_write" {
+  "id" int [pk, not null, increment]
+  "userid" int [not null]
+  "roomid" int [not null]
+  "chatid" int [not null]
+}
+
+Table "pet_chat" {
+  "id" int [pk, not null, increment]
+  "userid" int [not null]
+  "roomid" int [not null]
+  "createdAt" datetime(6) [not null, default: `CURRENT_TIMESTAMP(6)`]
+}
+
+Table "pet_chat_index" {
+  "id" int [pk, not null, increment]
+  "userid" int [not null]
+  "roomid" int [not null]
+  "text" varchar(255)
+  "userNickname" varchar(255) [not null]
+  "time" varchar(255)
+  "aopen" varchar(255)
+  "createdAt" datetime(6) [not null, default: `CURRENT_TIMESTAMP(6)`]
+}
+
+Table "pet_chat_room" {
+  "id" int [pk, not null, increment]
+  "userid" varchar(255)
+  "title" varchar(255)
+  "cnt" int [default: 1]
+  "createdAt" datetime(6) [not null, default: `CURRENT_TIMESTAMP(6)`]
+}
+
+Table "pet_chat_write" {
+  "id" int [pk, not null, increment]
+  "userid" int [not null]
+  "roomid" int [not null]
+  "chatid" int [not null]
+}
+
+Table "report" {
+  "id" int [pk, not null, increment]
+  "report" longtext [not null]
+  "reportCnt" int [not null, default: 0]
+  "timestamp" timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  "userId" int
+  "reporterId" int
+}
+
+Table "user" {
+  "id" int [pk, not null, increment]
+  "userid" varchar(255) [unique]
+  "nickname" varchar(255)
+  "name" varchar(255)
+  "password" varchar(255)
+  "age" varchar(255)
+  "gender" varchar(255)
+  "email" varchar(255)
+  "phone" varchar(255) [unique]
+  "address" varchar(255)
+  "provider" varchar(255)
+  "reportCnt" int [default: 0]
+  "premium" tinyint [default: 0]
+  "admin" tinyint [default: 0]
+}
+
+Table "user_admin" {
+  "id" int [pk, not null, increment]
+  "userid" varchar(255) [unique]
+  "name" varchar(255)
+  "password" varchar(255)
+  "email" varchar(255)
+}
+
+Table "user_hashtag" {
+  "id" int [pk, not null, increment]
+  "userId" int [not null]
+  "hashtagId" int
+  "category" varchar(255)
+  "hashtagName" varchar(255)
+}
+
+Ref "FK_6a80bcb704084ca42a3fcdf03c6":"category"."id" < "hashtag"."categoryid" [delete: cascade]
+
+Ref "FK_b500176d0d578141146f0abb7d3":"user"."id" < "in_body"."userId" [delete: cascade]
+
+Ref "FK_b424e44c49d1cda7f49a633b98f":"user"."id" < "in_body_data"."userId" [delete: cascade]
+
+Ref "FK_c0f884db778a9591982887a32d9":"person_chat_room"."id" < "person_chat"."roomid" [delete: cascade]
+
+Ref "FK_e60dc6bf490b26da966ad28529b":"user"."id" < "person_chat"."userid" [delete: cascade]
+
+Ref "FK_5b7797ce79246dd343103a9a98d":"person_chat_room"."id" < "person_chat_index"."roomid" [delete: cascade]
+
+Ref "FK_5bf43f79dbb7dc1a114f3ef89b9":"user"."id" < "person_chat_write"."userid" [delete: cascade]
+
+Ref "FK_dfa51c892ea657059a148069c07":"person_chat_index"."id" < "person_chat_write"."chatid" [delete: cascade]
+
+Ref "FK_f53bd8d6d818eef3ba2051390c5":"person_chat_room"."id" < "person_chat_write"."roomid" [delete: cascade]
+
+Ref "FK_7cf3258b947839898049d40cba0":"pet_chat_room"."id" < "pet_chat"."roomid" [delete: cascade]
+
+Ref "FK_ee71e994f0b769216070ce7d20a":"user"."id" < "pet_chat"."userid" [delete: cascade]
+
+Ref "FK_b73230082d0f0946f23009c9ce3":"pet_chat_room"."id" < "pet_chat_index"."roomid" [delete: cascade]
+
+Ref "FK_3a50cf024c60a85b2bf179c29aa":"pet_chat_index"."id" < "pet_chat_write"."chatid" [delete: cascade]
+
+Ref "FK_c1790e1125b5fe9dec2885ba26c":"user"."id" < "pet_chat_write"."userid" [delete: cascade]
+
+Ref "FK_e65151db8a1ec309269c5bd2be1":"pet_chat_room"."id" < "pet_chat_write"."roomid" [delete: cascade]
+
+Ref "FK_253163ca85b927f62596606f6cc":"user"."id" < "report"."reporterId" [delete: cascade]
+
+Ref "FK_e347c56b008c2057c9887e230aa":"user"."id" < "report"."userId" [delete: cascade]
+
+Ref "FK_9f804a776c9444ec19d8fde9459":"user"."id" < "user_hashtag"."userId" [delete: cascade]
+
+Ref "FK_d8e54648f69e461e1530d888772":"hashtag"."id" < "user_hashtag"."hashtagId" [delete: cascade]
