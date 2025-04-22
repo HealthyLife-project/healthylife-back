@@ -15,7 +15,6 @@ export class NewsService {
     );
   }
 
-  // 네이버 뉴스 API 요청
   private async getNewsFromAPI(query: string) {
     const url = `https://openapi.naver.com/v1/search/news.json?query=${encodeURIComponent(query)}&display=5&sort=date`;
 
@@ -34,13 +33,8 @@ export class NewsService {
     }
   }
 
-  // 운동 건강 뉴스
-  async getHealthNews(str: string) {
-    return this.getNewsFromAPI(str);
-  }
-
-  // 반려동물 건강 뉴스
-  async getPetHealthNews(str: string) {
-    return this.getNewsFromAPI(str);
+  async getNewsByCategory(category: string) {
+    // 주어진 카테고리로 뉴스를 가져오는 함수
+    return this.getNewsFromAPI(category);
   }
 }
