@@ -44,13 +44,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       room: string;
       userNickname: string;
       category: string;
+      title: string;
       roomid: number;
       userid: number;
       boolean: boolean;
     },
     @ConnectedSocket() client: Socket,
   ) {
-    const { userNickname, category, roomid, userid, boolean } = data;
+    const { userNickname, category, roomid, userid, boolean, title } = data;
     const room = `${roomid}-${category}`;
     client.join(room);
     this.users.set(client.id, { userNickname, room });
@@ -58,9 +59,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // 해당 방 유저 목록 전송
     const roomUsers = this.getUsersInRoom(room);
     this.server.to(room).emit('userList', roomUsers);
-
+    console.log('category', category);
     if (category == 'person') {
+      console.log('person on');
       const obj = { roomid, userid };
+      const obj2 = { title, userid };
+      const roomVali = await this.chatService.validatePersonRoomCreate(roomid);
+      if (!roomVali) {
+        await this.chatService.createPersonRoom(obj2);
+      }
       await this.chatService.insertPersonRoom(obj);
 
       const messages = await this.chatService.getPersonMessages(
@@ -112,7 +119,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
           });
     }
     if (category == 'pet') {
+      console.log('pet on');
       const obj = { roomid, userid };
+      const obj2 = { title, userid };
+      const roomVali = await this.chatService.validatePetRoomCreate(roomid);
+      if (!roomVali) {
+        await this.chatService.createPetRoom(obj2);
+      }
       await this.chatService.insertPetRoom(obj);
       const messages = await this.chatService.getPetMessages(
         roomid,

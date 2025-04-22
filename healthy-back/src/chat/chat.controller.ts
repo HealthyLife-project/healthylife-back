@@ -147,7 +147,7 @@ export class ChatController {
   @ApiParam({ name: 'id', description: '삭제할 채팅방 ID' })
   async deletePetRoom(
     @Param('id') userid: number,
-    @Param('roomid') roomid: number,
+    @Query('roomid') roomid: number,
   ) {
     return await this.chatService.deletePetRoom(userid, roomid);
   }

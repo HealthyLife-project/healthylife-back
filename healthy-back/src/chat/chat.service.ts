@@ -206,7 +206,9 @@ export class ChatService {
       console.log('roomcnt', room.cnt);
       // 인원 수가 0이면 방도 삭제
       if (room.cnt <= 0) {
-        await this.PetChatRoomRepo.delete({ id: roomid });
+        console.log('roomcnt2', room.cnt, roomid);
+        const result = await this.PetChatRoomRepo.delete({ id: roomid });
+        console.log('삭제 결과:', result);
       } else {
         await this.PetChatRoomRepo.update(room.id, {
           cnt: room.cnt,
@@ -258,18 +260,20 @@ export class ChatService {
 
   async insertPetRoom(
     obj: any,
-  ): Promise<{ result: boolean; message: string; boolean?: any }> {
+  ): Promise<{ result: boolean; message: string; data?: any }> {
     try {
       const data = await this.PetChatRepo.findOne({
         where: { userid: obj.userid, roomid: obj.roomid },
       });
+      console.log(data, 'data');
       if (data == null) {
         const join = this.PetChatRepo.create({
           userid: obj.userid,
           roomid: obj.roomid,
         });
-        await this.PetChatRepo.save(join);
-
+        console.log('null 내부 들어옴, ', join);
+        const data = await this.PetChatRepo.save(join);
+        console.log(data, 'data저장 됨');
         const room = await this.PetChatRoomRepo.findOne({
           where: { id: obj.roomid },
         });
@@ -282,20 +286,12 @@ export class ChatService {
 
         await this.PetChatRoomRepo.save(room);
 
-        return {
-          result: true,
-          message: '채팅방에 입장했습니다',
-          boolean: false,
-        };
+        return { result: true, message: '채팅방에 입장했습니다', data: true };
       } else {
-        const message = await this.PetChatIndexRepo.find({
-          where: { roomid: obj.roomid },
-        });
-
         return {
           result: true,
           message: '채팅방에 입장했습니다',
-          boolean: true,
+          data: false,
         };
       }
     } catch (e) {
@@ -530,6 +526,20 @@ export class ChatService {
     const data = await this.PersonChatRepo.findOne({
       where: { userid: obj.userid, roomid: obj.roomid },
     });
+
+    return data ? true : false;
+  }
+
+  async validatePersonRoomCreate(roomid: number): Promise<boolean> {
+    const data = await this.PersonChatRoomRepo.findOne({
+      where: { id: roomid },
+    });
+
+    return data ? true : false;
+  }
+
+  async validatePetRoomCreate(roomid: number): Promise<boolean> {
+    const data = await this.PetChatRoomRepo.findOne({ where: { id: roomid } });
 
     return data ? true : false;
   }
