@@ -32,4 +32,7 @@ export class PetChatIndex {
 
   @Column({ nullable: true })
   aopen: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

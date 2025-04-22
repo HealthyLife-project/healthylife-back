@@ -346,9 +346,20 @@ export class ChatService {
     limit: number,
   ) {
     // 1. 메시지를 최신순으로 가져오기 (pagination)
-    const messages = await this.PetChatIndexRepo.find({
-      where: { roomid: roomid },
+    const userData = await this.PetChatRepo.findOne({
+      where: { userid: userid },
     });
+    const messagesDate = await this.PetChatIndexRepo.find({
+      where: { roomid: roomid },
+      order: { createdAt: 'DESC' },
+    });
+    const userCreateAt = userData?.createdAt;
+
+    if (!userCreateAt) {
+      throw new Error('userData가 없거나 createdAt이 존재하지 않습니다');
+    }
+
+    const messages = messagesDate.filter((msg) => msg.createdAt > userCreateAt);
 
     // 2. 기존에 읽은 chatid 목록 가져오기
     const written = await this.PetChatWriteRepo.find({
@@ -376,9 +387,9 @@ export class ChatService {
         // 객체가 null이 아니어야만 create 메서드에 전달할 수 있음
         if (user && room && chat) {
           return this.PetChatWriteRepo.create({
-            userid: user.id, // User 객체 전달
-            roomid: room.id, // PersonChatRoom 객체 전달
-            chatid: chat.id, // PersonChatIndex 객체 전달
+            userid: user.id, // User  전달
+            roomid: room.id, // PersonChatRoom  전달
+            chatid: chat.id, // PersonChatIndex  전달
           });
         } else {
           throw new Error('error');
@@ -418,9 +429,20 @@ export class ChatService {
     limit: number,
   ) {
     // 1. 메시지를 최신순으로 가져오기 (pagination)
-    const messages = await this.PersonChatIndexRepo.find({
-      where: { roomid: roomid },
+    const userData = await this.PetChatRepo.findOne({
+      where: { userid: userid },
     });
+    const messagesDate = await this.PetChatIndexRepo.find({
+      where: { roomid: roomid },
+      order: { createdAt: 'DESC' },
+    });
+    const userCreateAt = userData?.createdAt;
+
+    if (!userCreateAt) {
+      throw new Error('userData가 없거나 createdAt이 존재하지 않습니다');
+    }
+
+    const messages = messagesDate.filter((msg) => msg.createdAt > userCreateAt);
 
     // 2. 기존에 읽은 chatid 목록 가져오기
     const written = await this.PersonChatWriteRepo.find({

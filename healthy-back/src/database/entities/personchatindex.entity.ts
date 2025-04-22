@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { PersonChatRoom } from './personchatRoom.entitiy';
 @Entity()
@@ -30,4 +31,7 @@ export class PersonChatIndex {
 
   @Column({ nullable: true })
   aopen: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
