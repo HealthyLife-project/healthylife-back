@@ -70,12 +70,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       }
       await this.chatService.insertPersonRoom(obj);
 
-      const messages = await this.chatService.getPersonMessages(
+      const messagesData = await this.chatService.getPersonMessages(
         roomid,
         userid,
         1,
         10,
       );
+      const messages = messagesData?.page;
       const today = new Date();
 
       const formatDate = (date: Date) => {
@@ -127,12 +128,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.chatService.createPetRoom(obj2);
       }
       await this.chatService.insertPetRoom(obj);
-      const messages = await this.chatService.getPetMessages(
+      const messagesData = await this.chatService.getPetMessages(
         roomid,
         userid,
         1,
         10,
       );
+      const messages = messagesData?.page;
       const today = new Date();
 
       const formatDate = (date: Date) => {
