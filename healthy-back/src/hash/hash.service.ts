@@ -140,7 +140,7 @@ export class HashService {
   async userHashtagUpdate(id: number, arr: any): Promise<{ result: boolean }> {
     for (const item of arr) {
       const hashEntity = await this.hashRepository.findOne({
-        where: { hash: item.hashtag },
+        where: { id: item.hashtag },
       });
 
       if (!hashEntity) continue;
