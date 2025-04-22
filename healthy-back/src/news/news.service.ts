@@ -35,12 +35,12 @@ export class NewsService {
   }
 
   // 운동 건강 뉴스
-  async getHealthNews() {
-    return this.getNewsFromAPI('운동 건강');
+  async getHealthNews(str: string) {
+    return this.getNewsFromAPI(str);
   }
 
   // 반려동물 건강 뉴스
-  async getPetHealthNews() {
-    return this.getNewsFromAPI('반려동물 건강');
+  async getPetHealthNews(str: string) {
+    return this.getNewsFromAPI(str);
   }
 }
