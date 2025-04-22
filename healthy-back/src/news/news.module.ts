@@ -1,20 +1,10 @@
-// import { Module } from '@nestjs/common';
-// import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { RedisModule, RedisModuleOptions } from '@nestjs-modules/ioredis';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { NewsService } from './news.service';
 
-// @Module({
-//   imports: [
-//     ConfigModule.forRoot(),
-//     RedisModule.forRootAsync({
-//       imports: [ConfigModule],
-//       inject: [ConfigService],
-//       useFactory: (configService: ConfigService): RedisModuleOptions => ({
-//         config: {
-//           host: configService.get<string>('REDIS_HOST', 'localhost'),
-//           port: configService.get<number>('REDIS_PORT', 6379),
-//         },
-//       }),
-//     }),
-//   ],
-// })
-// export class NewsModule {}
+@Module({
+  imports: [ConfigModule.forRoot()],
+  providers: [NewsService],
+  exports: [NewsService], // 필요 시 export 유지
+})
+export class NewsModule {}

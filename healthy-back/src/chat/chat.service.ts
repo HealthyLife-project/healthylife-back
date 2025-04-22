@@ -398,6 +398,9 @@ export class ChatService {
     // 페이지 번호가 마지막 페이지를 넘지 않도록 처리
     const currentPage = Math.min(page, totalPages); // 마지막 페이지가 넘지 않도록 보장
 
+    if (currentPage >= totalPages) {
+      return null;
+    }
     // 메시지 잘라내기 (최신순으로 정렬된 상태에서)
     const paginated = messagesReverse.slice(
       (currentPage - 1) * limit,
@@ -463,7 +466,9 @@ export class ChatService {
 
     // 페이지 번호가 마지막 페이지를 넘지 않도록 처리
     const currentPage = Math.min(page, totalPages); // 마지막 페이지가 넘지 않도록 보장
-
+    if (currentPage >= totalPages) {
+      return null;
+    }
     // 메시지 잘라내기 (최신순으로 정렬된 상태에서)
     const paginated = messagesReverse.slice(
       (currentPage - 1) * limit,
