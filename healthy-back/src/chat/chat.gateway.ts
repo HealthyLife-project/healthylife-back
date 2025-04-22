@@ -61,7 +61,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.to(room).emit('userList', roomUsers);
     console.log('category', category);
     if (category == 'person') {
-      console.log('person on');
+      console.log('person on', userid, roomid);
       const obj = { roomid, userid };
       const obj2 = { title, userid };
       const roomVali = await this.chatService.validatePersonRoomCreate(roomid);

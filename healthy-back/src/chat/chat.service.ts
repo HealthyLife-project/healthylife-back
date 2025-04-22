@@ -351,15 +351,20 @@ export class ChatService {
     });
     const messagesDate = await this.PetChatIndexRepo.find({
       where: { roomid: roomid },
-      order: { createdAt: 'DESC' },
     });
-    const userCreateAt = userData?.createdAt;
+    if (!userData || !userData.createdAt) {
+      return null;
+    }
+    const userCreateAt = new Date(userData?.createdAt);
 
     if (!userCreateAt) {
-      throw new Error('userData가 없거나 createdAt이 존재하지 않습니다');
+      return null;
     }
 
-    const messages = messagesDate.filter((msg) => msg.createdAt > userCreateAt);
+    const messages = messagesDate.filter((msg) => {
+      const msgCreatedAt = new Date(msg.createdAt); // Date로 변환
+      return msgCreatedAt > userCreateAt;
+    });
 
     // 2. 기존에 읽은 chatid 목록 가져오기
     const written = await this.PetChatWriteRepo.find({
@@ -429,20 +434,26 @@ export class ChatService {
     limit: number,
   ) {
     // 1. 메시지를 최신순으로 가져오기 (pagination)
-    const userData = await this.PetChatRepo.findOne({
+    const userData = await this.PersonChatRepo.findOne({
       where: { userid: userid },
     });
-    const messagesDate = await this.PetChatIndexRepo.find({
+
+    const messagesDate = await this.PersonChatIndexRepo.find({
       where: { roomid: roomid },
-      order: { createdAt: 'DESC' },
     });
-    const userCreateAt = userData?.createdAt;
+    if (!userData || !userData.createdAt) {
+      return null;
+    }
+    const userCreateAt = new Date(userData?.createdAt);
 
     if (!userCreateAt) {
-      throw new Error('userData가 없거나 createdAt이 존재하지 않습니다');
+      return null;
     }
 
-    const messages = messagesDate.filter((msg) => msg.createdAt > userCreateAt);
+    const messages = messagesDate.filter((msg) => {
+      const msgCreatedAt = new Date(msg.createdAt); // Date로 변환
+      return msgCreatedAt > userCreateAt;
+    });
 
     // 2. 기존에 읽은 chatid 목록 가져오기
     const written = await this.PersonChatWriteRepo.find({
