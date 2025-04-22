@@ -203,7 +203,7 @@ export class ChatService {
 
       // 인원 수 감소
       room.cnt -= 1;
-
+      console.log('roomcnt', room.cnt);
       // 인원 수가 0이면 방도 삭제
       if (room.cnt <= 0) {
         await this.PetChatRoomRepo.delete({ id: roomid });
@@ -213,6 +213,7 @@ export class ChatService {
         });
       }
       const chat = (await this.PetChatRoomRepo.find()) || null;
+
       return { result: true, message: '채팅방을 나갔습니다', chat };
     } catch (e) {
       return { result: false, message: `${e}`, chat: null };

@@ -26,6 +26,7 @@ import { InbodyModule } from 'src/inbody/inbody.module';
 import { MapsModule } from 'src/maps/maps.module';
 import { AdminModule } from 'src/admin/admin.module';
 import { ReportModule } from 'src/report/report.module';
+import { NewsModule } from 'src/news/news.module';
 @Module({
   imports: [
     ConfigModule.forRoot(), // 환경 변수 사용
@@ -45,6 +46,7 @@ import { ReportModule } from 'src/report/report.module';
         InbodyModule,
         MapsModule,
         ReportModule,
+        NewsModule,
       ],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
