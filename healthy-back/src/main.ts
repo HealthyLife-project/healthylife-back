@@ -28,12 +28,20 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:4000',
-      'http://43.203.38.38:4000',
-      'http://3.39.205.170:3000',
-    ],
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'http://43.203.38.38:3000',
+        'http://43.203.38.38:4000',
+        'http://admin.example.com',
+        'http://user.example.com',
+      ];
+
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   });
 
