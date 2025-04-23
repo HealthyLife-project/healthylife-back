@@ -32,6 +32,7 @@ async function bootstrap() {
       'http://localhost:3000',
       'http://localhost:4000',
       'http://43.203.38.38:4000',
+      'http://3.39.205.170:3000/',
     ],
     credentials: true,
   });

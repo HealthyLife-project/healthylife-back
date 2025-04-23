@@ -9,6 +9,7 @@ import { HashModule } from './hash/hash.module';
 import { AdModule } from './admin/ad/ad.module';
 import { InbodyModule } from './inbody/inbody.module';
 import { MapsModule } from './maps/maps.module';
+
 @Module({
   imports: [
     DatabaseModule,
