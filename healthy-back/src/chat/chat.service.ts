@@ -363,7 +363,7 @@ export class ChatService {
 
     const messages = messagesDate.filter((msg) => {
       const msgCreatedAt = new Date(msg.createdAt); // Date로 변환
-      return msgCreatedAt > userCreateAt;
+      return msgCreatedAt >= userCreateAt;
     });
 
     // 2. 기존에 읽은 chatid 목록 가져오기
@@ -452,7 +452,7 @@ export class ChatService {
 
     const messages = messagesDate.filter((msg) => {
       const msgCreatedAt = new Date(msg.createdAt); // Date로 변환
-      return msgCreatedAt > userCreateAt;
+      return msgCreatedAt >= userCreateAt;
     });
 
     // 2. 기존에 읽은 chatid 목록 가져오기

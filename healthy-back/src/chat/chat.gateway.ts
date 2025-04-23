@@ -70,13 +70,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       }
       await this.chatService.insertPersonRoom(obj);
 
-      const messagesData = await this.chatService.getPersonMessages(
-        roomid,
-        userid,
-        1,
-        10,
-      );
-      const messages = messagesData?.page;
       const today = new Date();
 
       const formatDate = (date: Date) => {
@@ -109,15 +102,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             time: formatDate(today),
             userid: userid,
           })
-        : messages?.map((item) => {
-            this.server.to(room).emit('receiveMessage', {
-              userNickname,
-              message: item.text,
-              aopen: item.aopen,
-              time: formatDate(today),
-              userid: userid,
-            });
-          });
+        : '';
     }
     if (category == 'pet') {
       console.log('pet on');
@@ -128,13 +113,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         await this.chatService.createPetRoom(obj2);
       }
       await this.chatService.insertPetRoom(obj);
-      const messagesData = await this.chatService.getPetMessages(
-        roomid,
-        userid,
-        1,
-        10,
-      );
-      const messages = messagesData?.page;
+
       const today = new Date();
 
       const formatDate = (date: Date) => {
@@ -167,15 +146,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             time: formatDate(today),
             userid: userid,
           })
-        : messages?.map((item) => {
-            this.server.to(room).emit('receiveMessage', {
-              userNickname,
-              message: item.text,
-              aopen: item.aopen,
-              time: formatDate(today),
-              userid: userid,
-            });
-          });
+        : '';
     }
 
     console.log(`${userNickname} joined room: ${room}`);
