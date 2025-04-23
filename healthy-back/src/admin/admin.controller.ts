@@ -48,7 +48,7 @@ export class AdminController {
       secure: false,
     });
 
-    return result;
+    return result.result ? result : result.result;
   }
 
   @Get('check')
