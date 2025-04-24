@@ -20,7 +20,6 @@ export class MapsService {
   }
 
   async searchFindAddress(str: string): Promise<any> {
-    console.log(str);
     const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(str)}`;
 
     try {

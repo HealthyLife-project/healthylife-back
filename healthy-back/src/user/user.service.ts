@@ -104,7 +104,6 @@ export class UserService {
     id: number,
     body: any,
   ): Promise<{ result: boolean; message: string }> {
-    console.log('body', body);
     const result = await this.userRepository.update(id, body);
 
     if (result.affected && result.affected > 0) {

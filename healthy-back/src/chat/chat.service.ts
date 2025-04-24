@@ -192,7 +192,7 @@ export class ChatService {
       const room = await this.PetChatRoomRepo.findOne({
         where: { id: roomid },
       });
-      console.log(room, '방 있어');
+
       if (!room) {
         return {
           result: false,
@@ -203,12 +203,10 @@ export class ChatService {
 
       // 인원 수 감소
       room.cnt -= 1;
-      console.log('roomcnt', room.cnt);
+
       // 인원 수가 0이면 방도 삭제
       if (room.cnt <= 0) {
-        console.log('roomcnt2', room.cnt, roomid);
         const result = await this.PetChatRoomRepo.delete({ id: roomid });
-        console.log('삭제 결과:', result);
       } else {
         await this.PetChatRoomRepo.update(room.id, {
           cnt: room.cnt,
@@ -231,7 +229,7 @@ export class ChatService {
       const room = await this.PersonChatRoomRepo.findOne({
         where: { id: roomid },
       });
-      console.log(room, '방 있어');
+
       if (!room) {
         return {
           result: false,
@@ -265,15 +263,15 @@ export class ChatService {
       const data = await this.PetChatRepo.findOne({
         where: { userid: obj.userid, roomid: obj.roomid },
       });
-      console.log(data, 'data');
+
       if (data == null) {
         const join = this.PetChatRepo.create({
           userid: obj.userid,
           roomid: obj.roomid,
         });
-        console.log('null 내부 들어옴, ', join);
+
         const data = await this.PetChatRepo.save(join);
-        console.log(data, 'data저장 됨');
+
         const room = await this.PetChatRoomRepo.findOne({
           where: { id: obj.roomid },
         });
@@ -306,15 +304,15 @@ export class ChatService {
       const data = await this.PersonChatRepo.findOne({
         where: { userid: obj.userid, roomid: obj.roomid },
       });
-      console.log(data, 'data');
+
       if (data == null) {
         const join = this.PersonChatRepo.create({
           userid: obj.userid,
           roomid: obj.roomid,
         });
-        console.log('null 내부 들어옴, ', join);
+
         const data = await this.PersonChatRepo.save(join);
-        console.log(data, 'data저장 됨');
+
         const room = await this.PersonChatRoomRepo.findOne({
           where: { id: obj.roomid },
         });
@@ -420,7 +418,7 @@ export class ChatService {
       (currentPage - 1) * limit,
       currentPage * limit,
     );
-    console.log(paginated.length);
+
     // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
     return paginated.length !== 0
       ? { page: paginated.reverse(), total: totalPages }
@@ -507,7 +505,7 @@ export class ChatService {
       (currentPage - 1) * limit,
       currentPage * limit,
     );
-    console.log(paginated.length, page, 'length');
+
     // 마지막 페이지에 맞춰 남은 메시지가 부족한 경우도 처리 (예: 마지막 페이지의 나머지 메시지만 반환)
     return paginated.length !== 0
       ? { page: paginated.reverse(), total: totalPages }

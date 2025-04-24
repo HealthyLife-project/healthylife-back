@@ -138,7 +138,6 @@ export class ChatController {
     @Param('id') userid: number,
     @Query('roomid') roomid: number,
   ) {
-    console.log(userid, 'userid', roomid, 'roomid');
     return await this.chatService.deletePersonRoom(userid, roomid);
   }
 

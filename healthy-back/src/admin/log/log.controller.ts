@@ -28,7 +28,6 @@ export class LogController {
     summary: 'ip 주소',
   })
   @ApiBody({
-    description: '해쉬태그명',
     type: UpdateLogDto,
   })
   async getLogs(@Query('page') page: string, @Query('limit') limit: string) {

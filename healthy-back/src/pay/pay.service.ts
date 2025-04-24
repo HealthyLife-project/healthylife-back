@@ -25,7 +25,7 @@ export class PayService {
     const secretKey = Buffer.from(
       'test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:',
     ).toString('base64');
-    console.log(secretKey, 'secret');
+
     try {
       // 결제 검증하는 곳
       const res = await axios.post(
@@ -42,7 +42,6 @@ export class PayService {
           },
         },
       );
-      console.log(res.data, '결제정보');
 
       return {
         success: res.data.status === 'DONE',

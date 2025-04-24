@@ -17,7 +17,6 @@ export class AiController {
   constructor(private readonly aiService: AiService) {}
   @Post('generate')
   async generateText(@Body('prompt') prompt: string) {
-    console.log('ai/generate 콘솔 로그 확인용');
     return this.aiService.generateText(prompt);
   }
 

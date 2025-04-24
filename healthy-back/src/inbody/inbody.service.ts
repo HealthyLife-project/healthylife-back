@@ -20,8 +20,6 @@ export class InbodyService {
   ) {}
 
   async inbodyUpdate(id: number, obj: any): Promise<InBody> {
-    console.log('obj', obj);
-
     const inbody = this.inbodyrep.create({
       weight: obj.weight,
       muscleMass: obj.musclemass,
@@ -31,8 +29,6 @@ export class InbodyService {
       height: obj.height,
       userId: id,
     });
-
-    console.log('inbody', inbody);
 
     await this.inbodyrep.save(inbody);
 

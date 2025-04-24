@@ -26,7 +26,6 @@ export class AiService {
         },
       );
 
-      console.log('테스트', JSON.stringify(res.data, null, 2));
       const candidates = res.data.candidates;
       if (!candidates || candidates.length === 0) {
         return '응답 데이터가 없습니다.';
@@ -76,8 +75,6 @@ export class AiService {
     const responseJSON = data as UnsplashResponse;
 
     const images = responseJSON.results.map((img) => img.urls.regular);
-
-    responseJSON.results.map((img) => console.log(img.urls, 'urls'));
 
     return images; // 프론트에선 img.src로 바로 사용 가능
   }
