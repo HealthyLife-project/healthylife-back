@@ -9,7 +9,7 @@ import { HashModule } from './hash/hash.module';
 import { AdModule } from './admin/ad/ad.module';
 import { InbodyModule } from './inbody/inbody.module';
 import { MapsModule } from './maps/maps.module';
-
+import { SeederModule } from './seed/seeder.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -20,6 +20,7 @@ import { MapsModule } from './maps/maps.module';
     AdModule,
     InbodyModule,
     MapsModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService],

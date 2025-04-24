@@ -14,19 +14,19 @@ import { Report } from './entities/report.entity';
 import { Adb } from 'src/database/entities/ad.entity';
 
 import { RedisModule } from '@nestjs-modules/ioredis';
-import { HashModule } from 'src/hash/hash.module';
+import { HashModule } from '../hash/hash.module';
 import { UserModule } from '../user/user.module';
 import { ChatModule } from '../chat/chat.module';
-import { LogModule } from 'src/admin/log/log.module';
-import { AuthModule } from 'src/auth/auth.module';
-import { AiModule } from 'src/ai/ai.module';
-import { PayModule } from 'src/pay/pay.module';
-import { AdModule } from 'src/admin/ad/ad.module';
-import { InbodyModule } from 'src/inbody/inbody.module';
-import { MapsModule } from 'src/maps/maps.module';
-import { AdminModule } from 'src/admin/admin.module';
-import { ReportModule } from 'src/report/report.module';
-import { NewsModule } from 'src/news/news.module';
+import { LogModule } from '../admin/log/log.module';
+import { AuthModule } from '../auth/auth.module';
+import { AiModule } from '../ai/ai.module';
+import { PayModule } from '../pay/pay.module';
+import { AdModule } from '../admin/ad/ad.module';
+import { InbodyModule } from '../inbody/inbody.module';
+import { MapsModule } from '../maps/maps.module';
+import { AdminModule } from '../admin/admin.module';
+import { ReportModule } from '../report/report.module';
+import { NewsModule } from '../news/news.module';
 @Module({
   imports: [
     ConfigModule.forRoot(), // 환경 변수 사용
