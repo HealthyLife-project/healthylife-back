@@ -6,6 +6,7 @@ import { User } from '../database/entities/user.entity';
 import { Category } from '../database/entities/category.entity';
 import { Hashtag } from '../database/entities/hash.entity';
 import { Adb } from '../database/entities/ad.entity';
+import { InBody } from '../database/entities/inbody.entity';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class SeederService {
@@ -14,6 +15,7 @@ export class SeederService {
     @InjectRepository(Category) private categoryRepo: Repository<Category>,
     @InjectRepository(Hashtag) private hashtagRepo: Repository<Hashtag>,
     @InjectRepository(Adb) private adbRepo: Repository<Adb>,
+    @InjectRepository(InBody) private inbodyRepo: Repository<InBody>,
   ) {}
   async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
@@ -21,6 +23,11 @@ export class SeederService {
   }
 
   async runSeed() {
+    await this.inbodyRepo.delete({});
+    await this.hashtagRepo.delete({});
+    await this.categoryRepo.delete({});
+    await this.adbRepo.delete({});
+    await this.userRepo.delete({});
     // 🧑 User seed
     const password = await this.hashPassword('#Aa1234567');
     const user = this.userRepo.create({
@@ -32,6 +39,7 @@ export class SeederService {
       gender: 'male',
       email: 'test@example.com',
       phone: '01012345678',
+      premium: true,
     });
     await this.userRepo.save(user);
 
@@ -72,7 +80,37 @@ export class SeederService {
         categoryid,
       })),
     );
+    const inbodySamples = [
+      {
+        userId: user.id,
+        weight: '70.5',
+        muscleMass: '30.2',
+        bodyFat: '15.3',
+        bmi: '22.1',
+        height: '175',
+        bodyFatPer: '21.7',
+      },
+      {
+        userId: user.id,
+        weight: '69.0',
+        muscleMass: '30.8',
+        bodyFat: '13.9',
+        bmi: '21.7',
+        height: '175',
+        bodyFatPer: '20.1',
+      },
+      {
+        userId: user.id,
+        weight: '67.4',
+        muscleMass: '31.5',
+        bodyFat: '12.5',
+        bmi: '21.1',
+        height: '175',
+        bodyFatPer: '18.9',
+      },
+    ];
 
+    await this.inbodyRepo.save(inbodySamples);
     // 📸 Adb seed
     const adImages = [
       'ad-1745406725786-528540682.png',

@@ -138,37 +138,22 @@ export class HashService {
   }
 
   async userHashtagUpdate(id: number, arr: any): Promise<{ result: boolean }> {
+    await this.userHashRepo.delete({ userId: id });
     for (const item of arr) {
       const hashEntity = await this.hashRepository.findOne({
-        where: { id: item.hashtag },
+        where: { hash: item.hashtag },
       });
 
       if (!hashEntity) continue;
 
-      // 이미 userId + hashtagId 조합이 존재하는지 확인
-      const existing = await this.userHashRepo.findOne({
-        where: {
-          userId: id,
-          hashtagId: hashEntity.id,
-        },
+      const value = this.userHashRepo.create({
+        userId: id,
+        hashtagId: hashEntity.id, // 수정된 부분
+        category: item.category,
+        hashtagName: hashEntity.hash,
       });
 
-      if (existing) {
-        // 이미 존재하면 업데이트
-        existing.category = item.category;
-        existing.hashtagName = hashEntity.hash;
-        await this.userHashRepo.save(existing);
-      } else {
-        // 존재하지 않으면 새로 생성
-        const value = this.userHashRepo.create({
-          userId: id,
-          hashtagId: hashEntity.id,
-          category: item.category,
-          hashtagName: hashEntity.hash,
-        });
-
-        await this.userHashRepo.save(value);
-      }
+      await this.userHashRepo.save(value);
     }
 
     return { result: true };
