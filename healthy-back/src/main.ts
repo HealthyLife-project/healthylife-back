@@ -28,20 +28,7 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: (origin, callback) => {
-      const allowedOrigins = [
-        'http://43.203.38.38:3000',
-        'http://43.203.38.38:4000',
-        'http://admin.example.com',
-        'http://user.example.com',
-      ];
-
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: true, // 모든 origin 허용하되 credentials까지 허용됨
     credentials: true,
   });
 
