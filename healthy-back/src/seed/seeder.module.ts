@@ -6,12 +6,20 @@ import { Category } from '../database/entities/category.entity';
 import { Hashtag } from '../database/entities/hash.entity';
 import { Adb } from '../database/entities/ad.entity';
 import { UserHashtag } from '../database/entities/hashtag.entity';
+import { InBody } from 'src/database/entities/inbody.entity';
 
 import { DatabaseModule } from '../database/database.module';
 @Module({
   imports: [
     DatabaseModule,
-    TypeOrmModule.forFeature([User, Category, Hashtag, Adb, UserHashtag]),
+    TypeOrmModule.forFeature([
+      User,
+      Category,
+      Hashtag,
+      Adb,
+      UserHashtag,
+      InBody,
+    ]),
   ],
   providers: [SeederService],
   exports: [SeederService],
