@@ -7,7 +7,9 @@ import { Category } from '../database/entities/category.entity';
 import { Hashtag } from '../database/entities/hash.entity';
 import { Adb } from '../database/entities/ad.entity';
 import { InBody } from '../database/entities/inbody.entity';
+import { UserHashtag } from 'src/database/entities/hashtag.entity'; // 👈 추가
 import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class SeederService {
   constructor(
@@ -16,7 +18,10 @@ export class SeederService {
     @InjectRepository(Hashtag) private hashtagRepo: Repository<Hashtag>,
     @InjectRepository(Adb) private adbRepo: Repository<Adb>,
     @InjectRepository(InBody) private inbodyRepo: Repository<InBody>,
+    @InjectRepository(UserHashtag)
+    private userHashtagRepo: Repository<UserHashtag>, // 👈 추가
   ) {}
+
   async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(password, salt);
@@ -24,11 +29,13 @@ export class SeederService {
 
   async runSeed() {
     await this.inbodyRepo.delete({});
+    await this.userHashtagRepo.delete({});
     await this.hashtagRepo.delete({});
     await this.categoryRepo.delete({});
     await this.adbRepo.delete({});
     await this.userRepo.delete({});
-    // 🧑 User seed
+
+    // 🧑 User
     const password = await this.hashPassword('#Aa1234567');
     const user = this.userRepo.create({
       userid: 'testuser',
@@ -43,7 +50,7 @@ export class SeederService {
     });
     await this.userRepo.save(user);
 
-    // 📂 Category seed
+    // 📂 Category
     const categories = [
       { id: 6, category: '운동' },
       { id: 7, category: '헬스' },
@@ -51,7 +58,7 @@ export class SeederService {
     ];
     await this.categoryRepo.save(categories);
 
-    // 🔖 Hashtag seed
+    // 🔖 Hashtags
     const hashtags: [string, number][] = [
       ['축구', 6],
       ['농구', 6],
@@ -74,12 +81,25 @@ export class SeederService {
       ['반려견과 산책', 9],
       ['펫워크아웃', 9],
     ];
-    await this.hashtagRepo.save(
-      hashtags.map(([hash, categoryid]) => ({
-        hash,
-        categoryid,
-      })),
+
+    const savedHashtags = await this.hashtagRepo.save(
+      hashtags.map(([hash, categoryid]) => ({ hash, categoryid })),
     );
+
+    // 🌟 UserHashtag 연결 (ex: 첫 5개만 선택)
+    const selectedHashtags = savedHashtags.slice(0, 5); // 예시로 5개만
+    const userHashtags = selectedHashtags.map((ht) =>
+      this.userHashtagRepo.create({
+        userId: user.id,
+        hashtagId: ht.id,
+        hashtagName: ht.hash,
+        category:
+          categories.find((c) => c.id === ht.categoryid)?.category || '',
+      }),
+    );
+    await this.userHashtagRepo.save(userHashtags);
+
+    // 🧍‍♂️ InBody
     const inbodySamples = [
       {
         userId: user.id,
@@ -109,16 +129,15 @@ export class SeederService {
         bodyFatPer: '18.9',
       },
     ];
-
     await this.inbodyRepo.save(inbodySamples);
-    // 📸 Adb seed
+
+    // 📸 Adb 이미지
     const adImages = [
       'ad-1745406725786-528540682.png',
       'ad-1745406731084-202442315.png',
       'ad-1745406735669-980420030.png',
       'ad-1745406740131-450505105.jpg',
     ];
-
     await this.adbRepo.save(
       adImages.map((file) => ({
         imgsrc: `ads/${file}`,
