@@ -1,12 +1,12 @@
 # Healthylife_project
-백엔드 서버
+healthylife backend
 
 
 ## 🔧 Stack
 - Nest.js, mysql
 
 
-## 🔧 데이터베이스 구조
+## 🔧 ERD
 ![healthy-project-erd](https://github.com/user-attachments/assets/6ede3d14-d524-49ee-bb09-ed9c2424b6d2)
 
 
@@ -30,4 +30,6 @@
 - nodemailer
 
 
-담당 : 안상현
+## 주요 기능 로직
+
+
